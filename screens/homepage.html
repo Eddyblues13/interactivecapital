@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Capita - Learn to Invest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&family=Sahitya:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(8, 7, 30);
+            color: white;
+            font-family: "Poppins", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .navbar {
+            background-color: transparent;
+            padding: 20px 0;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+        }
+
+        .category-label {
+            background-color: #19172c;
+            padding: 10px;
+            letter-spacing: 1.5px;
+            border-radius: 15px;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-family: IBM Plex Mono, sans-serif;
+        }
+
+        .hero-heading {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .gradient-invest {
+            background: linear-gradient(to right, #a855f7, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip:text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-successfully {
+            background: linear-gradient(to right, #d946ef, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-and {
+            color: #f97316;
+        }
+
+        .gradient-safely {
+            background: linear-gradient(to right, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .btn-login {
+            background: linear-gradient(225deg, #3045ff, #ae2aff 76%, #ff5d02);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            margin-right: 15px;
+            transition: opacity 0.3s;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+            color: white;
+        }
+
+        .btn-create {
+            background: transparent;
+            border: 1px solid #0287df;
+            padding: 12px 30px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-create:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .participants-section {
+            margin-top: 50px;
+        }
+
+        .avatar-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #0a061d;
+            margin-left: -10px;
+            background-color: #1a1f2b;
+        }
+
+        .avatar-more {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #7c3aed;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            margin-left: -10px;
+        }
+
+        .participants-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+    .section-heading {
+        font-size: 2.8rem;
+        font-weight: 450;
+        margin-bottom: 25px;
+        color: #a5bdd9;
+    }
+
+    .section-text {
+        color: #a5bdd9;
+        font-size: 1.3rem;
+        line-height: 1.6;
+    }
+    .video-card video{
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .gradient-trade {
+        background: linear-gradient(to right, #a855f7, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-brand {
+        background: linear-gradient(to right, #f97316, #ef4444);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .trading-option {
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s;
+    }
+
+    .trading-option:hover {
+        transform: translateY(-5px);
+    }
+
+    .trading-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0ea5e9;
+    }
+
+    .trading-icon .icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .trading-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+    }
+
+@media screen and (max-width: 768px) {
+    .hero-heading{
+        font-size: 2rem;
+    }
+    .btn-login {
+            
+            padding: 10px 25px;
+            font-size: 0.8rem;
+        }
+
+        .btn-create {
+            background: transparent;
+            border: 1px solid #0287df;
+            padding: 10px 25px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+    .section-heading {
+        font-size: 2rem;
+        font-weight: 450;
+        margin-bottom: 25px;
+        color: #a5bdd9;
+    }
+
+    .section-text {
+        color: #a5bdd9;
+        font-size: 1rem;
+        line-height: 1.6;
+    }  
+    .white-text{
+        font-size: 16px !important;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="brand-icon"><img src="assets/img/android-chrome-36x36.png" alt=""></div>
+                el capita
+            </a>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container text-center py-5">
+        <div class="category-label">
+            TRAINING & COMMUNITY
+        </div>
+
+        <h1 class="hero-heading">
+            Learn how to <span class="gradient-invest">invest</span><br>
+            <span class="gradient-successfully">successfully</span> 
+            <span class="gradient-and">&</span> 
+            <span class="gradient-safely">safely</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Absolute top experts show you how to invest strategically to make your
+            money work for you sustainably.
+        </p>
+
+        <div class="buttons mb-5 d-flex justify-content-center">
+            <a href="#" class="btn btn-login">Login my account</a>
+            <a href="#" class="btn btn-create">Create account</a>
+        </div>
+        <div class="participants-section">
+            <div class="avatar-group">
+                <img src="assets/img/CRYParticipants.webp" width="250" alt="">
+            </div>
+            <div class="participants-text">1M+ succesful participants</div>
+        </div>
+
+    <!-- Copy Top Investors Section -->
+    <div class="row align-items-center my-5 py-5">
+        <div class="col-md-6 position-relative">
+            <div class="video-card">
+                <video autoplay muted loop>
+                    <source src="assets/videos/Toro-Investors.mp4" type="video/mp4">
+                </video>     
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2 class="section-heading mb-4">Copy top investors</h2>
+            <p class="section-text">
+                With el Capita innovative CopyTrader™, you can automatically copy the moves of other investors. Find investors you believe in and replicate their actions in real time.
+            </p>
+        </div>
+    </div>
+
+    <!-- Trading Options Section -->
+    <div class="text-center my-5 py-5">
+        <h2 class="section-heading mb-5">
+            What can you <span class="gradient-trade">Trade</span> with 
+            <span class="gradient-brand">el capita</span>?
+        </h2>
+        
+        <div class=" d-flex justify-content-center">
+            <div class="row g-4 mx-1">
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                <path d="M15 9l-3 3-3-3"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">Forex</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18"/>
+                                <path d="M19 9l-5 5-4-4-3 3"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">Stocks</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 17h2v5h16V17h2M4 17l8-15 8 15"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">Commodities</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 mx-1">
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M7 7h10M7 12h10M7 17h10"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">ETFs</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">Crypto</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="trading-option">
+                        <div class="trading-icon">
+                            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18"/>
+                                <path d="M3 12h18M3 6h18M3 18h18"/>
+                            </svg>
+                        </div>
+                        <div class="trading-label">Indices</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+    </div>
+</div>
+
+<section class="bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 video-card">
+                <video autoplay muted loop>
+                    <source src="assets/videos/Toro-Portfolios.mp4" type="video/mp4">
+                </video>  
+            </div>
+
+            <div class="col-lg-6 d-flex justify-content-center align-items-center px-4">
+                <p class="text-dark fs-5 white-text">El capita Stock trading offers an exciting opportunity to grow your wealth by investing in companies you believe in. It’s all about buying shares in businesses and benefiting as they grow and succeed.</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

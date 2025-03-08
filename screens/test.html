@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reasons To Choose Us</title>
+    <style>
+        body {
+            background-color: #0a061d;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 60px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .reason-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .reason-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .reason-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .reason-icon {
+            width: 100px;
+            height: 100px;
+            margin: 20px 0;
+        }
+
+        .reason-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .reason-description {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .reasons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="section-title">
+            <span class="gradient-text">7 Reasons</span> To Choose Us
+        </h2>
+
+        <div class="reasons-grid">
+            <!-- Secured Card -->
+            <div class="reason-card">
+                <div class="reason-label">REASON 1</div>
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%20%28170%29-an4sNR2G6outUuUmFsY1Q4Sln0wDHr.png" alt="Security Lock" class="reason-icon">
+                <h3 class="reason-title">Secured</h3>
+                <p class="reason-description">
+                    We prioritize your data's safety with advanced encryption, regular audits, and robust firewalls. Trust us to provide a secure environment, ensuring your sensitive information stays confidential and protected. Your safety is our priority, giving you peace of mind every step.
+                </p>
+            </div>
+
+            <!-- Leverage Card -->
+            <div class="reason-card">
+                <div class="reason-label">REASON 2</div>
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%20%28170%29-an4sNR2G6outUuUmFsY1Q4Sln0wDHr.png" alt="Rocket" class="reason-icon">
+                <h3 class="reason-title">Leverage</h3>
+                <p class="reason-description">
+                    Maximize your potential by amplifying your positions. Our platform ensures seamless leverage management, empowering you to achieve greater profits. Take advantage of this feature responsibly and unlock greater opportunities.
+                </p>
+            </div>
+
+            <!-- Crypto Payments Card -->
+            <div class="reason-card">
+                <div class="reason-label">REASON 3</div>
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%20%28170%29-an4sNR2G6outUuUmFsY1Q4Sln0wDHr.png" alt="Bitcoin" class="reason-icon">
+                <h3 class="reason-title">Crypto Payments</h3>
+                <p class="reason-description">
+                    Enjoy the flexibility of using your favorite cryptocurrencies for seamless, secure transactions. Our platform embraces innovation, offering fast processing and enhanced privacy. Join us to experience a modern payment solution that meets your needs.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

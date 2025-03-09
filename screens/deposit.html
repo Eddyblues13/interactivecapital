@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&family=Sahitya:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
 </head>
 <body>
     <!-- Top Navigation -->
@@ -106,9 +105,28 @@
 
     <!-- Main Content -->
     <div class="mx-3 my-4">
-          <div class="deposit-card text-white text-center py-5">
-              No Deposits yet
-          </div>
+        <div class="no-transaction-card text-center py-5">
+            No deposit yet
+        </div>
+
+          <div class="notification">
+            <div class="notification-text">
+                Deposits will be pending until there are sufficient confirmations on the blockchain.
+            </div>
+            <button class="close-button">&times;</button>
+        </div>
+    
+        <div class="transaction-card">
+            <div class="date-section">
+                <div class="month fs-6 fw-bold">MAR</div>
+                <div class="day fs-2">05</div>
+            </div>
+            <div class="transaction-details">
+                <div class="amount text-silverish">FUND $870.00</div>
+                <div class="deposit-description">TRADING BALANCE TOTAL</div>
+            </div>
+            <div class="deposit-status">Pending</div>
+        </div>
   </div>
   <!-- Fixed Action Button -->
   <button type="button" class="fixed-action-btn" aria-label="Add new item">

@@ -436,6 +436,91 @@
             color: #a5bdd9; 
         }
 
+        .notification {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            margin: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-text {
+            color: #a5bdd9;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: #93c5fd;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+
+        .transaction-card {
+            background-color:rgba(59, 130, 246, 0.1);
+            color: #a5bdd9;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .no-transaction-card{
+            background-color:rgba(59, 130, 246, 0.1);
+            color: #a5bdd9;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .date-section {
+            text-align: center;
+            min-width: 80px;
+            line-height: 1.3rem;
+        }
+
+        .month {
+            color: #a5bdd9;;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .day {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .transaction-details {
+            flex-grow: 1;
+            padding: 0 20px;
+        }
+
+        .amount {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #a5bdd9;
+        }
+
+        .deposit-description {
+            color: #a5bdd9;
+            font-size: 0.9rem;
+        }
+        .text-silverish{
+            color: #a5bdd9 !important;
+        }
+
+        .deposit-status {
+            color: #93c5fd;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
         /* Fix add button */
         .fixed-action-btn {
             position: fixed;

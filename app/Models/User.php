@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\User\HoldingBalance;
+use App\Models\User\StakingBalance;
+use App\Models\User\TradingBalance;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -18,8 +21,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
+        'phone_number',
+        'currency',
+        'country',
+        'city',
+        'profile_photo',
+        'email_verification',
+        'id_verification',
+        'address_verification',
         'password',
     ];
 
@@ -44,5 +56,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function holdingBalance()
+    {
+        return $this->hasOne(HoldingBalance::class);
+    }
+
+    public function stakingBalance()
+    {
+        return $this->hasOne(StakingBalance::class);
+    }
+
+    public function tradingBalance()
+    {
+        return $this->hasOne(TradingBalance::class);
     }
 }

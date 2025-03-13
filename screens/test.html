@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapitalFidel - Dashboard</title>
+    <title>CapitalFidel - Holdings</title>
     <style>
         body {
             background-color: #000000;
@@ -26,171 +26,97 @@
             font-weight: 500;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            margin-bottom: 80px;
-        }
-
         .balance-card {
             background-color: #1a1f2b;
+            margin: 20px;
             border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .balance-chart {
+            background: linear-gradient(rgba(26, 31, 43, 0.9), rgba(26, 31, 43, 0.9)),
+                        url('chart-background.png');
             padding: 20px;
-            background-image: linear-gradient(rgba(26, 31, 43, 0.9), rgba(26, 31, 43, 0.9)),
-                            url('chart-background.png');
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .balance-section {
+            text-align: left;
         }
 
         .balance-amount {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
 
         .balance-label {
             color: #6b7280;
             font-size: 0.8rem;
             letter-spacing: 1px;
-            margin-bottom: 20px;
         }
 
-        .signal-strength {
-            margin-top: 20px;
-        }
-
-        .signal-label {
-            color: white;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .progress-bar {
+        .deposit-button {
+            background: transparent;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
             width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background-color: #0d6efd;
-            transition: width 0.3s;
-        }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .action-button {
-            padding: 20px;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-button:hover {
-            opacity: 0.9;
-        }
-
-        .fund-account { background-color: #0d6efd; }
-        .copy-experts { background-color: #f97316; }
-        .asset-market { background-color: #10b981; }
-        .trading-room { background-color: #8b5cf6; }
-
-        .trades-card {
-            background-color: #1a1f2b;
-            border-radius: 12px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .trades-toggle {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .trades-toggle::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -10px;
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle-button {
-            background: none;
-            border: none;
-            color: #6b7280;
+            padding: 12px;
             font-size: 1rem;
             cursor: pointer;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: background-color 0.3s;
         }
 
-        .toggle-button.active {
-            color: white;
+        .deposit-button:hover {
+            background-color: rgba(13, 110, 253, 0.1);
         }
 
-        .no-trades {
-            text-align: center;
-            color: #6b7280;
-            padding: 40px 0;
+        .assets-list {
+            margin: 20px;
         }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        .asset-card {
             background-color: #1a1f2b;
-            padding: 15px 0;
+            border-radius: 12px;
+            padding: 15px;
             display: flex;
-            justify-content: space-around;
             align-items: center;
+            margin-bottom: 10px;
         }
 
-        .nav-item {
+        .asset-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 15px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-decoration: none;
+            justify-content: center;
+        }
+
+        .bitcoin-icon { background-color: #f7931a; }
+        .ethereum-icon { background-color: #627eea; }
+        .apple-icon { background-color: #000000; }
+        .microsoft-icon { background-color: #ffffff; }
+
+        .asset-info {
+            flex-grow: 1;
+        }
+
+        .asset-amount {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .asset-value {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .asset-type {
             color: #6b7280;
             font-size: 0.8rem;
-            gap: 5px;
-        }
-
-        .nav-item.active {
-            color: #0d6efd;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
+            text-align: right;
         }
     </style>
 </head>
@@ -200,100 +126,71 @@
         <div class="user-name">Eweh</div>
     </nav>
 
-    <div class="container">
-        <div class="dashboard">
-            <!-- Left Section -->
-            <div>
-                <div class="balance-card">
-                    <div class="balance-amount">$0.00</div>
-                    <div class="balance-label">TRADING BALANCE</div>
-                    <div class="signal-strength">
-                        <div class="signal-label">SIGNAL STRENGTH (%)</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="action-grid">
-                    <button class="action-button fund-account">
-                        <span>💰</span>
-                        FUND ACCOUNT
-                    </button>
-                    <button class="action-button copy-experts">
-                        <span>👥</span>
-                        COPY EXPERTS
-                    </button>
-                    <button class="action-button asset-market">
-                        <span>📊</span>
-                        ASSET MARKET
-                    </button>
-                    <button class="action-button trading-room">
-                        <span>📈</span>
-                        TRADING ROOM
-                    </button>
-                </div>
+    <div class="balance-card">
+        <div class="balance-chart">
+            <div class="balance-section">
+                <div class="balance-amount">$0.00</div>
+                <div class="balance-label">HOLDING BALANCE</div>
             </div>
-
-            <!-- Right Section -->
-            <div class="trades-card">
-                <div class="trades-toggle">
-                    <button class="toggle-button active" data-type="closed">
-                        <span>⌛</span>
-                        Closed
-                    </button>
-                    <button class="toggle-button" data-type="active">
-                        <span>▶️</span>
-                        Active
-                    </button>
-                </div>
-                <div class="no-trades" id="trades-message">
-                    NO CLOSED TRADES
-                </div>
+            <div class="balance-section">
+                <div class="balance-amount">$0.00</div>
+                <div class="balance-label">VALUE OF HOLDINGS</div>
             </div>
         </div>
+        <button class="deposit-button">DEPOSIT</button>
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <span>📊</span>
-            Trading
-        </a>
-        <a href="#" class="nav-item">
-            <span>💼</span>
-            Holding
-        </a>
-        <a href="#" class="nav-item">
-            <span>💳</span>
-            Mining
-        </a>
-        <a href="#" class="nav-item">
-            <span>📚</span>
-            Staking
-        </a>
-    </div>
+    <div class="assets-list">
+        <!-- Bitcoin -->
+        <div class="asset-card">
+            <div class="asset-icon bitcoin-icon">₿</div>
+            <div class="asset-info">
+                <div class="asset-amount">0.00 BTC</div>
+                <div class="asset-value">$0.00</div>
+            </div>
+            <div class="asset-type">Bitcoin<br>crypto</div>
+        </div>
 
-    <script>
-        // Toggle functionality with message update
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-        const tradesMessage = document.getElementById('trades-message');
-        
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Update active state
-                toggleButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // Update message based on which button was clicked
-                const type = button.getAttribute('data-type');
-                if (type === 'closed') {
-                    tradesMessage.textContent = 'NO CLOSED TRADES';
-                } else if (type === 'active') {
-                    tradesMessage.textContent = 'NO OPEN TRADES';
-                }
-            });
-        });
-    </script>
+        <!-- Ethereum -->
+        <div class="asset-card">
+            <div class="asset-icon ethereum-icon">Ξ</div>
+            <div class="asset-info">
+                <div class="asset-amount">0.00 ETH</div>
+                <div class="asset-value">$0.00</div>
+            </div>
+            <div class="asset-type">Ethereum<br>crypto</div>
+        </div>
+
+        <!-- Apple -->
+        <div class="asset-card">
+            <div class="asset-icon apple-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.27 1.2-.34 2.38-1.04 3.19-.69.81-1.84 1.44-2.94 1.34-.15-1.15.41-2.35 1.04-3.03z"/>
+                </svg>
+            </div>
+            <div class="asset-info">
+                <div class="asset-amount">0.00 AAPL</div>
+                <div class="asset-value">$0.00</div>
+            </div>
+            <div class="asset-type">Apple<br>stock</div>
+        </div>
+
+        <!-- Microsoft -->
+        <div class="asset-card">
+            <div class="asset-icon microsoft-icon">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 20px; height: 20px;">
+                    <div style="background: #f25022;"></div>
+                    <div style="background: #7fba00;"></div>
+                    <div style="background: #00a4ef;"></div>
+                    <div style="background: #ffb900;"></div>
+                </div>
+            </div>
+            <div class="asset-info">
+                <div class="asset-amount">0.00 MSFT</div>
+                <div class="asset-value">$0.00</div>
+            </div>
+            <div class="asset-type">Microsoft<br>stock</div>
+        </div>
+    </div>
 </body>
 </html>

@@ -1030,3 +1030,33 @@
     min-width: 100px;
 }
 
+/* account styles*/
+.account-profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.settings-card {
+    background-color: #1a1f2b;
+    transition: background-color 0.3s;
+}
+
+.settings-card:hover {
+    background-color: #242935;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-teal { background-color: #00bfa5; }
+.icon-blue { background-color: #2196f3; }
+.icon-coral { background-color: #ff5252; }
+.icon-purple { background-color: #7c4dff; }
+

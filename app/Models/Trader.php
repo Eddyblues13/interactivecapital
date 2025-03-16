@@ -13,6 +13,8 @@ class Trader extends Model
         'verified_badge',
         'name',
         'return_rate',
+        'min_amount',
+        'max_amount',
         'followers',
         'profit_share',
     ];

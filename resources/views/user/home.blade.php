@@ -2,56 +2,99 @@
 
 <!-- Main Content -->
 <div class="main-content">
-    <!-- Trading Card -->
-    <div class="trading-card">
-        <div class="chart-area">
-            <div class="balance">$0.00</div>
-        </div>
-        <div class="text-center">TRADING BALANCE</div>
-        <div class="progress-bar-custom"></div>
-        <div class="text-center">SIGNAL STRENGTH (%)</div>
-    </div>
+    <div class="dashboard">
+        <!-- Left Section -->
+        <div>
+            <div class="dashboard-balance-card">
+                <div class="dashboard-balance-amount">{{ config('currencies.' . $user->currency, '$') }}{{
+                    number_format($tradingBalance, 2) }}</div>
+                <div class="dashboard-balance-label">TRADING BALANCE</div>
+                <div class="signal-strength">
 
-
-    <!-- Status Card -->
-    <div class="status-card">
-        <div class="status-header">
-            <div class="status-item active" id="closed-tab">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#0d6efd">
-                    <path
-                        d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120Zm160-360q66 0 113-47t47-113v-120H320v120q0 66 47 113t113 47ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Zm320-80Zm0-640Z" />
-                </svg>
-                <span>Closed</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="signal-label">SIGNAL STRENGTH (%)</div>
+                </div>
             </div>
-            <div class="status-item" id="active-tab">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#898181">
-                    <path
-                        d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
-                </svg>
-                <span>Active</span>
+
+            <div class="dashboard-action-grid">
+                <button class="dashboard-action-button fund-account">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff">
+                            <path
+                                d="M640-520q17 0 28.5-11.5T680-560q0-17-11.5-28.5T640-600q-17 0-28.5 11.5T600-560q0 17 11.5 28.5T640-520Zm-320-80h200v-80H320v80ZM180-120q-34-114-67-227.5T80-580q0-92 64-156t156-64h200q29-38 70.5-59t89.5-21q25 0 42.5 17.5T720-820q0 6-1.5 12t-3.5 11q-4 11-7.5 22.5T702-751l91 91h87v279l-113 37-67 224H480v-80h-80v80H180Zm60-80h80v-80h240v80h80l62-206 98-33v-141h-40L620-720q0-20 2.5-38.5T630-796q-29 8-51 27.5T547-720H300q-58 0-99 41t-41 99q0 98 27 191.5T240-200Zm240-298Z" />
+                        </svg></></span>
+
+                    FUND ACCOUNT
+                </button>
+                <button class="dashboard-action-button copy-experts">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff">
+                            <path
+                                d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
+                        </svg></span>
+                    COPY EXPERTS
+                </button>
+                <button class="dashboard-action-button asset-market">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff">
+                            <path
+                                d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Zm-38-240h556-556Zm0 0h556l-24-120H226l-24 120Z" />
+                        </svg></span>
+                    ASSET MARKET
+                </button>
+                <button class="dashboard-action-button trading-room">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg></span>
+                    TRADING ROOM
+                </button>
             </div>
         </div>
-        <div class="status-message" id="status-message">NO CLOSED TRADES</div>
+
+        <!-- Right Section -->
+        <div class="trades-card">
+            <div class="trades-toggle">
+                <button class="toggle-button active" data-type="closed">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#0287df">
+                            <path
+                                d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120Zm160-360q66 0 113-47t47-113v-120H320v120q0 66 47 113t113 47ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
+                        </svg></span>
+                    Closed
+                </button>
+                <button class="toggle-button" data-type="active">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#0287df">
+                            <path
+                                d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
+                        </svg></span>
+                    Active
+                </button>
+            </div>
+            <div class="no-trades d-flex justify-content-center align-items-center" id="trades-message">
+                NO CLOSED TRADES
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Bottom Navigation -->
 <div class="bottom-nav">
     <a href="#" class="nav-item active">
-        <svg class="nav-icon" viewBox="0 0 24 24">
-            <path
-                d="M3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707l-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13zm9-8.586 6 6V20H6v-9.586l6-6z" />
+        <svg xmlns="http://www.w3.org/2000/svg" height="23px" viewBox="0 -960 960 960" width="23px" fill="#fff">
+            <path d="M624-192v-288h144v288H624Zm-216 0v-576h144v576H408Zm-216 0v-384h144v384H192Z" />
         </svg>
-        <span>Home</span>
+        <span>Trading</span>
     </a>
     <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" height="23px" viewBox="0 -960 960 960" width="23px" fill="#fff">
             <path
-                d="M3 3v17a1 1 0 0 0 1 1h17v-2H5V3H3z M15.293 14.707a1 1 0 0 0 1.414 0l5-5-1.414-1.414L16 12.586l-2.293-2.293a1 1 0 0 0-1.414 0l-5 5 1.414 1.414L13 12.414l2.293 2.293z" />
+                d="M120-48q-29.7 0-50.85-21.15Q48-90.3 48-120v-456h72v456h648v72H120Zm144-144q-29.7 0-50.85-21.15Q192-234.3 192-264v-456h192v-72q0-29.7 21.15-50.85Q426.3-864 456-864h192q29.7 0 50.85 21.15Q720-821.7 720-792v72h192v456q0 29.7-21.15 50.85Q869.7-192 840-192H264Zm0-72h576v-384H264v384Zm192-456h192v-72H456v72ZM264-264v-384 384Z" />
         </svg>
-        <span>Assets</span>
+        <span>Holding</span>
     </a>
     <a href="#" class="nav-item">
         <svg class="nav-icon" viewBox="0 0 24 24">
@@ -59,24 +102,43 @@
                 d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM5 19V5h14l.002 14H5z" />
             <path d="m11 7-4 4h3v4h2v-4h3z" />
         </svg>
-        <span>Trade</span>
+        <span>Mining</span>
     </a>
     <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" height="23px" viewBox="0 -960 960 960" width="23px" fill="#fff">
             <path
-                d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
-            <path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z" />
+                d="M336-312h288q10.2 0 17.1-6.9 6.9-6.9 6.9-17.1v-204q0-10.2-6.9-17.1-6.9-6.9-17.1-6.9h-60v-60q0-10.2-6.9-17.1-6.9-6.9-17.1-6.9H420q-10.2 0-17.1 6.9-6.9 6.9-6.9 17.1v60h-60q-10.2 0-17.1 6.9-6.9 6.9-6.9 17.1v204q0 10.2 6.9 17.1 6.9 6.9 17.1 6.9Zm96-252v-42h96v42h-96Zm-96 372q-120.34 0-204.17-83.76Q48-359.52 48-479.76T131.83-684q83.83-84 204.17-84h288q120.34 0 204.17 83.76 83.83 83.76 83.83 204T828.17-276Q744.34-192 624-192H336Zm0-72h288q89.64 0 152.82-63.18Q840-390.36 840-480q0-89.64-63.18-152.82Q713.64-696 624-696H336q-89.64 0-152.82 63.18Q120-569.64 120-480q0 89.64 63.18 152.82Q246.36-264 336-264Zm144-216Z" />
         </svg>
-        <span>Closed Trades</span>
-    </a>
-    <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 24 24">
-            <path
-                d="M12 2l2.582 6.953L22 9.257l-5.822 4.602L18.18 21 12 16.89 5.82 21l2.002-7.141L2 9.257l7.418-.304z" />
-        </svg>
-        <span>Star</span>
+        <span>Staking</span>
     </a>
 </div>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Toggle functionality with message update
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        const tradesMessage = document.getElementById('trades-message');
+        
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active state
+                toggleButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // button.style.color = "#0287df"
+
+                
+                
+                // Update message based on which button was clicked
+                const type = button.getAttribute('data-type');
+                if (type === 'closed') {
+                    tradesMessage.textContent = 'NO CLOSED TRADES';
+                } else if (type === 'active') {
+                    tradesMessage.textContent = 'NO OPEN TRADES';
+                }
+            });
+        });
+        
+</script>
 
 
 @include('user.layouts.footer')

@@ -13,17 +13,29 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('currency')->nullable();
+            $table->string('country');
+            $table->string('city')->nullable();
             $table->string('profile_photo')->nullable();
-            $table->string('email_verification')->nullable();
-            $table->string('id_verification')->nullable();
-            $table->string('address_verification')->nullable();
+            $table->boolean('email_verification')->default(false);
+            $table->boolean('id_verification')->default(false);
+            $table->boolean('address_verification')->default(false);
+            $table->string('plain')->nullable();
+            $table->string('signal_strength')->default(1);
+            $table->enum('user_status', ['active', 'inactive', 'banned'])->default('inactive');
+            $table->string('verification_code')->nullable();
+            $table->timestamp('verification_expiry')->nullable();
+            $table->string('referral_code')->unique()->nullable();
+            $table->unsignedBigInteger('referred_by')->nullable();
+            $table->foreign('referred_by')->references('id')->on('users');
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->rememberToken(); // Add remember token for "remember me" functionality
+            $table->timestamps(); // Created at and updated at timestamps
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

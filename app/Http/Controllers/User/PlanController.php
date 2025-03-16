@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Log;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use App\Models\User\PlanHistory;
@@ -10,6 +11,7 @@ use App\Models\User\StakingBalance;
 use App\Models\User\TradingBalance;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class PlanController extends Controller
 {
@@ -17,15 +19,35 @@ class PlanController extends Controller
     {
         $plans = Plan::all();
         $user = Auth::user();
+        $localCurrency = $user->currency; // Get the user's local currency
 
+        // Fetch exchange rate from Frankfurter API (convert from USD to user's local currency)
+        $apiUrl = "https://api.frankfurter.app/latest?from=USD&to={$localCurrency}";
+
+        // Fetch balances
         $holdingBalance = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $stakingBalance = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $tradingBalance = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
         $totalBalance = $holdingBalance + $stakingBalance + $tradingBalance;
 
-        return view('user.plans', compact('plans', 'totalBalance'));
+        // Convert plan prices from USD to user's local currency
+        $response = Http::get($apiUrl);
+        if ($response->successful()) {
+            $exchangeRate = $response->json()['rates'][$localCurrency] ?? 1; // Default to 1 if not found
+            $plans->each(function ($plan) use ($exchangeRate) {
+                $plan->local_amount = $plan->price * $exchangeRate; // Add local amount to each plan
+            });
+        } else {
+            // If API fails, use the USD amount as the local amount
+            $plans->each(function ($plan) {
+                $plan->local_amount = $plan->price;
+            });
+        }
+
+        return view('user.plans', compact('plans', 'totalBalance', 'localCurrency'));
     }
+
 
 
 

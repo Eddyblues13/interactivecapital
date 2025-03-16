@@ -115,4 +115,14 @@ class AuthController extends Controller
             ? response()->json(['success' => true, 'message' => __($status), 'redirect' => route('login')])
             : response()->json(['success' => false, 'message' => __($status)], 400);
     }
+
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Logs out the user
+        $request->session()->invalidate(); // Invalidates the session
+        $request->session()->regenerateToken(); // Regenerates the CSRF token
+
+        return redirect('/login'); // Redirects to the homepage or login page
+    }
 }

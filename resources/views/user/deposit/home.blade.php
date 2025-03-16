@@ -6,6 +6,25 @@
         No Deposits yet
     </div>
 </div>
+<div class="notification">
+    <div class="notification-text">
+        Deposits will be pending until there are sufficient confirmations on the blockchain.
+    </div>
+    <button class="close-button">&times;</button>
+</div>
+
+<div class="transaction-card">
+    <div class="date-section">
+        <div class="month fs-6 fw-bold">MAR</div>
+        <div class="day fs-2">05</div>
+    </div>
+    <div class="transaction-details">
+        <div class="amount text-silverish">FUND $870.00</div>
+        <div class="deposit-description">TRADING BALANCE TOTAL</div>
+    </div>
+    <div class="deposit-status">Pending</div>
+</div>
+
 <!-- Fixed Action Button -->
 <button type="button" class="fixed-action-btn" aria-label="Add new item">
     <a href="{{route('deposit.one')}}">

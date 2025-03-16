@@ -4,231 +4,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>CapitalFidel - Sign Up</title>
+    <title>El Capita - Learn to Invest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&family=Sahitya:wght@400;700&display=swap"
         rel="stylesheet">
-    <!-- Include Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <style>
-        /* Your existing CSS styles */
-        body {
-            background-color: rgb(8, 7, 30);
-            color: white;
-            font-family: "Poppins", serif;
-            font-weight: 400;
-            font-style: normal;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo img {
-            width: 80px;
-            height: 80px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b7280;
-            width: 20px;
-            height: 20px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 12px 12px 40px;
-            border: none;
-            border-radius: 8px;
-            background: none;
-            font-size: 1rem;
-            color: #1a1f2b;
-            box-sizing: border-box;
-        }
-
-        .form-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
-
-        .sign-in-button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(225deg, #3045ff, #ae2aff 76%, #ff5d02);
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: opacity 0.3s;
-        }
-
-        .sign-in-button:hover {
-            background-color: #0287df !important;
-        }
-
-        .forgot-password {
-            display: block;
-            text-align: center;
-            color: #0d6efd;
-            text-decoration: none;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .signup-prompt {
-            text-align: center;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .signup-link {
-            color: #0d6efd;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        .signup-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Loading spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles2.css">
+    <script src="{{asset('assets/js/countries.js')}}"></script>
+    <script language="javascript">
+        populateCountries("country", "state");
+        populateCountries("country2");
+        populateCountries("country2");
+    </script>
 </head>
 
-<body>
-    <div class="login-container">
-        <a href="#" class="text-decoration-none">
-            <div class="logo">
-                <img src="assets/img/logo.png" alt="Logo">
-            </div>
-        </a>
-
-        <form id="registerForm">
-            @csrf
-
-            <div class="form-group">
-                <label class="form-label">First Name</label>
-                <div class="input-wrapper">
-                    <input type="text" name="first_name" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <div class="input-wrapper">
-                    <input type="text" name="last_name" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <div class="input-wrapper">
-                    <input type="email" name="email" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <div class="input-wrapper">
-                    <input type="text" name="phone_number" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Currency</label>
-                <div class="input-wrapper">
-                    <input type="text" name="currency" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Country</label>
-                <div class="input-wrapper">
-                    <input type="text" name="country" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">City</label>
-                <div class="input-wrapper">
-                    <input type="text" name="city" class="form-input" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <div class="input-wrapper">
-                    <input type="password" name="password" class="form-input" required>
-                </div>
-            </div>
-
-            <button type="submit" class="sign-in-button" id="submitButton">
-                <span id="buttonText">Sign Up</span>
-                <span id="loadingSpinner" class="loading-spinner" style="display: none;"></span>
+<body class="bg-black">
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="brand-icon"><img src="assets/img/android-chrome-36x36.png" alt=""></div>
+                el capita
+            </a>
+            <button class="btn mobile-menu menu-icon text-white me-3" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#sidebar" aria-controls="sidebarMenu">
+                <i class="bi bi-list"></i>
             </button>
+        </div>
+    </nav>
 
-            <div class="signup-prompt">
-                Already have an account? <a href="{{ route('login') }}" class="signup-link">Sign In</a>
-            </div>
-        </form>
+    <!-- Sidebar -->
+    <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="sidebar" data-bs-scroll="true"
+        data-bs-backdrop="false">
+        <!-- Sidebar content here -->
     </div>
 
+    <div class="signup-container">
+        <h1 class="signup-title">Create An Account</h1>
+        <form id="registerForm" class="signup-form">
+            @csrf
+            <!-- Other form fields -->
+            <input type="hidden" name="referral_code" value="{{ $referral_code ?? '' }}">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-input" value="{{ old('email') }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" name="password_confirmation" class="form-input" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" name="first_name" class="form-input" value="{{ old('first_name') }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" name="last_name" class="form-input" value="{{ old('last_name') }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" name="phone_number" class="form-input" value="{{ old('phone') }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select name="currency" class="form-select" required>
+                        <option value="USD" {{ old('currency')=='USD' ? 'selected' : '' }}>USD</option>
+                        <option value="EUR" {{ old('currency')=='EUR' ? 'selected' : '' }}>EUR</option>
+                        <option value="GBP" {{ old('currency')=='GBP' ? 'selected' : '' }}>GBP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Country</label>
+                    <select name="country" class="form-select" id="country" required>
+
+                        @php
+                        $countries = [
+                        "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda",
+                        "Argentina", "Armenia", "Australia", "Austria",
+                        "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
+                        "Belize", "Benin", "Bhutan", "Bolivia",
+                        "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso",
+                        "Burundi", "Cabo Verde", "Cambodia",
+                        "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia",
+                        "Comoros", "Congo (Congo-Brazzaville)",
+                        "Congo (Congo-Kinshasa)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+                        "Denmark", "Djibouti", "Dominica",
+                        "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+                        "Estonia", "Eswatini", "Ethiopia",
+                        "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece",
+                        "Grenada", "Guatemala", "Guinea",
+                        "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia",
+                        "Iran", "Iraq", "Ireland", "Israel",
+                        "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait",
+                        "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+                        "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar",
+                        "Malawi", "Malaysia", "Maldives",
+                        "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
+                        "Moldova", "Monaco", "Mongolia",
+                        "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal",
+                        "Netherlands", "New Zealand", "Nicaragua",
+                        "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau",
+                        "Palestine", "Panama", "Papua New Guinea",
+                        "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia",
+                        "Rwanda", "Saint Kitts and Nevis",
+                        "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and
+                        Principe", "Saudi Arabia", "Senegal",
+                        "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon
+                        Islands", "Somalia", "South Africa",
+                        "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden",
+                        "Switzerland", "Syria", "Taiwan", "Tajikistan",
+                        "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia",
+                        "Turkey", "Turkmenistan", "Tuvalu",
+                        "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+                        "Uzbekistan", "Vanuatu", "Vatican City",
+                        "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+                        ];
+                        $selectedCountry = $user->contactInfo->country ?? '';
+                        @endphp
+
+                        @foreach($countries as $country)
+                        <option value="{{ $country }}" {{ $selectedCountry==$country ? 'selected' : '' }}>
+                            {{ $country }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" name="city" id="state" class="form-input" value="{{ old('city') }}" required>
+                </div>
+            </div>
+
+            <div class="terms-checkbox d-flex justify-content-center">
+                <input type="checkbox" name="terms" class="checkbox-input" {{ old('terms') ? 'checked' : '' }} required>
+                <span class="text-primary" style="font-size: 13px;">I Declare That The Information Provided Is Correct
+                    And Accept All <a href="#" class="terms-link">Terms Of Service</a></span>
+            </div>
+
+            <button type="submit" id="submitButton" class="submit-button">
+                <span id="buttonText">CREATE MY ACCOUNT</span>
+                <span id="loadingSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                    style="display: none;"></span>
+            </button>
+        </form>
+    </div>
+    <div class="text-center mb-5">
+        Already have an account? <a href="{{route('login')}}">Login</a>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="brand">El Capita</div>
+            <h2 class="heading">
+                Build your wealth with<br>
+                <span class="gradient-crypto">cryptocurrencies</span>
+                <span class="gradient-step">step by step.</span>
+            </h2>
+            <div class="footer-bottom">
+                <div class="copyright">Copyright © 2024 by El Capita</div>
+                <a href="#" class="terms">Terms and Conditions</a>
+            </div>
+        </div>
+        <div class="glow-arc"></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#registerForm').on('submit', function (e) {

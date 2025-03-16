@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\User\HoldingBalance;
 use App\Models\User\StakingBalance;
 use App\Models\User\TradingBalance;
+use App\Models\User\ReferralBalance;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -37,6 +38,8 @@ class User extends Authenticatable
         'verification_code',
         'verification_expiry',
         'signal_strength',
+        'referral_code',
+        'referred_by',
         'password',
     ];
 
@@ -76,5 +79,27 @@ class User extends Authenticatable
     public function tradingBalance()
     {
         return $this->hasOne(TradingBalance::class);
+    }
+
+    // Relationship to ReferralBalance
+    public function referralBalance()
+    {
+        return $this->hasOne(ReferralBalance::class);
+    }
+
+    // Relationship to Referred Users
+    public function referredUsers()
+    {
+        return $this->hasMany(User::class, 'referred_by');
+    }
+
+    // Generate a unique referral code
+    public static function generateReferralCode()
+    {
+        do {
+            $code = strtoupper(substr(md5(uniqid()), 0, 8));
+        } while (self::where('referral_code', $code)->exists());
+
+        return $code;
     }
 }

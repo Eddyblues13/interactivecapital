@@ -11,13 +11,24 @@ Route::get('/', function () {
 });
 
 
+// Login routes (only accessible to guests)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('login.page');
+    Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login');
+});
+
+// Registration routes (only accessible to guests)
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.submit');
+});
+
+// Referral signup route (only accessible to guests)
+Route::middleware('guest')->group(function () {
+    Route::get('/signup/{referral_code}', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('referral.signup');
+});
 
 
-Route::get('/login', [App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('login.page');
-Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login');
-
-Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.submit');
 
 
 
@@ -44,17 +55,22 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::prefix('accounts')->name('account.')->group(function () {
         Route::get('/', [App\Http\Controllers\User\ProfileController::class, 'index'])->name('index');
         Route::get('/transfer', [App\Http\Controllers\User\ProfileController::class, 'transfer'])->name('transfer');
+        Route::post('/transfer-to-holding', [App\Http\Controllers\User\ProfileController::class, 'transferToHolding'])->name('transfer.to.holding');
+        Route::post('/transfer-to-trading', [App\Http\Controllers\User\ProfileController::class, 'transferToTrading'])->name('transfer.to.trading');
         Route::get('/email', [App\Http\Controllers\User\ProfileController::class, 'email'])->name('email');
+        Route::post('/email', [App\Http\Controllers\User\ProfileController::class, 'updateEmail'])->name('update.email');
         Route::get('/referrals', [App\Http\Controllers\User\ProfileController::class, 'referrals'])->name('referrals');
         Route::get('/password', [App\Http\Controllers\User\ProfileController::class, 'password'])->name('password');
+        Route::post('/password', [App\Http\Controllers\User\ProfileController::class, 'updatePassword'])->name('update.password');
         Route::get('/notifications', [App\Http\Controllers\User\ProfileController::class, 'notifications'])->name('notification');
         Route::get('/address', [App\Http\Controllers\User\ProfileController::class, 'address'])->name('address');
+        Route::post('/address', [App\Http\Controllers\User\ProfileController::class, 'updateContactInfo'])->name('update.contact');
         Route::get('/photo', [App\Http\Controllers\User\ProfileController::class, 'photo'])->name('photo');
         Route::post('/photo', [App\Http\Controllers\User\ProfileController::class, 'updatePhoto'])->name('upload.photo');
     });
 
     Route::prefix('verifications')->name('verifications.')->group(function () {
-        Route::get('/', [App\Http\Controllers\User\ProfileController::class, 'index'])->name('index');
+        Route::get('/', [App\Http\Controllers\User\VerificationController::class, 'index'])->name('index');
     });
 
     Route::get('/plans', [App\Http\Controllers\User\PlanController::class, 'index'])->name('plans');

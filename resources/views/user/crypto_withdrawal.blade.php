@@ -19,6 +19,9 @@
                         number_format($holdingBalance, 2) }})</option>
                     <option value="staking">Staking Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{
                         number_format($stakingBalance, 2) }})</option>
+                    <option value="referral">Staking Balance ({{ config('currencies.' . Auth::user()->currency, '$')
+                        }}{{
+                        number_format($referralBalance, 2) }})</option>
                 </select>
             </div>
 

@@ -9,6 +9,7 @@ use App\Models\User\HoldingBalance;
 use App\Models\User\StakingBalance;
 use App\Models\User\TradingBalance;
 use App\Http\Controllers\Controller;
+use App\Models\User\ReferralBalance;
 use Illuminate\Support\Facades\Auth;
 
 class WithdrawalController extends Controller
@@ -18,15 +19,16 @@ class WithdrawalController extends Controller
 
         $user = Auth::user();
         // Fetch withdrawals for the authenticated user
-        $withdrawals = Withdrawal::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $data['withdrawals'] = Withdrawal::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
 
-        $holdingBalance = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
-        $stakingBalance = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
-        $tradingBalance = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['holdingBalance'] = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
-        $totalBalance = $holdingBalance + $stakingBalance + $tradingBalance;
+        $data['totalBalance'] =    $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'];
 
-        return view('user.withdrawal', compact('totalBalance', 'withdrawals'));
+        return view('user.withdrawal', $data);
     }
 
     public function cryptoWithdrawal()
@@ -34,13 +36,15 @@ class WithdrawalController extends Controller
 
         $user = Auth::user();
 
-        $holdingBalance = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
-        $stakingBalance = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
-        $tradingBalance = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['holdingBalance'] = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
-        $totalBalance = $holdingBalance + $stakingBalance + $tradingBalance;
 
-        return view('user.crypto_withdrawal', compact('totalBalance', 'holdingBalance', 'stakingBalance', 'tradingBalance'));
+        $data['totalBalance'] =   $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'];
+
+        return view('user.crypto_withdrawal', $data);
     }
 
     public function submit(Request $request)
@@ -63,6 +67,7 @@ class WithdrawalController extends Controller
         $holdingBalance = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $stakingBalance = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $tradingBalance = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $referralBalance = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
         // Validate the withdrawal amount
         switch ($accountType) {
@@ -100,6 +105,9 @@ class WithdrawalController extends Controller
                 case 'trading':
                     TradingBalance::where('user_id', $user->id)->decrement('amount', $amount);
                     break;
+                case 'trading':
+                    referralBalance::where('user_id', $user->id)->decrement('amount', $amount);
+                    break;
             }
 
             // Create a new withdrawal record
@@ -114,8 +122,12 @@ class WithdrawalController extends Controller
 
             // Commit the transaction
             DB::commit();
-
-            return response()->json(['message' => 'Withdrawal request submitted successfully!']);
+            // Set a session flag to show the notification
+            session()->flash('show_notification', true);
+            return response()->json([
+                'message' => 'Withdrawal request submitted successfully!',
+                'redirect' => route('withdrawal'), // Redirect to the withdrawal page
+            ]);
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();

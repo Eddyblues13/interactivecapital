@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User\ReferralBalance;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,9 +17,10 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
-        return view('auth.register'); // Ensure this matches your Blade file location
+        $referral_code = $request->query('referral_code'); // Get referral code from URL
+        return view('auth.register', compact('referral_code')); // Pass referral code to the view
     }
 
     /**
@@ -26,9 +29,6 @@ class RegisterController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
-
-
     public function register(Request $request)
     {
         // Validate the request data
@@ -41,6 +41,7 @@ class RegisterController extends Controller
             'country' => 'required|string|max:100',
             'city' => 'required|string|max:100',
             'password' => 'required|string|min:4|confirmed',
+            'referral_code' => 'nullable|string|exists:users,referral_code', // Validate referral code
         ]);
 
         // If validation fails, return error response
@@ -49,6 +50,12 @@ class RegisterController extends Controller
                 'success' => false,
                 'message' => $validator->errors()->first(),
             ], 422);
+        }
+
+        // Find the referrer if a valid referral code is provided
+        $referrer = null;
+        if ($request->referral_code) {
+            $referrer = User::where('referral_code', $request->referral_code)->first();
         }
 
         // Create the user
@@ -65,6 +72,8 @@ class RegisterController extends Controller
             'verification_code' => rand(1000, 9999), // Generate a random verification code
             'verification_expiry' => now()->addMinutes(10), // Set expiry time for verification code
             'password' => Hash::make($request->password), // Hash the password
+            'referral_code' => $this->generateReferralCode(), // Generate a unique referral code for the new user
+            'referred_by' => $referrer ? $referrer->id : null, // Set referred_by if referrer exists
         ]);
 
         // Create related balances for the user
@@ -83,11 +92,36 @@ class RegisterController extends Controller
             'amount' => 0,
         ]);
 
+        // Add referral bonus to the referrer's balance
+        if ($referrer) {
+            $referrer->referralBalance()->updateOrCreate(
+                ['user_id' => $referrer->id],
+                ['amount' => DB::raw('amount + 10')] // Add $10 as referral bonus
+            );
+        }
+
+        // Log in the user
+        auth()->login($user);
+
         // Return success response
         return response()->json([
             'success' => true,
             'message' => 'Registration successful!',
-            'redirect' => route('home'), // Redirect to home page after registration
+            'redirect' => route('email_verify'), // Redirect to email verification page
         ]);
+    }
+
+    /**
+     * Generate a unique referral code.
+     *
+     * @return string
+     */
+    protected function generateReferralCode()
+    {
+        do {
+            $code = strtoupper(substr(md5(uniqid()), 0, 8)); // Generate an 8-character code
+        } while (User::where('referral_code', $code)->exists()); // Ensure the code is unique
+
+        return $code;
     }
 }

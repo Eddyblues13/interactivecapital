@@ -25,12 +25,17 @@ return new class extends Migration
             $table->boolean('id_verification')->default(false);
             $table->boolean('address_verification')->default(false);
             $table->string('plain')->nullable();
-            $table->string('signal_strength')->nullable();
+            $table->string('signal_strength')->default(1);
             $table->enum('user_status', ['active', 'inactive', 'banned'])->default('inactive');
             $table->string('verification_code')->nullable();
             $table->timestamp('verification_expiry')->nullable();
+            $table->string('referral_code')->unique()->nullable();
+            $table->unsignedBigInteger('referred_by')->nullable();
+            $table->foreign('referred_by')->references('id')->on('users');
             $table->string('password');
-            $table->timestamps();
+            $table->rememberToken(); // Add remember token for "remember me" functionality
+            $table->timestamps(); // Created at and updated at timestamps
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

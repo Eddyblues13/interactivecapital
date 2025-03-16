@@ -7,6 +7,7 @@ use App\Models\User\HoldingBalance;
 use App\Models\User\StakingBalance;
 use App\Models\User\TradingBalance;
 use App\Http\Controllers\Controller;
+use App\Models\User\ReferralBalance;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -21,6 +22,7 @@ class UserController extends Controller
         $data['holdingBalance'] = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
 
 
@@ -43,7 +45,7 @@ class UserController extends Controller
 
         return view('user.holding', compact('holdingBalance'));
     }
- 
+
     public function trading()
     {
 

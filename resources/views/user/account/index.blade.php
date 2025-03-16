@@ -8,7 +8,8 @@
     <div class="row g-4">
         <div class="col-md-4">
             <div class="text-center mb-5">
-                <img src="assets/img/human.png" class="account-profile-avatar mx-auto mb-3"></img>
+                <img src="{{ Auth::user()->profile_photo ? asset(Auth::user()->profile_photo) : asset('assets/img/human.png') }}"
+                    class="account-profile-avatar mx-auto mb-3"></img>
                 <h4 class="text-white mb-2">{{Auth::user()->first_name}}
                     {{Auth::user()->last_name}}</h4>
                 <p class="text-secondary mb-3">Bronze</p>

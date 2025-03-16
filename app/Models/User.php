@@ -32,6 +32,11 @@ class User extends Authenticatable
         'email_verification',
         'id_verification',
         'address_verification',
+        'plain',
+        'user_status',
+        'verification_code',
+        'verification_expiry',
+        'signal_strength',
         'password',
     ];
 

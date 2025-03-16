@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('traders', function (Blueprint $table) {
             $table->id();
-            $table->string('picture')->nullable(); // Trader profile picture
-            $table->boolean('is_verified')->default(false); // Verification status
-            $table->string('verified_badge')->nullable(); // Verified badge SVG or image path
-            $table->string('name'); // Trader's name
-            $table->decimal('return_rate', 5, 2)->default(0.00); // Return Rate percentage
-            $table->integer('followers')->default(0); // Number of followers
-            $table->integer('profit_share')->default(0); // Profit share percentage
+            $table->string('picture')->nullable();
+            $table->boolean('is_verified')->default(false);
+            $table->string('verified_badge')->nullable();
+            $table->string('name');
+            $table->decimal('return_rate', 8, 2)->default(0.00);
+            $table->decimal('min_amount', 15, 2);
+            $table->decimal('max_amount', 15, 2);
+            $table->integer('followers')->default(0);
+            $table->decimal('profit_share', 5, 2)->default(0.00);
             $table->timestamps();
         });
     }

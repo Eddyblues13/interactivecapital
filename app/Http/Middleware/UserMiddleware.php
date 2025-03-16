@@ -25,20 +25,14 @@ class UserMiddleware
 
         $user = Auth::user();
 
-        // if ($user->email_status !== '1') {
-        //     return redirect()->route('email_verify')->with('error', 'You must verify your email before accessing this page.');
-        // }
+        if ($user->email_verification === 0) {
+            return redirect()->route('email_verify')->with('error', 'You must verify your email before accessing this page.');
+        }
+
+
 
         // if ($user->user_status !== '1') {
         //     return redirect()->route('user_verify')->with('error', 'Your account needs verification.');
-        // }
-
-
-
-        // Check if the user is verified and not an admin
-        // $user = Auth::user();
-        // if ($user->is_verified == 0 && !Auth::guard('admin')->check()) {
-        //     return redirect()->route('verify', ['id' => $user->id]);
         // }
 
         return $next($request);

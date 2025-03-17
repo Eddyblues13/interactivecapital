@@ -38,6 +38,18 @@
             height: 2px;
             background-color: rgba(255, 255, 255, 0.6);
         }
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
 
         .menu-icon::before { top: -6px; }
         .menu-icon::after { bottom: -6px; }
@@ -54,7 +66,7 @@
         }
 
         .profile-section {
-            background-image: url("../img/Office.jpg");
+            background: #000;
             padding: 20px;
             margin-bottom: 0;
         }
@@ -87,8 +99,8 @@
         }
 
         .profile-image img {
-            width: 50px;
-            height: 50px;
+            width: 90px;
+            height: 90px;
             border-radius: 100%;
         }
 
@@ -589,4 +601,115 @@ a{
         gap: 20px;
         text-align: center;
     }
+}
+
+/* faqs */
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 2.5rem 0;
+}
+
+.accordion-item {
+    background-color: #1a1f2b;
+    border: none;
+    margin-bottom: 0.5rem;
+}
+
+.accordion-button {
+    background-color: #1a1f2b;
+    color: white;
+    box-shadow: none;
+    padding: 1.25rem;
+    position: relative;
+    padding-left: 3rem;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #1a1f2b;
+    color: white;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* Remove default Bootstrap arrow */
+.accordion-button::after {
+    display: none;
+}
+
+/* Add custom left-side arrow */
+.accordion-button::before {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 16px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.accordion-button.collapsed::before {
+    transform: rotate(-90deg);
+}
+
+.accordion-body {
+    background-color: #0a0d14;
+    color: #a0a0a0;
+    padding: 1.5rem;
+    line-height: 1.6;
+}
+
+/* about */
+.about-page-title {
+    font-size: 3.2rem;
+    font-weight: 500;
+    margin: 2.5rem 0;
+}
+
+.about-content-section {
+    background-color: #1a1f2b;
+    padding: 1.5rem;
+    border-radius: 8px;
+    line-height: 1.7;
+}
+
+.about-section-title {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.about-section-text {
+    color: #d1d1d1;
+    margin-bottom: 1.5rem;
+}
+
+.home-faq .accordion-button {
+    background: #0E0D25;
+    color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.home-faq .accordion-item{
+    border-radius: 20px;
+}
+
+.home-faq .accordion-body{
+    border-radius: 20px;
+    background: #0E0D25;
+    color: #cbd5e1;
+}
+
+
+.section {
+    background-color: #121825;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 60px;
 }

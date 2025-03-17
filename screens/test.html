@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapitalFidel - About Us</title>
+    <title>CapitalFidel - Holdings</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -12,111 +12,208 @@
         }
 
         .navbar {
-            background-color: #0a0d14;
-            padding: 1.25rem 1.5rem;
+            background-color: #1a1f2b !important;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            margin-right: 10px;
-        }
-
-        .brand-name {
-            font-weight: 500;
-            font-size: 1.25rem;
-            color: white;
-            letter-spacing: -0.5px;
-        }
-
-        .hamburger-icon {
-            width: 24px;
-            height: 24px;
+        .chart-bg {
+            background-color: #141b36;
+            background-image: url('assets/img/DashboardTrading.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 8px;
+            padding: 2rem;
+            height: 100%;
+            /* min-height: 250px; */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            cursor: pointer;
         }
 
-        .hamburger-line {
-            width: 100%;
-            height: 2px;
-            background-color: white;
+        .balance-section {
+            display: flex;
+            justify-content: space-between;
         }
 
-        .page-title {
-            font-size: 3.5rem;
-            font-weight: 500;
-            margin: 2.5rem 0;
+        .balance-box {
+            text-align: left;
         }
 
-        .content-section {
-            background-color: #1a1f2b;
-            padding: 2rem;
-            border-radius: 8px;
-            line-height: 1.7;
-        }
-
-        .section-title {
+        .balance-value {
+            font-size: 1.8rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
         }
 
-        .section-text {
-            color: #d1d1d1;
-            margin-bottom: 1.5rem;
+        .balance-label {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+        }
+
+        .deposit-btn {
+            background-color: transparent;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
+            padding: 0.75rem;
+            width: 100%;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .deposit-btn:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            border-color: #0d6efd;
+            color: #0d6efd;
+        }
+
+        .asset-card {
+            background-color: #1a1f2b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .asset-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2a3042;
+        }
+
+        .asset-icon img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .asset-info {
+            flex-grow: 1;
+        }
+
+        .asset-amount {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-value {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+
+        .asset-type {
+            text-align: right;
+        }
+
+        .asset-name {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-category {
+            font-size: 0.8rem;
+            color: #a0a0a0;
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container-fluid px-0">
-            <a class="navbar-brand p-0" href="#">
-                <div class="logo-container">
-                    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="18" cy="18" r="18" fill="#0d6efd"/>
-                        <path d="M24 14c0-3.314-2.686-6-6-6s-6 2.686-6 6c0 2.794 1.914 5.146 4.5 5.828v-3.828c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5v3.828c2.586-0.682 4.5-3.034 4.5-5.828z" fill="white"/>
-                    </svg>
-                    <div class="brand-name">CapitalFidel</div>
-                </div>
-            </a>
-            <div class="hamburger-icon">
-                <div class="hamburger-line"></div>
-                <div class="hamburger-line"></div>
-                <div class="hamburger-line"></div>
-            </div>
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">CapitalFidel</a>
+            <span class="text-white">Eweh</span>
         </div>
     </nav>
 
-    <!-- About Us Content -->
-    <div class="container">
-        <h1 class="about-page-title">About Us</h1>
+    <div class="container py-4">
+        <div class="row g-4">
+            <!-- Left Column - Balance and Chart -->
+            <div class="col-md-4">
+                <div class="chart-bg h-50">
+                    <div class="balance-section">
+                        <div class="balance-box">
+                            <div class="balance-value">$0.00</div>
+                            <div class="balance-label">Holding Balance</div>
+                        </div>
+                        <div class="balance-box">
+                            <div class="balance-value">$0.00</div>
+                            <div class="balance-label">Value of Holdings</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
 
-        <div class="content-section">
-            <p class="section-text">
-                Welcome to a trading platform where innovation meets opportunity in the world of finance. Our platform is meticulously crafted to cater to the diverse needs and aspirations of traders, from seasoned professionals seeking advanced tools to novices taking their first steps into the world of trading.
-            </p>
+            <!-- Right Column - Assets List -->
+            <div class="col-md-8">
+                <!-- Bitcoin -->
+                <div class="asset-card">
+                    <div class="asset-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZmlsbD0iI2Y3OTMxYSIgZD0iTTE1Ljk2MyAyMC45OTlsLTcuNzQtMy4xMjEgNy43NC0xMy44NTUgNy43NDEgMTMuODU1LTcuNzQxIDMuMTIxem0wIDEuMTI3bC03Ljc0IDMuMTIyIDcuNzQgNC41NzUgNy43NDEtNC41NzUtNy43NDEtMy4xMjJ6Ii8+PC9zdmc+" alt="Bitcoin">
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-amount">0.00 BTC</div>
+                        <div class="asset-value">$0.00</div>
+                    </div>
+                    <div class="asset-type">
+                        <div class="asset-name">Bitcoin</div>
+                        <div class="asset-category">crypto</div>
+                    </div>
+                </div>
 
-            <h5 class="section-title">Copy Trading:</h5>
-            <p class="section-text">
-                Harness the collective wisdom of the trading community with our innovative copy trading feature. By following the strategies of successful traders, you can replicate their trades in real-time, allowing you to benefit from their expertise and potentially enhance your own investment performance. Whether you're looking to diversify your portfolio or gain insights from top performers, our copy trading feature empowers you to make informed decisions with ease.
-            </p>
+                <!-- Ethereum -->
+                <div class="asset-card">
+                    <div class="asset-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZmlsbD0iIzYyN0VFQSIgZD0iTTE2IDMyQzcuMTYzIDMyIDAgMjQuODM3IDAgMTZTNy4xNjMgMCAxNiAwczE2IDcuMTYzIDE2IDE2LTcuMTYzIDE2LTE2IDE2em03Ljk5NC0xNS43ODFMMTYgNi41NDdsLTcuOTk0IDkuNjcyTDE2IDIzLjA0MWw3Ljk5NC03LjgyMnptLTguMDAxIDIuMDYzTDE2IDIzLjA0MWw4LjAwMS03LjgyMkwxNiA2LjU0N2wtLjAwNyAxMS43MzV6Ii8+PC9zdmc+" alt="Ethereum">
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-amount">0.00 ETH</div>
+                        <div class="asset-value">$0.00</div>
+                    </div>
+                    <div class="asset-type">
+                        <div class="asset-name">Ethereum</div>
+                        <div class="asset-category">crypto</div>
+                    </div>
+                </div>
 
-            <h5 class="section-title">Stock Trading:</h5>
-            <p class="section-text">
-                Dive into the world of stocks with confidence using our intuitive trading platform. Whether you're interested in blue-chip companies, emerging growth stocks, or niche sectors, our platform provides access to a wide range of equities from global markets. With advanced charting tools, real-time market data, and comprehensive analysis, you can stay ahead of market trends and make informed trading decisions. Our platform caters to traders of all levels, offering seamless execution and customizable features to suit your individual trading style.
-            </p>
+                <!-- Apple -->
+                <div class="asset-card">
+                    <div class="asset-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAzMCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTI0LjczIDI2YTExLjI2IDExLjI2IDAgMDEtMS4wOS0yLjU2IDkuNjUgOS42NSAwIDAxLS42My0zLjQ0IDcuMjUgNy4yNSAwIDAxMS4zMS00LjEzIDguMzUgOC4zNSAwIDAxMy42OC0yLjg4IDcuMzQgNy4zNCAwIDAwLTEuMTktMS4xNSA4LjEgOC4xIDAgMDAtNC4yNS0xLjgyIDExLjEzIDExLjEzIDAgMDAtMi4yMy4xOSA2LjIzIDYuMjMgMCAwMS0xLjk1LS4xMSA4LjQzIDguNDMgMCAwMC0yLjE1LS4xOSA4LjQ5IDguNDkgMCAwMC0zLjMzLjkzQTcuMzIgNy4zMiAwIDAwOS44IDEzLjRhOS4zOCA5LjM4IDAgMDAtMS4yNSA0Ljg1IDEwLjY2IDEwLjY2IDAgMDAuODcgNC4yMSA5LjQ0IDkuNDQgMCAwMDEuNjcgMi43NyA2LjY5IDYuNjkgMCAwMDEuODMgMS41MyA0LjQ5IDQuNDkgMCAwMDIuMTMuNTQgNS41OSA1LjU5IDAgMDAyLS4zNyA3LjQgNy40IDAgMDExLjk1LS4zOCA3LjI3IDcuMjcgMCAwMTEuOTUuMzggNS43NiA1Ljc2IDAgMDAxLjk1LjM3IDQuNDkgNC40OSAwIDAwMi4xMy0uNTQgNi42OSA2LjY5IDAgMDAxLjgzLTEuNTNBNS4zOSA1LjM5IDAgMDAyOCAyNGgtLjA5YTUuMzUgNS4zNSAwIDAxLTMuMTggMnptLTMuNDMtMTQuNzVhNy4yNSA3LjI1IDAgMDExLjY5LTEuNTMgNi4wNSA2LjA1IDAgMDExLjk1LS44NyA0LjI0IDQuMjQgMCAwMC0uODctMS4zMSA2LjUxIDYuNTEgMCAwMC00LjU3LTEuOTUgNi43NiA2Ljc2IDAgMDAtLjg3IDMuNjggNi4yIDYuMiAwIDAwMi42NyAxLjk4eiIvPjwvc3ZnPg==" alt="Apple">
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-amount">0.00 AAPL</div>
+                        <div class="asset-value">$0.00</div>
+                    </div>
+                    <div class="asset-type">
+                        <div class="asset-name">Apple</div>
+                        <div class="asset-category">stock</div>
+                    </div>
+                </div>
 
-            <h5 class="section-title">Crypto Trading:</h5>
-            <p class="section-text">
-                Experience the excitement of cryptocurrency trading on our platform. From Bitcoin to altcoins, we offer a diverse selection of digital assets for you to trade, along with real-time market data and comprehensive analysis to help you navigate this rapidly evolving market with confidence. Whether you're a crypto enthusiast exploring new opportunities or a seasoned trader looking to capitalize on market volatility, our platform provides the tools and resources you need to trade cryptocurrencies with precision.
-            </p>
+                <!-- Microsoft -->
+                <div class="asset-card">
+                    <div class="asset-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMyAyMyI+PHBhdGggZmlsbD0iI2YyNTAyMiIgZD0iTTEgMWgxMHYxMEgxeiIvPjxwYXRoIGZpbGw9IiM3ZmJhMDAiIGQ9Ik0xMiAxaDEwdjEwSDEyeiIvPjxwYXRoIGZpbGw9IiMwMGE0ZWYiIGQ9Ik0xIDEyaDEwdjEwSDEiLz48cGF0aCBmaWxsPSIjZmZiOTAwIiBkPSJNMTIgMTJoMTB2MTBIMTIiLz48L3N2Zz4=" alt="Microsoft">
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-amount">0.00 MSFT</div>
+                        <div class="asset-value">$0.00</div>
+                    </div>
+                    <div class="asset-type">
+                        <div class="asset-name">Microsoft</div>
+                        <div class="asset-category">stock</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

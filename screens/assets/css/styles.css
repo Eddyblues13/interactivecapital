@@ -1315,3 +1315,8 @@
 .text-greyish{
     color: #a5bdd9;
 }
+
+.small-amount {
+    font-size: 18px; /* Adjust the size as needed */
+    font-weight: bold; /* Optional: Keep the text bold */
+}

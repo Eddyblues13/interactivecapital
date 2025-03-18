@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Capita - Learn to Invest</title>
+    <title>Interactive Capital Pro - Learn to Invest</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,7 @@
         <div class="container">
             <a class="navbar-brand" href="#">
                 <div class="brand-icon"><img src="assets/img/android-chrome-36x36.png" alt=""></div>
-                el capita
+                Interactive Capital Pro
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
                 aria-controls="sidebarMenu">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>el capita</title>
+    <title>Interactive Capital Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
                 data-bs-target="#sidebar" aria-controls="sidebarMenu">
                 <i class="bi bi-list"></i>
             </button>
-            <div class="mt-1"><a href="#" class="text-decoration-none text-white">el Capita</a></div>
+            <div class="mt-1"><a href="#" class="text-decoration-none text-white">Interactive Capital Pro</a></div>
         </div>
 
         <div>{{Auth::user()->first_name}}

@@ -40,7 +40,8 @@
         <div class="col-md-6">
             <h2 class="section-heading mb-4">Copy top investors</h2>
             <p class="section-text">
-                With el Capita innovative CopyTrader™, you can automatically copy the moves of other investors. Find
+                With Interactive Capital Pro innovative CopyTrader™, you can automatically copy the moves of other
+                investors. Find
                 investors you believe in and replicate their actions in real time.
             </p>
         </div>
@@ -50,7 +51,7 @@
     <div class="text-center my-5 py-5">
         <h2 class="section-heading mb-5">
             What can you <span class="gradient-trade">Trade</span> with
-            <span class="gradient-brand">el capita</span>?
+            <span class="gradient-brand">Interactive Capital Pro</span>?
         </h2>
 
         <div class=" d-flex justify-content-center">
@@ -138,7 +139,8 @@
             </div>
 
             <div class="col-lg-6 d-flex justify-content-center align-items-center px-4">
-                <p class="text-dark fs-5 white-text">El capita Stock trading offers an exciting opportunity to grow
+                <p class="text-dark fs-5 white-text">Interactive Capital Pro Stock trading offers an exciting
+                    opportunity to grow
                     your wealth by investing in companies you believe in. It’s all about buying shares in businesses
                     and benefiting as they grow and succeed.</p>
             </div>

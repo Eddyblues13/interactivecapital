@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn deposit-btn">Deposit</button>
+            <a href="{{route('deposit.one')}}" class="btn deposit-btn">Deposit</a>
         </div>
 
         <!-- Right Column - Assets List -->

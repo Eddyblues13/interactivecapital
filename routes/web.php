@@ -10,6 +10,59 @@ Route::get('/', function () {
     return view('home.homepage');
 });
 
+Route::get('/about', function () {
+    return view('home.about');
+});
+Route::get('/faqs', function () {
+    return view('home.faqs');
+});
+
+Route::get('/contact', function () {
+    return view('home.contact');
+});
+
+Route::get('/copy-trade', function () {
+    return view('home.copy-trade');
+});
+
+
+Route::get('/cookie-policy', function () {
+    return view('home.cookie-policy');
+});
+
+Route::get('/crypto-mining', function () {
+    return view('home.crypto-mining');
+});
+
+Route::get('/forex-trading', function () {
+    return view('home.forex-trading');
+});
+
+Route::get('/privacy-policy', function () {
+    return view('home.privacy-policy');
+});
+
+Route::get('/bitcoin-mining', function () {
+    return view('home.bitcoin-mining');
+});
+
+Route::get('/crypto-trading', function () {
+    return view('home.crypto-trading');
+});
+
+Route::get('/stocks-trading', function () {
+    return view('home.stocks-trading');
+});
+
+Route::get('/dogecoin-mining', function () {
+    return view('home.dogecoin-mining');
+});
+
+Route::get('/terms-of-service', function () {
+    return view('home.terms-of-service');
+});
+
+
 
 // Login routes (only accessible to guests)
 Route::middleware('guest')->group(function () {

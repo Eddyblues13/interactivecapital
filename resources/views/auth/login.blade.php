@@ -194,7 +194,7 @@
             <a href="{{ route('password.request') }}" class="forgot-password">Forgot Password?</a>
 
             <div class="signup-prompt">
-                Don't have an account?<a href="#" class="signup-link">Sign Up</a>
+                Don't have an account?<a href="{{route('register')}}" class="signup-link">Sign Up</a>
             </div>
         </form>
     </div>

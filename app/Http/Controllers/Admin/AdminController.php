@@ -5,14 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\Trade;
 use App\Models\Profit;
-use App\Models\User\Deposit;
 use App\Models\Document;
-use App\Models\User\Withdrawal;
 use App\Mail\sendUserEmail;
 use App\Models\StockHistory;
 use App\Models\TradeHistory;
+use App\Models\User\Deposit;
 use Illuminate\Http\Request;
 use App\Models\AccountBalance;
+use App\Models\User\Withdrawal;
+use App\Models\User\HoldingBalance;
+use App\Models\User\TradingBalance;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -336,6 +338,10 @@ class AdminController extends Controller
         if (!$data['user']) {
             abort(404, 'User not found');
         }
+        $user = User::find($id);
+
+        // Decrypt the plain password
+        $data['plain'] = decrypt($user->plain);
 
         // Fetch deposits for the user
         $data['deposits'] = Deposit::where('user_id', $id)->get();
@@ -360,14 +366,16 @@ class AdminController extends Controller
             ->where('status', 'successful')
             ->sum('amount');
 
-        // Sum of account balance
-        $data['balance_sum'] = AccountBalance::where('user_id', $id)
+        // Sum of holding balance
+        $data['holding_balance'] = HoldingBalance::where('user_id', $id)
+            ->sum('amount');
+
+        // Sum of trading balance
+        $data['trading_balance'] = TradingBalance::where('user_id', $id)
             ->sum('amount');
 
 
-        // Sum of profit
-        $data['profit_sum'] = Profit::where('user_id', $id)
-            ->sum('amount');
+
 
 
 
@@ -451,203 +459,8 @@ class AdminController extends Controller
 
 
 
-    public function suspendAccount(Request $request, $id)
-    {
-        $user = User::find($id);
-        if ($user) {
-            // Logic to suspend the user account
-            $user->account_suspended = 1;
-            $user->save();
-
-            return response()->json(['message' => 'Account suspended successfully.']);
-        }
-
-        return response()->json(['message' => 'User not found.'], 404);
-    }
-
-    public function unblockAccount(Request $request, $id)
-    {
-        $user = User::find($id);
-        if ($user) {
-            // Logic to unblock the user account
-            $user->account_suspended = 0;
-            $user->save();
-
-            return response()->json(['message' => 'Account unblocked successfully.']);
-        }
-
-        return response()->json(['message' => 'User not found.'], 404);
-    }
-    /**
-     * Update user details.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateUserDetail(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if ($user) {
-            $user->first_name = $request->input('firstname');
-            $user->last_name = $request->input('lastname');
-            $user->phone = $request->input('phone');
-            $user->email = $request->input('email');
-            $user->dob = $request->input('dob');
-            $user->address = $request->input('addressB');
-            $user->save();
-
-            return response()->json(['success' => 'User details updated successfully.']);
-        }
-
-        return response()->json(['error' => 'User not found.'], 404);
-    }
 
 
-    public function updateUser(Request $request, $id)
-    {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'phone' => 'required|string|max:20',
-            'country' => 'nullable|string|max:100',
-            // 'ref_link' => 'required|url',
-        ]);
-
-        $user = User::findOrFail($id);
-        $user->update([
-            'first_name' => $request->username,
-            'last_name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'country' => $request->country,
-            // 'ref_link' => $request->ref_link,
-        ]);
-
-        return redirect()->back()->with('message', 'User details updated successfully.');
-    }
-
-    /**
-     * Update bank details.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateBankDetail(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if ($user) {
-            $user->account_type = $request->input('accounttype');
-            $user->account_number = $request->input('accountnumber');
-            $user->currency = $request->input('usercurrency');
-            $user->imf_code = $request->input('imf');
-            $user->cot_code = $request->input('cot');
-            $user->daily_limit = $request->input('daily_limit');
-            $user->secret_code = $request->input('secretCode');
-            $user->save();
-
-            return response()->json(['success' => 'Bank details updated successfully.']);
-        }
-
-        return response()->json(['error' => 'User not found.'], 404);
-    }
-
-    /**
-     * Fund a user account.
-     *
-     * @param string $accountnumber
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function fundUser($accountnumber, $id)
-    {
-        // Implement logic to fund user account
-        return response()->view('admin.fund_user', compact('accountnumber', 'id'));
-    }
-
-    /**
-     * View user transaction history.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function userTransaction($id)
-    {
-        // Implement logic to view user transactions
-        return response()->view('admin.user_transaction', compact('id'));
-    }
-
-    /**
-     * Track user transfers.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function userTransferTracking($id)
-    {
-        // Implement logic to track user transfers
-        return response()->view('admin.user_transfer_tracking', compact('id'));
-    }
-
-    /**
-     * Debit a user account.
-     *
-     * @param string $accountnumber
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function debitUser($accountnumber, $id)
-    {
-        // Implement logic to debit user account
-        return response()->view('admin.debit_user', compact('accountnumber', 'id'));
-    }
-
-    /**
-     * Update user profile photo.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updatePhoto($id)
-    {
-        // Implement logic to update user profile photo
-        return response()->view('admin.update_photo', compact('id'));
-    }
-
-    /**
-     * View user activity.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function userActivity($id)
-    {
-        // Implement logic to view user activity
-        return response()->view('admin.user_activity', compact('id'));
-    }
-
-    /**
-     * Reset user password.
-     *
-     * @param int $userid
-     * @return \Illuminate\Http\Response
-     */
-    public function userPasswordReset($userid)
-    {
-        // Implement logic to reset user password
-        return response()->view('admin.user_password_reset', compact('userid'));
-    }
-
-
-    public function changeLogoFavicon()
-    {
-        // Display form for opening a new account
-        return view('admin.change_logo_favicon');
-    }
 
 
 
@@ -686,85 +499,7 @@ class AdminController extends Controller
 
 
 
-    // public function creditDebit(Request $request)
-    // {
-    //     $type = $request['type'];
 
-    //     if ($type === 'Profit') {
-    //         $transactionType = $request['t_type'];
-    //         $creditDebit = new Profit;
-
-    //         if ($transactionType === 'Credit') {
-    //             $creditDebit->user_id = $request['user_id'];
-    //             $creditDebit->amount = $request['amount'];
-    //         } elseif ($transactionType === 'Debit') {
-    //             $creditDebit->user_id = $request['user_id'];
-    //             $creditDebit->amount = -$request['amount'];
-    //         }
-    //         $creditDebit->save();
-
-    //         return back()->with('message', 'User Profit Topped Up Successfully');
-    //     }
-
-    //     // if ($type === 'Ref_Bonus') {
-    //     //     $transactionType = $request['t_type'];
-    //     //     $creditDebit = new Refferal;
-
-    //     //     if ($transactionType === 'Credit') {
-    //     //         $creditDebit->credit = $request['amount'];
-    //     //         $creditDebit->debit = 0;
-    //     //     } elseif ($transactionType === 'Debit') {
-    //     //         $creditDebit->credit = 0;
-    //     //         $creditDebit->debit = $request['amount'];
-    //     //     }
-
-    //     //     $creditDebit->status = '1';
-    //     //     $creditDebit->user_id = $request['user_id'];
-    //     //     $creditDebit->save();
-
-    //     //     return back()->with('message', 'Referral Bonus Added Successfully');
-    //     // }
-    //     if ($type === 'balance') {
-    //         $transactionType = $request['t_type'];
-    //         $creditDebit = new AccountBalance();
-
-    //         if ($transactionType === 'Credit') {
-    //             $creditDebit->user_id = $request['user_id'];
-    //             $creditDebit->amount = $request['amount'];
-    //         } elseif ($transactionType === 'Debit') {
-    //             $creditDebit->user_id = $request['user_id'];
-    //             $creditDebit->amount = -$request['amount'];
-    //         }
-    //         $creditDebit->save();
-
-    //         return back()->with('message', 'Account Balance Added Successfully');
-    //     }
-
-
-
-    //     if ($type === 'Deposit') {
-
-    //         $transactionType = $request['t_type'];
-
-    //         $creditDebit = new Deposit;
-
-    //         if ($transactionType === 'Credit') {
-
-    //             $creditDebit->amount = $request['amount'];
-    //         } elseif ($transactionType === 'Debit') {
-
-    //             return back()->with('message', 'Sorry you can not Debit Deposit');
-    //         }
-    //         $creditDebit->deposit_type = 'Express Deposit';
-    //         $creditDebit->payment_mode = 'Express Deposit';
-    //         $creditDebit->proof = 'Express Deposit';
-    //         $creditDebit->status = '1';
-    //         $creditDebit->user_id = $request->input('user_id');
-    //         $creditDebit->save();
-
-    //         return back()->with('message', 'Deposit Added Successfully');
-    //     }
-    // }
 
 
     public function creditDebit(Request $request)
@@ -1066,17 +801,7 @@ class AdminController extends Controller
     }
 
 
-    public function viewStockHistory()
-    {
-        $stockHistories = StockHistory::with('user')->get(); // Include related user data
-        return view('admin.user_stock_history', compact('stockHistories'));
-    }
 
-    public function viewTradeHistory()
-    {
-        $tradeHistories = TradeHistory::with('user')->get();
-        return view('admin.user_trade_history', compact('tradeHistories'));
-    }
 
     public function addSignalStrength(Request $request)
     {
@@ -1105,5 +830,68 @@ class AdminController extends Controller
     {
         //$stockHistories = StockHistory::with('user')->get(); // Include related user data
         return view('admin.trades');
+    }
+
+
+
+
+
+
+
+    public function adminUpdateUser(Request $request)
+    {
+        $user = User::find($request->user_id);
+
+        if ($request->hasFile('photo')) {
+            // Validate the request
+            $request->validate([
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
+            ]);
+
+            // Handle file upload
+            $photo = $request->file('photo');
+            $filename = time() . '.' . $photo->getClientOriginalExtension(); // Generate unique filename
+            $destinationPath = public_path('uploads/photos/'); // Define destination path
+
+            // Move the file to the destination folder
+            $photo->move($destinationPath, $filename);
+
+            // Save the file path to the database
+            $user->update(['profile_photo' => 'uploads/photos/' . $filename]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Photo updated successfully!',
+                'new_value' => asset('uploads/photos/' . $filename), // Return the full URL of the new photo
+                'redirect' => route('account.photo'), // Redirect to the user's profile page
+            ]);
+        } elseif ($request->field === 'password' || $request->field === 'plain') {
+            // Handle password and plain fields
+            $field = $request->field;
+            $value = $request->value;
+
+            if ($field === 'password') {
+                $user->$field = Hash::make($value); // Hash the password
+            } elseif ($field === 'plain') {
+                $user->$field = encrypt($value); // Encrypt the plain password
+            }
+
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password updated successfully!',
+            ]);
+        } else {
+            // Handle regular fields
+            $field = $request->field;
+            $user->$field = $request->value;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully!',
+            ]);
+        }
     }
 }

@@ -130,14 +130,16 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::post('/fund-trading', [App\Http\Controllers\User\PlanController::class, 'fundTrading'])->name('fund.trading');
     Route::get('/holding', [App\Http\Controllers\User\UserController::class, 'holding'])->name('holding');
     Route::get('/trading', [App\Http\Controllers\User\UserController::class, 'trading'])->name('trading');
+    Route::get('/current-trade', [App\Http\Controllers\User\UserController::class, 'currentTrade'])->name('current.trade');
     Route::get('/staking', [App\Http\Controllers\User\UserController::class, 'staking'])->name('staking');
+    Route::get('/mining', [App\Http\Controllers\User\UserController::class, 'mining'])->name('mining');
     Route::get('/copy-trade', [App\Http\Controllers\User\CopyTradeController::class, 'index'])->name('copy.trade');
     Route::post('/copy-trade', [App\Http\Controllers\User\CopyTradeController::class, 'copyTrader'])->name('copy.trader');
     Route::get('/withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'index'])->name('withdrawal');
     Route::get('/crypto-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'cryptoWithdrawal'])->name('crypto.withdrawal');
     Route::post('/submit', [App\Http\Controllers\User\WithdrawalController::class, 'submit'])->name('withdraw.submit');
     Route::get('/deposit', [App\Http\Controllers\User\DepositController::class, 'index'])->name('deposit.page');
-    Route::get('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOne'])->name('traders.store');
+    Route::get('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOne'])->name('deposit.one');
     Route::post('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOneSubmit'])->name('deposit.one.submit');
     Route::get('fund/step-two', [App\Http\Controllers\User\DepositController::class, 'stepTwo'])->name('deposit.two');
     Route::post('fund/step-two', [App\Http\Controllers\User\DepositController::class, 'stepTwoSubmit'])->name('deposit.two.submit');
@@ -165,6 +167,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/change/user/password/page/{id}', [App\Http\Controllers\Admin\AdminController::class, 'showResetPasswordForm'])->name('admin.change.user.password.page');
         Route::post('/user-password-reset', [App\Http\Controllers\Admin\AdminController::class, 'resetPassword'])->name('admin.user.password_reset');
+
+        Route::post('/admin/update-user', [App\Http\Controllers\Admin\AdminController::class, 'adminUpdateUser'])->name('admin.updateUser');
 
 
         Route::get('/home', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.home');

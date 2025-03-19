@@ -57,12 +57,12 @@
                             </div>
                             <div class="p-3 mt-4 border rounded row text-light">
                                 <div class="col-md-3">
-                                    <h5 class="text-bold">Account Balance</h5>
-                                    <p>${{number_format($balance_sum, 2, '.', ',')}}</p>
+                                    <h5 class="text-bold">Holding Balance</h5>
+                                    <p>${{number_format($holding_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
-                                    <h5>Total Profit</h5>
-                                    <p>${{number_format($profit_sum, 2, '.', ',')}}</p>
+                                    <h5 class="text-bold">Trading Balance</h5>
+                                    <p>${{number_format($trading_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5>Total Deposit</h5>
@@ -75,10 +75,11 @@
                                 <div class="col-md-3">
                                     <h5>Trades</h5>
 
-                                    <a class="btn btn-sm btn-primary d-inline" href="{{ route('admin.user.trades', $user->id) }}">Add Trade</a>
+                                    <a class="btn btn-sm btn-primary d-inline"
+                                        href="{{ route('admin.user.trades', $user->id) }}">Add Trade</a>
 
 
-                                </div> 
+                                </div>
                                 <div class="col-md-3">
                                     <h5>KYC</h5>
                                     {{-- @if($kyc_status=="0")
@@ -96,44 +97,84 @@
                                     <h5>USER INFORMATION</h5>
                                 </div>
                             </div>
+                            @php
+                            $fields = [
+                            'first_name' => 'First Name',
+                            'last_name' => 'Last Name',
+                            'email' => 'Email Address',
+                            'phone_number' => 'Mobile Number',
+                            'currency' => 'Currency',
+                            'country' => 'Country',
+                            'city' => 'City',
+                            'profile_photo' => 'Profile Photo',
+                            'email_verification' => 'Email Verification',
+                            'id_verification' => 'ID Verification',
+                            'address_verification' => 'Address Verification',
+                            'user_status' => 'User Status',
+                            'signal_strength' => 'Signal Strength',
+                            'referral_code' => 'Referral Code',
+                            'referred_by' => 'Referred By',
+                            ];
+                            @endphp
+
+                            @foreach($fields as $key => $label)
                             <div class="p-3 border row text-light">
                                 <div class="col-md-4 border-right">
-                                    <h5>Fullname</h5>
+                                    <h5>{{ $label }}</h5>
                                 </div>
                                 <div class="col-md-8">
-                                    <h5>{{$user->name}}</h5>
+                                    @if($key === 'profile_photo')
+                                    <span id="display-{{ $key }}">
+                                        <img src="{{ asset($user->$key) }}" alt="Profile Photo"
+                                            style="width:100px; height:auto;">
+                                    </span>
+                                    <input type="file" class="form-control d-none" id="input-{{ $key }}"
+                                        accept="image/*">
+                                    @elseif($key === 'email_verification')
+                                    <span id="display-{{ $key }}">
+                                        {{ $user->$key == 1 ? 'Verified' : 'Not Verified' }}
+                                    </span>
+                                    <select class="form-control d-none" id="input-{{ $key }}">
+                                        <option value="1" {{ $user->$key == 1 ? 'selected' : '' }}>Verified</option>
+                                        <option value="0" {{ $user->$key == 0 ? 'selected' : '' }}>Not Verified</option>
+                                    </select>
+                                    @elseif($key === 'id_verification')
+                                    <span id="display-{{ $key }}">
+                                        {{ $user->$key == 1 ? 'Verified' : 'Not Verified' }}
+                                    </span>
+                                    <select class="form-control d-none" id="input-{{ $key }}">
+                                        <option value="1" {{ $user->$key == 1 ? 'selected' : '' }}>Verified</option>
+                                        <option value="0" {{ $user->$key == 0 ? 'selected' : '' }}>Not Verified</option>
+                                    </select>
+                                    @elseif($key === 'address_verification')
+                                    <span id="display-{{ $key }}">
+                                        {{ $user->$key == 1 ? 'Verified' : 'Not Verified' }}
+                                    </span>
+                                    <select class="form-control d-none" id="input-{{ $key }}">
+                                        <option value="1" {{ $user->$key == 1 ? 'selected' : '' }}>Verified</option>
+                                        <option value="0" {{ $user->$key == 0 ? 'selected' : '' }}>Not Verified</option>
+                                    </select>
+                                    @elseif($key === 'password' || $key === 'plain')
+                                    <span id="display-{{ $key }}">********</span> <!-- Masked for security -->
+                                    <input type="password" class="form-control d-none" id="input-{{ $key }}" value="">
+                                    @else
+                                    <span id="display-{{ $key }}">{{ $user->$key }}</span>
+                                    <input type="text" class="form-control d-none" id="input-{{ $key }}"
+                                        value="{{ $user->$key }}">
+                                    @endif
+                                    <button class="btn btn-sm btn-primary edit-btn"
+                                        data-field="{{ $key }}">Edit</button>
+                                    <button class="btn btn-sm btn-success save-btn d-none"
+                                        data-field="{{ $key }}">Save</button>
                                 </div>
                             </div>
+                            @endforeach
                             <div class="p-3 border row text-light">
                                 <div class="col-md-4 border-right">
-                                    <h5>Email Address</h5>
+                                    <h5>Password</h5>
                                 </div>
                                 <div class="col-md-8">
-                                    <h5>{{$user->email}}</h5>
-                                </div>
-                            </div>
-                            <div class="p-3 border row text-light">
-                                <div class="col-md-4 border-right">
-                                    <h5>Mobile Number</h5>
-                                </div>
-                                <div class="col-md-8">
-                                    <h5>{{$user->phone}}</h5>
-                                </div>
-                            </div>
-                            <div class="p-3 border row text-light">
-                                <div class="col-md-4 border-right">
-                                    <h5>Date of birth</h5>
-                                </div>
-                                <div class="col-md-8">
-                                    <h5>{{$user->dob}}</h5>
-                                </div>
-                            </div>
-                            <div class="p-3 border row text-light">
-                                <div class="col-md-4 border-right">
-                                    <h5>Nationality</h5>
-                                </div>
-                                <div class="col-md-8">
-                                    <h5>{{$user->country}}</h5>
+                                    <h5>{{$plain}}</h5>
                                 </div>
                             </div>
 
@@ -460,5 +501,130 @@
         </div>
     </div>
     <!-- /Delete user Modal -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".edit-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    let field = this.dataset.field;
+                    document.getElementById(`display-${field}`).classList.add("d-none");
+                    document.getElementById(`input-${field}`).classList.remove("d-none");
+                    this.classList.add("d-none");
+                    document.querySelector(`.save-btn[data-field='${field}']`).classList.remove("d-none");
+                });
+            });
+    
+            document.querySelectorAll(".save-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    let field = this.dataset.field;
+                    let newValue;
+    
+                    if (field === 'profile_photo') {
+                        let fileInput = document.getElementById(`input-${field}`);
+                        let file = fileInput.files[0];
+    
+                        if (!file) {
+                            toastr.error("Please select a photo to upload.");
+                            return;
+                        }
+    
+                        let formData = new FormData();
+                        formData.append('photo', file); // Use 'photo' as the key to match backend validation
+                        formData.append('user_id', "{{ $user->id }}");
+    
+                        fetch("{{ route('admin.updateUser') }}", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById(`display-${field}`).innerHTML = `<img src="${data.new_value}" alt="Profile Photo" style="width:100px; height:auto;">`;
+                                document.getElementById(`display-${field}`).classList.remove("d-none");
+                                document.getElementById(`input-${field}`).classList.add("d-none");
+                                button.classList.add("d-none");
+                                document.querySelector(`.edit-btn[data-field='${field}']`).classList.remove("d-none");
+                                toastr.success(data.message);
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                }
+                            } else {
+                                toastr.error(data.message || "Error updating profile photo.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            toastr.error("An error occurred while updating the photo.");
+                        });
+                    } else if (field === 'password' || field === 'plain') {
+                        newValue = document.getElementById(`input-${field}`).value;
+    
+                        fetch("{{ route('admin.updateUser') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                field: field,
+                                value: newValue,
+                                user_id: "{{ $user->id }}"
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById(`display-${field}`).textContent = "********"; // Mask the updated value
+                                document.getElementById(`display-${field}`).classList.remove("d-none");
+                                document.getElementById(`input-${field}`).classList.add("d-none");
+                                button.classList.add("d-none");
+                                document.querySelector(`.edit-btn[data-field='${field}']`).classList.remove("d-none");
+                                toastr.success("Password updated successfully!");
+                            } else {
+                                toastr.error("Error updating password.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                    } else {
+                        newValue = document.getElementById(`input-${field}`).value;
+    
+                        fetch("{{ route('admin.updateUser') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                field: field,
+                                value: newValue,
+                                user_id: "{{ $user->id }}"
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById(`display-${field}`).textContent = newValue;
+                                document.getElementById(`display-${field}`).classList.remove("d-none");
+                                document.getElementById(`input-${field}`).classList.add("d-none");
+                                button.classList.add("d-none");
+                                document.querySelector(`.edit-btn[data-field='${field}']`).classList.remove("d-none");
+                                toastr.success("User updated successfully!");
+                            } else {
+                                toastr.error("Error updating data.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 
     @include('admin.footer')

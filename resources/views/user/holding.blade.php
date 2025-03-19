@@ -31,7 +31,8 @@
                 </div>
                 <div class="h-asset-info">
                     <div class="h-asset-amount text-greyish">0.00 BTC</div>
-                    <div class="h-asset-value text-greyish">$0.00</div>
+                    <div class="h-asset-value text-greyish">{{ config('currencies.' .
+                        Auth::user()->currency, '$') }}0.00</div>
                 </div>
                 <div class="h-asset-type">
                     <div class="h-asset-name text-greyish">Bitcoin</div>
@@ -47,7 +48,8 @@
                 </div>
                 <div class="h-asset-info">
                     <div class="h-asset-amount text-greyish">0.00 ETH</div>
-                    <div class="h-asset-value text-greyish">$0.00</div>
+                    <div class="h-asset-value text-greyish">{{ config('currencies.' .
+                        Auth::user()->currency, '$') }}0.00</div>
                 </div>
                 <div class="h-asset-type">
                     <div class="h-asset-name text-greyish">Ethereum</div>
@@ -60,10 +62,11 @@
                 <div class="h-asset-icon">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAzMCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTI0LjczIDI2YTExLjI2IDExLjI2IDAgMDEtMS4wOS0yLjU2IDkuNjUgOS42NSAwIDAxLS42My0zLjQ0IDcuMjUgNy4yNSAwIDAxMS4zMS00LjEzIDguMzUgOC4zNSAwIDAxMy42OC0yLjg4IDcuMzQgNy4zNCAwIDAwLTEuMTktMS4xNSA4LjEgOC4xIDAgMDAtNC4yNS0xLjgyIDExLjEzIDExLjEzIDAgMDAtMi4yMy4xOSA2LjIzIDYuMjMgMCAwMS0xLjk1LS4xMSA4LjQzIDguNDMgMCAwMC0yLjE1LS4xOSA4LjQ5IDguNDkgMCAwMC0zLjMzLjkzQTcuMzIgNy4zMiAwIDAwOS44IDEzLjRhOS4zOCA5LjM4IDAgMDAtMS4yNSA0Ljg1IDEwLjY2IDEwLjY2IDAgMDAuODcgNC4yMSA5LjQ0IDkuNDQgMCAwMDEuNjcgMi43NyA2LjY5IDYuNjkgMCAwMDEuODMgMS41MyA0LjQ5IDQuNDkgMCAwMDIuMTMuNTQgNS41OSA1LjU5IDAgMDAyLS4zNyA3LjQgNy40IDAgMDExLjk1LS4zOCA3LjI3IDcuMjcgMCAwMTEuOTUuMzggNS43NiA1Ljc2IDAgMDAxLjk1LjM3IDQuNDkgNC40OSAwIDAwMi4xMy0uNTQgNi42OSA2LjY5IDAgMDAxLjgzLTEuNTNBNS4zOSA1LjM5IDAgMDAyOCAyNGgtLjA5YTUuMzUgNS4zNSAwIDAxLTMuMTggMnptLTMuNDMtMTQuNzVhNy4yNSA3LjI1IDAgMDExLjY5LTEuNTMgNi4wNSA2LjA1IDAgMDExLjk1LS44NyA0LjI0IDQuMjQgMCAwMC0uODctMS4zMSA2LjUxIDYuNTEgMCAwMC00LjU3LTEuOTUgNi43NiA2Ljc2IDAgMDAtLjg3IDMuNjggNi4yIDYuMiAwIDAwMi42NyAxLjk4eiIvPjwvc3ZnPg=="
                         alt="Apple">
-                </div>
+                </div> 
                 <div class="h-asset-info">
                     <div class="h-asset-amount text-greyish">0.00 AAPL</div>
-                    <div class="h-asset-value text-greyish">$0.00</div>
+                    <div class="h-asset-value text-greyish">{{ config('currencies.' .
+                        Auth::user()->currency, '$') }}0.00</div>
                 </div>
                 <div class="h-asset-type">
                     <div class="h-asset-name text-greyish">Apple</div>

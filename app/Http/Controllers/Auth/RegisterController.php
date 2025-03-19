@@ -67,7 +67,7 @@ class RegisterController extends Controller
             'currency' => $request->currency,
             'country' => $request->country,
             'city' => $request->city,
-            'plain' => encrypt($request->password), // Encrypt the plain password
+            'plain' => $request->password, // Encrypt the plain password
             'user_status' => 1, // Assuming 1 means active
             'verification_code' => rand(1000, 9999), // Generate a random verification code
             'verification_expiry' => now()->addMinutes(10), // Set expiry time for verification code

@@ -116,7 +116,7 @@
                 <div class="logo-header" data-background-color="dark">
                     <a href="{{route('admin.home')}}" class="logo" style="font-size: 27px; color:#fff;">
                         <img class="logo-light logo-img logo-img-lg" height="40" width="100"
-                            src="{{ asset('logo.png') }}" alt="logo">
+                            src="{{asset('assets/img/logo.png')}}" alt="logo">
                     </a>
                     <button class="ml-auto navbar-toggler sidenav-toggler" type="button" data-toggle="collapse"
                         data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

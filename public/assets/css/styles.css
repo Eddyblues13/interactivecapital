@@ -263,6 +263,10 @@
             .chart-bg{
                 height: 75% !important;
             }
+
+            .mining .chart-bg{
+                height: 25% !important
+            }
         }
 
 
@@ -879,8 +883,8 @@
     background: transparent;
     border: 1px solid #0d6efd;
     color: #0d6efd;
-    padding: 10px 40px;
-    border-radius: 5px;
+    padding: 15px 10px;
+    border-radius: none;
     min-width: 169px;
     transition: all 0.3s;
 }

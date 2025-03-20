@@ -5,9 +5,10 @@
         <div class="terms-of-service-content-section section">
             <p class="terms-of-service-section-text">
                 This Agreement is entered into by and these Terms & Conditions (hereinafter referred to as the
-                “Agreement”) shall regulate the relationship between CapitalFidel LTD, (hereinafter referred to as the
+                “Agreement”) shall regulate the relationship between Interactive Capital Pro LTD, (hereinafter referred
+                to as the
                 “Company”), and the user (a natural or legal entity) (hereinafter referred to as the “Client”) of
-                CapitalFidel (hereinafter referred as the “Website”).
+                Interactive Capital Pro (hereinafter referred as the “Website”).
             </p>
 
             <p class="terms-of-service-section-text">

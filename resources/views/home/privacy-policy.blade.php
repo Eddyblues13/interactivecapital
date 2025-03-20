@@ -4,7 +4,8 @@
         <h1 class="privacy-policy-page-title">Privacy Policy</h1>
         <div class="privacy-policy-content-section section">
             <p class="privacy-policy-section-text">
-                CapitalFidel Limited (in incorporation) (“us“, “we” or “Company“) respects the privacy of our users
+                Interactive Capital Pro Limited (in incorporation) (“us“, “we” or “Company“) respects the privacy of our
+                users
                 (each, “you” or “User“) and is committed to protecting the privacy of Users who access, download,
                 install, or register for our mobile application (the “Application“), our website, or any other online
                 services we provide (collectively: the “Services“). The Company has prepared this Privacy Policy to

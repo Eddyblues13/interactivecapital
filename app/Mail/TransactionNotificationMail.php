@@ -15,9 +15,9 @@ class TransactionNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The user instance.
+     * The user's name.
      */
-    public $user;
+    public $name;
 
     /**
      * The transaction amount.
@@ -25,9 +25,9 @@ class TransactionNotificationMail extends Mailable
     public $amount;
 
     /**
-     * The type of account (Savings or Checking).
+     * The transaction category (e.g., Holding Balance, Mining Balance).
      */
-    public $type;
+    public $transactionCategory;
 
     /**
      * The transaction type (Credit or Debit).
@@ -35,14 +35,20 @@ class TransactionNotificationMail extends Mailable
     public $transactionType;
 
     /**
+     * The transaction date.
+     */
+    public $date;
+
+    /**
      * Create a new message instance.
      */
-    public function __construct(User $user, $amount, $type, $transactionType)
+    public function __construct($name, $amount, $transactionCategory, $transactionType, $date)
     {
-        $this->user = $user;
+        $this->name = $name;
         $this->amount = $amount;
-        $this->type = $type;
+        $this->transactionCategory = $transactionCategory;
         $this->transactionType = $transactionType;
+        $this->date = $date;
     }
 
     /**
@@ -63,10 +69,11 @@ class TransactionNotificationMail extends Mailable
         return new Content(
             view: 'emails.transaction_notification', // Ensure this view exists
             with: [
-                'user' => $this->user,
+                'name' => $this->name,
                 'amount' => $this->amount,
-                'type' => $this->type,
+                'transactionCategory' => $this->transactionCategory,
                 'transactionType' => $this->transactionType,
+                'date' => $this->date,
             ]
         );
     }

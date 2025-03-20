@@ -5,6 +5,20 @@
             @if(session('message'))
             <div class="alert alert-success mb-2">{{session('message')}}</div>
             @endif
+            @if(session('message'))
+            <div class="alert alert-success mb-2">{{session('message')}}</div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
+
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
             <div>
             </div>
             <div>
@@ -28,13 +42,17 @@
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-lg-right">
                                                 <a class="dropdown-item" href="">Login Activity</a>
-                                                <a class="dropdown-item" href="#">Block</a>
-                                                <a class="dropdown-item" href="">Turn off trade</a>
+                                                <a href="#" data-toggle="modal" data-target="#holdingBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Holding Balance</a>
+                                                <a href="#" data-toggle="modal" data-target="#tradingBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Trading Balance</a>
+                                                <a href="#" data-toggle="modal" data-target="#stakingBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Staking Balance</a>
+                                                <a href="#" data-toggle="modal" data-target="#miningBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Mining Balance</a>
+                                                <a href="#" data-toggle="modal" data-target="#referralBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Referral Balance</a>
 
-                                                <a href="#" data-toggle="modal" data-target="#topupModal"
-                                                    class="dropdown-item">Credit/Debit</a>
-                                                {{-- <a href="#" data-toggle="modal" data-target="#topupxModal"
-                                                    class="dropdown-item">Fund / Wallet</a> --}}
                                                 <a href="#" data-toggle="modal" data-target="#resetpswdModal"
                                                     class="dropdown-item">Reset Password</a>
                                                 <a href="#" data-toggle="modal" data-target="#clearacctModal"
@@ -58,15 +76,28 @@
                             <div class="p-3 mt-4 border rounded row text-light">
                                 <div class="col-md-3">
                                     <h5 class="text-bold">Holding Balance</h5>
-                                    <p>${{number_format($holding_balance, 2, '.', ',')}}</p>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($holding_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5 class="text-bold">Trading Balance</h5>
-                                    <p>${{number_format($trading_balance, 2, '.', ',')}}</p>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($trading_balance, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-bold">Mining Balance</h5>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($mining_balance, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-bold">Referral Balance</h5>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($referral_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5>Total Deposit</h5>
-                                    <p>${{number_format($successful_deposits_sum, 2, '.', ',')}}</p>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($successful_deposits_sum, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5>User Account Status</h5>
@@ -501,6 +532,186 @@
         </div>
     </div>
     <!-- /Delete user Modal -->
+
+    <!-- Holding Balance Modal -->
+    <div id="holdingBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->name}}'s Holding Balance</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.holding.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mining Balance Modal -->
+    <div id="miningBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->name}}'s Mining Balance</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.mining.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Referral Balance Modal -->
+    <div id="referralBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->name}}'s Referral Balance</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.referral.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staking Balance Modal -->
+    <div id="stakingBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->name}}'s Staking Balance</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.staking.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trading Balance Modal -->
+    <div id="tradingBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->name}}'s Trading Balance</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.trading.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

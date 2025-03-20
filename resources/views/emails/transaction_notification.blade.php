@@ -11,7 +11,7 @@
     <link href='https://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet'>
     <!--<![endif]-->
 
-    <title>LAYSTACK Trust Bank</title>
+    <title>Interactive Capital Pro</title>
 
     <style type='text/css'>
         body {
@@ -159,8 +159,11 @@
                                     <td align='center' height='70' style='height:70px;'>
                                         <a href=''
                                             style='display: block; border-style: none !important; border: 0 !important;'>
-                                            <img width='100' border='0' style='display: block; width: 100%;'
-                                                src="{{asset('uploads/logo.png')}}" alt="LAYSTACK Trust Bank" />
+                                            <img width="10" height="10" border="0"
+                                                style="display: block; width: 10px; height: 10px;"
+                                                src="{{ asset('assets/img/logo.png') }}"
+                                                alt="Interactive Capital Pro" />
+
                                         </a>
                                     </td>
                                 </tr>
@@ -183,16 +186,16 @@
                         <td align="left"
                             style="color: #888888; font-size: 16px; font-family: Arial, sans-serif; line-height: 24px;">
 
-                            <p>Dear {{ $user->name }},</p>
+                            <p>Dear {{ $name }},</p>
                             <p>Your account has been {{ $transactionType }}ed with the following details:</p>
                             <ul>
-                                <li>Amount: {{ $user->currency ?? '$' }}{{ number_format($amount, 2) }} </li>
-                                <li>Category: {{ $type }}</li>
+                                <li>Amount: {{ number_format($amount, 2) }}</li>
+                                <li>Category: {{ $transactionCategory }}</li>
                                 <li>Type: {{ $transactionType }}</li>
-
+                                <li>Date: {{ $date }}</li>
                             </ul>
                             <p>Thank you for using our service!</p>
-                            <p>Kind Regards,<br>LAYSTACK Trust Bank.</p>
+                            <p>Kind Regards,<br>Interactive Capital Pro.</p>
                         </td>
                     </tr>
                 </table>

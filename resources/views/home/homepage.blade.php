@@ -224,7 +224,7 @@
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            How to start trading with CapitalFidel?
+                            How to start trading with Interactive Capital Pro?
 
                         </button>
                     </h2>
@@ -233,7 +233,7 @@
                         <div class="accordion-body">
                             Create An Account.
                             Confirm your identity and eligibility for a financial account (KYC).
-                            Fund your CapitalFidel Trading account by connecting your digital wallet.
+                            Fund your Interactive Capital Pro Trading account by connecting your digital wallet.
                             Login and start trading.
 
                         </div>
@@ -251,14 +251,15 @@
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                         data-bs-parent="#faqAccordion1">
                         <div class="accordion-body">
-                            Click the Sign-Up Button to sign up for an account with CapitalFidel.
+                            Click the Sign-Up Button to sign up for an account with Interactive Capital Pro.
                             Please complete the form, read the terms and conditions, and click the Sign-Up button.
                             You’ll receive an email with a unique verification link.
                             Verify by clicking or copying/pasting the link to your browser URL. (If you can’t find
                             the email, look in your junk mail, spam, and any other folders your inbox may have. If,
                             for some reason, you still don’t receive the email and would like to resend, visit the
                             login page and click on Resend verification email. Enter your email and click ‘Send
-                            Confirmation Email’). Once verified, you can log in to yourCapitalFidel account and
+                            Confirmation Email’). Once verified, you can log in to yourInteractive Capital Pro account
+                            and
                             verify your identity.
 
                         </div>
@@ -293,13 +294,14 @@
                     <h2 class="accordion-header" id="headingFour">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            How do I deposit money and fund my account with CapitalFidel?
+                            How do I deposit money and fund my account with Interactive Capital Pro?
                         </button>
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
                         data-bs-parent="#faqAccordion1">
                         <div class="accordion-body">
-                            You are given a personal dashboard when you create your CapitalFidelAccount. Follow your
+                            You are given a personal dashboard when you create your Interactive Capital ProAccount.
+                            Follow your
                             account’s on-screen instructions, depending on the payment method chosen (Bitcoin or
                             USDT). The options available to you will be shown. Select “Deposit” in the left hand
                             menu.
@@ -312,7 +314,7 @@
                     <h2 class="accordion-header" id="headingFive">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                            Is CapitalFidel a regulated broker?
+                            Is Interactive Capital Pro a regulated broker?
                         </button>
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
@@ -330,7 +332,7 @@
                     <h2 class="accordion-header" id="headingSix">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                            How to withdraw money from CapitalFidel?
+                            How to withdraw money from Interactive Capital Pro?
                         </button>
                     </h2>
                     <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"

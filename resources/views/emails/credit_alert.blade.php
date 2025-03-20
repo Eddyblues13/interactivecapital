@@ -5,7 +5,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<title>LAYSTACK Trust Bank</title>
+	<title>Interactive Capital Pro</title>
 
 	<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap"
 		rel="stylesheet" />
@@ -264,7 +264,7 @@
 				<tr class="proton-tr">
 					<td class="proton-td" colspan="10" style="">
 						<h3>Kind Regards,</h3>
-						<p>LAYSTACK Trust Bank</p>
+						<p>Interactive Capital Pro</p>
 					</td>
 				</tr>
 
@@ -272,7 +272,7 @@
 					<td class="proton-td" colspan="10" style="">
 						<div class="proton-divider"></div>
 						<center>
-							<span style="color: #706d6b"> © 2024 LAYSTACK Trust Bank</span>
+							<span style="color: #706d6b"> © 2024 Interactive Capital Pro</span>
 						</center>
 						<div class="proton-flex">
 							<a href="https://proton.me" class="proton-link">

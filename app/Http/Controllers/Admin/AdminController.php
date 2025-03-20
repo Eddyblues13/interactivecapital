@@ -13,9 +13,12 @@ use App\Models\User\Deposit;
 use Illuminate\Http\Request;
 use App\Models\AccountBalance;
 use App\Models\User\Withdrawal;
+use App\Models\User\MiningBalance;
 use App\Models\User\HoldingBalance;
+use App\Models\User\StakingBalance;
 use App\Models\User\TradingBalance;
 use App\Http\Controllers\Controller;
+use App\Models\User\ReferralBalance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -223,19 +226,24 @@ class AdminController extends Controller
     public function clearAccount($id)
     {
         $user = User::find($id);
-        if ($user) {
+        $userId = User::find($id);
 
-            // Delete related records (posts, comments, likes) associated with the user
-            $user->profit()->delete();
-            $user->deposits()->delete();
-            $user->balance()->delete();
-            $user->trade()->delete();
-            $user->withdrawal()->delete();
+        // Clear Holding Balance
+        HoldingBalance::where('user_id', $userId)->update(['amount' => 0]);
 
-            return back()->with('message', 'Records deleted successfully');
-        } else {
-            return back()->with('message', 'User Not Found');
-        }
+        // Clear Mining Balance
+        MiningBalance::where('user_id', $userId)->update(['amount' => 0]);
+
+        // Clear Referral Balance
+        ReferralBalance::where('user_id', $userId)->update(['amount' => 0]);
+
+        // Clear Staking Balance
+        StakingBalance::where('user_id', $userId)->update(['amount' => 0]);
+
+        // Clear Trading Balance
+        TradingBalance::where('user_id', $userId)->update(['amount' => 0]);
+
+        return redirect()->back()->with('success', 'All balances cleared successfully.');
     }
 
 
@@ -374,6 +382,14 @@ class AdminController extends Controller
         $data['trading_balance'] = TradingBalance::where('user_id', $id)
             ->sum('amount');
 
+        // Sum of referral balance
+        $data['referral_balance'] = ReferralBalance::where('user_id', $id)
+            ->sum('amount');
+
+        // Sum of trading balance
+        $data['mining_balance'] = MiningBalance::where('user_id', $id)
+            ->sum('amount');
+
 
 
 
@@ -386,37 +402,6 @@ class AdminController extends Controller
 
 
 
-    public function creditUserPage($id)
-    {
-        $user = User::find($id);
-
-        $data['user'] = $user;
-
-        // Sum of successful account balance
-        $data['balance_sum'] = AccountBalance::where('user_id',  $user->id)
-            ->sum('amount');
-
-        // Sum of successful account balance
-        $data['profit_sum'] = Profit::where('user_id', $user)
-            ->sum('amount');
-
-        if (!$user) {
-            abort(404, 'User not found');
-        }
-
-        return view('admin.credit_user', $data);
-    }
-
-    /**
-     * Open a new account.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function openAccount()
-    {
-        // Display form for opening a new account
-        return view('admin.open_account');
-    }
 
 
     /**
@@ -459,43 +444,6 @@ class AdminController extends Controller
 
 
 
-
-
-
-
-
-    public function creditUser(Request $request)
-    {
-        $request->validate([
-            'id' => 'required|exists:users,id',
-            'amount' => 'required|numeric|min:1',
-            'scope' => 'required|in:Account Balance,Profit',
-            'emailnotify' => 'required|in:Yes,No',
-            'memo' => 'nullable|string',
-        ]);
-
-        $user = User::findOrFail($request->id);
-        $amount = $request->amount;
-        $scope = $request->scope;
-
-        if ($scope == 'Account Balance') {
-            $accountBalance = new AccountBalance();
-            $accountBalance->user_id = $user->id;
-            $accountBalance->amount = $amount;
-            $accountBalance->save();
-        } else {
-            $profit = new Profit();
-            $profit->user_id = $user->id;
-            $profit->amount = $amount;
-            $profit->save();
-        }
-
-        // if ($request->emailnotify == 'Yes') {
-        //     Mail::to($user->email)->send(new \App\Mail\CreditNotification($user, $amount, $scope, $request->memo));
-        // }
-        // Redirect back with a success message
-        return back()->with('success', 'Funds have been credited successfully.');
-    }
 
 
 

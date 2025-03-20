@@ -19,6 +19,7 @@
     <link rel="icon" href="{{asset('user/account/storage/app/public/photos/uPYDzhfavicon.png1677339254')}}"
         type="image/png" />
     <link rel="icon" href="{{ asset('account/cloud/uploads/favicon.png')}}" type="image/png" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
 
     <!-- Fonts and icons -->
     <script src="{{asset('user/account/dash/js/plugin/webfont/webfont.min.js')}}"></script>

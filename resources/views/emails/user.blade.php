@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {{ $subject ?? 'LAYSTACK Trust Bank' }}</title>
+    <title> {{ $subject ?? 'Interactive Capital Pro' }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,16 +60,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('uploads/logo.png') }}" alt="Company Logo">
+            <img src="{{ asset('assets/img/logo.png') }}" alt="Company Logo">
         </div>
         <div class="content">
             <p>{{ $subject }},</p>
             <p>{!! nl2br(e($messageBody)) !!}</p>
             <p>Best Regards,</p>
-            <p><strong>LAYSTACK Trust Bank</strong></p>
+            <p><strong>Interactive Capital Pro</strong></p>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} LAYSTACK Trust Bank. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Interactive Capital Pro. All rights reserved.</p>
         </div>
     </div>
 </body>

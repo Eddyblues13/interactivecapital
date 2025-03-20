@@ -151,7 +151,8 @@
 
             <p class="dogecoin-mining-section-text">
                 You might find some cloud mining vendors offer a couple of months of free mining. However, always make
-                sure you are completely aware of all terms and conditions. <strong>CapitalFidel</strong> can be a good
+                sure you are completely aware of all terms and conditions. <strong>Interactive Capital Pro</strong> can
+                be a good
                 option here.
             </p>
 

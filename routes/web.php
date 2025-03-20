@@ -171,6 +171,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/admin/update-user', [App\Http\Controllers\Admin\AdminController::class, 'adminUpdateUser'])->name('admin.updateUser');
 
 
+        Route::post('/update/holding-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateHoldingBalance'])->name('update.holding.balance');
+        Route::post('/update/mining-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateMiningBalance'])->name('update.mining.balance');
+        Route::post('/update/referral-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateReferralBalance'])->name('update.referral.balance');
+        Route::post('/update/staking-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateStakingBalance'])->name('update.staking.balance');
+        Route::post('/update/trading-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateTradingBalance'])->name('update.trading.balance');
+
+
         Route::get('/home', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.home');
         Route::get('/manage-users', [App\Http\Controllers\Admin\AdminController::class, 'manageUsersPage'])->name('manage.users.page');
         Route::get('getusers', [App\Http\Controllers\Admin\AdminController::class, 'getUsers'])->name('admin.getusers');

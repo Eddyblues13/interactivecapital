@@ -4,7 +4,7 @@
         <h1 class="cookie-policy-page-title">Cookie Policy</h1>
         <div class="cookie-policy-content-section section">
             <p class="cookie-policy-section-text">
-                CapitalFidel uses cookies to:
+                Interactive Capital Pro uses cookies to:
             </p>
             <ul class="cookie-policy-section-list">
                 <li>Optimize your trading experience, including remembering your preferences, location, preferred
@@ -26,10 +26,12 @@
 
             <h5 class="cookie-policy-section-title">Managing Cookies</h5>
             <p class="cookie-policy-section-text">
-                At CapitalFidel, we respect your right to privacy and are therefore happy to provide you with tools to
+                At Interactive Capital Pro, we respect your right to privacy and are therefore happy to provide you with
+                tools to
                 manage the cookies you receive from our web services. Some cookies are essential to the performance of
                 our platform (you cannot opt out from these cookies if you wish to use our platform). Below you will
-                find a list of some of the third-party cookies used by CapitalFidel. For those users who would prefer
+                find a list of some of the third-party cookies used by Interactive Capital Pro. For those users who
+                would prefer
                 not to receive non-essential cookies, we have provided an “opt out” option for you to select.
             </p>
 

@@ -33,7 +33,7 @@
         <div class="col-md-6 position-relative">
             <div class="video-card">
                 <video autoplay muted loop>
-                    <source src="assets/videos/Toro-Investors.mp4" type="video/mp4">
+                    <source src="{{ asset('assets/videos/Toro-Investors.mp4') }}" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -134,7 +134,7 @@
         <div class="row">
             <div class="col-lg-6 video-card">
                 <video autoplay muted loop>
-                    <source src="assets/videos/Toro-Portfolios.mp4" type="video/mp4">
+                    <source src="{{ asset('assets/videos/Toro-Portfolios.mp4') }}" type="video/mp4">
                 </video>
             </div>
 
@@ -158,7 +158,7 @@
         <div class="reason-card px-4">
             <div class="reason-label">REASON 1</div>
             <div class="text-end">
-                <img src="assets/img/CryReason2.avif" alt="Security Lock" class="reason-icon">
+                <img src="{{ asset('assets/img/CryReason2.avif') }}" alt="Security Lock" class="reason-icon">
             </div>
             <h3 class="reason-title">Secured</h3>
             <p class="reason-description">
@@ -172,7 +172,7 @@
         <div class="reason-card px-4">
             <div class="reason-label">REASON 2</div>
             <div class="text-end">
-                <img src="assets/img/CryReason3.avif" alt="Security Lock" class="reason-icon">
+                <img src="{{ asset('assets/img/CryReason3.avif') }}" alt="Security Lock" class="reason-icon">
             </div>
             <h3 class="reason-title">Leverage</h3>
             <p class="reason-description">
@@ -186,7 +186,7 @@
         <div class="reason-card px-4">
             <div class="reason-label">REASON 3</div>
             <div class="text-end">
-                <img src="assets/img/CryReason1.avif" alt="Security Lock" class="reason-icon">
+                <img src="{{ asset('assets/img/CryReason1.avif') }}" alt="Security Lock" class="reason-icon">
             </div>
             <h3 class="reason-title">Crypto Payments</h3>
             <p class="reason-description">

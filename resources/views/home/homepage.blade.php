@@ -33,7 +33,7 @@
         <div class="col-md-6 position-relative">
             <div class="video-card">
                 <video autoplay muted loop>
-                    <source src="{{ asset('assets/videos/1.mp4') }}" type="video/mp4">
+                    <source src="https://interactivecapitalpro.com/assets/videos/1.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -134,7 +134,7 @@
         <div class="row">
             <div class="col-lg-6 video-card">
                 <video autoplay muted loop>
-                    <source src="{{ asset('assets/videos/2.mp4') }}" type="video/mp4">
+                    <source src="https://interactivecapitalpro.com/assets/videos/2.mp4" type="video/mp4">
                 </video>
             </div>
 

@@ -32,8 +32,9 @@
     <div class="row align-items-center my-5 py-5">
         <div class="col-md-6 position-relative">
             <div class="video-card">
-                <video autoplay muted loop>
-                    <source src="https://interactivecapitalpro.com/assets/videos/1.mp4" type="video/mp4">
+                <video autoplay muted loop playsinline preload="auto">
+                    <source src="{{ asset('assets/videos/1.webm') }}" type="video/webm">
+                    <source src="{{ asset('assets/videos/1.mp4') }}" type="video/mp4">
                 </video>
             </div>
         </div>

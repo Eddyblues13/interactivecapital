@@ -134,7 +134,7 @@
         <div class="row">
             <div class="col-lg-6 video-card">
 
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline preload="auto">
                     <source src="{{ asset('assets/videos/2.webm') }}" type="video/webm">
                     <source src="{{ asset('assets/videos/2.mp4') }}" type="video/mp4">
                 </video>

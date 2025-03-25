@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use DB;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\User\ReferralBalance;
+use App\Mail\VerificationEmail;
 use App\Http\Controllers\Controller;
+use App\Models\User\ReferralBalance;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -41,23 +43,25 @@ class RegisterController extends Controller
             'country' => 'required|string|max:100',
             'city' => 'required|string|max:100',
             'password' => 'required|string|min:4|confirmed',
-            'referral_code' => 'nullable|string|exists:users,referral_code', // Validate referral code
+            'referral_code' => 'nullable|string|exists:users,referral_code',
         ]);
-
-        // If validation fails, return error response
+    
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
             ], 422);
         }
-
+    
         // Find the referrer if a valid referral code is provided
         $referrer = null;
         if ($request->referral_code) {
             $referrer = User::where('referral_code', $request->referral_code)->first();
         }
-
+    
+        // Generate verification code
+        $verificationCode = rand(1000, 9999);
+        
         // Create the user
         $user = User::create([
             'first_name' => $request->first_name,
@@ -67,47 +71,64 @@ class RegisterController extends Controller
             'currency' => $request->currency,
             'country' => $request->country,
             'city' => $request->city,
-            'plain' => $request->password, // Encrypt the plain password
-            'user_status' => 1, // Assuming 1 means active
-            'verification_code' => rand(1000, 9999), // Generate a random verification code
-            'verification_expiry' => now()->addMinutes(10), // Set expiry time for verification code
-            'password' => Hash::make($request->password), // Hash the password
-            'referral_code' => $this->generateReferralCode(), // Generate a unique referral code for the new user
-            'referred_by' => $referrer ? $referrer->id : null, // Set referred_by if referrer exists
+            'plain' => $request->password,
+            'user_status' => 1,
+            'verification_code' => $verificationCode,
+            'verification_expiry' => now()->addMinutes(10),
+            'password' => Hash::make($request->password),
+            'referral_code' => $this->generateReferralCode(),
+            'referred_by' => $referrer ? $referrer->id : null,
         ]);
-
+    
         // Create related balances for the user
-        $user->holdingBalance()->create([
-            'user_id' => $user->id,
-            'amount' => 0,
-        ]);
-
-        $user->stakingBalance()->create([
-            'user_id' => $user->id,
-            'amount' => 0,
-        ]);
-
-        $user->tradingBalance()->create([
-            'user_id' => $user->id,
-            'amount' => 0,
-        ]);
-
+        $user->holdingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
+        $user->stakingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
+        $user->tradingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
+    
         // Add referral bonus to the referrer's balance
         if ($referrer) {
             $referrer->referralBalance()->updateOrCreate(
                 ['user_id' => $referrer->id],
-                ['amount' => DB::raw('amount + 10')] // Add $10 as referral bonus
+                ['amount' => DB::raw('amount + 10')]
             );
         }
-
+    
+        // Prepare and send verification email
+        $full_name = $request->first_name . ' ' . $request->last_name;
+        $vmessage = "
+        <p style='line-height: 24px;margin-bottom:15px;'>
+            Hello $full_name,
+        </p>
+        <br>
+        <p>
+        We are so happy to have you on board, and thank you for joining us.
+        </p>
+        <p>
+        We just need to verify your email address before you can access cytopiacapital.
+        </p>
+        <br>
+        <p>
+        Use this code to verify your email: <strong>$verificationCode</strong>
+        </p>
+        <p style='color: red;'>
+        Please note that this code will expire in 10 minutes.
+        </p>
+        <br>
+        <p>
+        Don't hesitate to get in touch if you have any questions; we'll always get back to you.
+        </p>
+        ";
+    
+        // Send the email
+        Mail::to($user->email)->send(new VerificationEmail($vmessage));
+    
         // Log in the user
         auth()->login($user);
-
-        // Return success response
+    
         return response()->json([
             'success' => true,
-            'message' => 'Registration successful!',
-            'redirect' => route('email_verify'), // Redirect to email verification page
+            'message' => 'Registration successful! Please check your email for verification code.',
+            'redirect' => route('email_verify'),
         ]);
     }
 

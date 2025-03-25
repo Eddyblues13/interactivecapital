@@ -119,7 +119,7 @@ class EmailVerificationController extends Controller
         $user->verification_code = $validToken;
         $user->verification_expiry = now()->addMinutes(10); // Code expires in 10 minutes
         $user->save();
-
+ 
         $full_name =  $user->first_name . ' ' .  $user->last_name;
         $email = $user->email;
 

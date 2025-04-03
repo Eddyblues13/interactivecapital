@@ -292,7 +292,7 @@
     <div class="row g-4 mb-3">
         <div class="col-12 col-md-6 col-lg-4">
             <div class="reason-card">
-                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                <div class="card-header d-flex justify-content-start">
                     <img src="https://capitalfidel.com/assets/images/site/CryIcon3.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
                 </div>
                 <h3 class="reason-title">Learn to recognize and understand market movements</h3>
@@ -304,7 +304,7 @@
 
         <div class="col-12 col-md-6 col-lg-4">
             <div class="reason-card">
-                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                <div class="card-header d-flex justify-content-start">
                     <img src="https://capitalfidel.com/assets/images/site/CryIcon1.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
                 </div>
                 <h3 class="reason-title">Understanding Bitcoin & Blockchain</h3>
@@ -316,7 +316,7 @@
         
         <div class="col-12 col-md-6 col-lg-4">
             <div class="reason-card">
-                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                <div class="card-header d-flex justify-content-start">
                     <img src="https://capitalfidel.com/assets/images/site/CryIcon4.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
                 </div>
                 <h3 class="reason-title">Proven Strategies & Systematization</h3>

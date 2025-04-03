@@ -28,7 +28,7 @@
         <div class="participants-text">1M+ succesful participants</div>
     </div>
 
-    <!-- Copy Top Investors Section -->
+    {{-- <!-- Copy Top Investors Section -->
     <div class="row align-items-center my-5 py-5">
         <div class="col-md-6 position-relative">
             <div class="video-card">
@@ -46,10 +46,10 @@
                 investors you believe in and replicate their actions in real time.
             </p>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Trading Options Section -->
-    <div class="text-center my-5 py-5">
+    {{-- <div class="text-center my-5 py-5">
         <h2 class="section-heading mb-5">
             What can you <span class="gradient-trade">Trade</span> with
             <span class="gradient-brand">Interactive Capital Pro</span>?
@@ -127,10 +127,10 @@
             </div>
         </div>
 
-    </div>
+    </div> --}}
 </div>
 
-<section class="bg-white">
+{{-- <div class="bg-white">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 video-card">
@@ -149,71 +149,188 @@
             </div>
         </div>
     </div>
+</div> --}}
 
-</section>
-<section class="reasons-container py-4">
-    <h2 class="section-heading text-center">
-        <span class="gradient-text">3 Reasons</span> To Choose Us
+<div class="container section-container">
+    <h2 class="section-reason-title my-5" style="color: #CBD5E1">
+
+        The best time to invest in<br> Bitcoin was 2009.<br>
+        <span class="gradient-text">The second best time is now.</span>
+
     </h2>
 
-    <div class="reasons-grid container">
+    <div class="row g-4 mb-3">
         <!-- Secured Card -->
-        <div class="reason-card px-4">
-            <div class="reason-label">REASON 1</div>
-            <div class="text-end">
-                <img src="{{ asset('assets/img/CryReason2.avif') }}" alt="Security Lock" class="reason-icon">
+        <div class="col-12">
+            <div class="text-center">
+                <img src="{{ asset('assets/img/crypChart.png') }}" alt="Crypto Chart" class="img img-fluid w-75 crypto-chart0">
             </div>
-            <h3 class="reason-title">Secured</h3>
-            <p class="reason-description">
-                We prioritize your data's safety with advanced encryption, regular audits, and robust firewalls.
-                Trust us to provide a secure environment, ensuring your sensitive information stays confidential and
-                protected. Your safety is our priority, giving you peace of mind every step.
-            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container section-container">
+    <h2 class="section-reason-title my-5" style="color: #CBD5E1">
+        <span class="gradient-text">7 Reasons</span> Why Cryptocurrencies<br> Will Change All of Our Lives
+
+    </h2>
+
+    <div class="row g-4 mb-3">
+        <!-- Secured Card -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 1</div>
+                    <img src="{{ asset('assets/img/CryReason1.avif') }}" alt="Security Lock" class="reason-icon">
+                </div>
+                <h3 class="reason-title">decentralization and independence</h3>
+                <p class="reason-description">
+                    Bitcoin & Co. are not controlled by a central authority or government. This protects against political influences and interventions that can affect the value and stability of traditional currencies.
+                </p>
+            </div>
         </div>
 
         <!-- Leverage Card -->
-        <div class="reason-card px-4">
-            <div class="reason-label">REASON 2</div>
-            <div class="text-end">
-                <img src="{{ asset('assets/img/CryReason3.avif') }}" alt="Security Lock" class="reason-icon">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 2</div>
+                    <img src="{{ asset('assets/img/CryReason2.avif') }}" alt="Rocket" class="reason-icon">
+                </div>
+                <h3 class="reason-title">protection against crises and inflation</h3>
+                <p class="reason-description">
+                    Cryptocurrencies like Bitcoin usually have a fixed supply, which protects them from inflationary tendencies. In times of crisis, they can serve as a safe haven because they operate independently of national monetary and financial systems.
+                </p>
             </div>
-            <h3 class="reason-title">Leverage</h3>
-            <p class="reason-description">
-                Maximize your potential by amplifying your positions. Our platform ensures seamless leverage
-                management, empowering you to achieve greater profits. Take advantage of this feature responsibly
-                and unlock greater opportunities.
-            </p>
         </div>
 
         <!-- Crypto Payments Card -->
-        <div class="reason-card px-4">
-            <div class="reason-label">REASON 3</div>
-            <div class="text-end">
-                <img src="{{ asset('assets/img/CryReason1.avif') }}" alt="Security Lock" class="reason-icon">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 3</div>
+                    <img src="{{ asset('assets/img/CryReason3.avif') }}" alt="Bitcoin" class="reason-icon">
+                </div>
+                <h3 class="reason-title">High return opportunities</h3>
+                <p class="reason-description">
+                    Bitcoin alone has achieved an average annual return of over 200% since 2014. These impressive gains make cryptocurrencies an incredibly attractive investment option.
+                </p>
             </div>
-            <h3 class="reason-title">Crypto Payments</h3>
-            <p class="reason-description">
-                Enjoy the flexibility of using your favorite cryptocurrencies for seamless, secure transactions. Our
-                platform embraces innovation, offering fast processing and enhanced privacy. Join us to experience a
-                modern payment solution that meets your needs.
-            </p>
         </div>
     </div>
-</section>
 
-<!-- <section class="py-5">
-    <div class="container">
-        <h3 class="section-heading text-center">
-            The best time to invest was 2009.
-             <span class="gradient-text">The second best time is now.</span>
-        </h3>
-        <div class="d-flex justify-content-center px-5">
-            <div class="crypto-chart">
-                <img src="assets/img/crypChart.png" alt="img">
+    <div class="row g-4 mb-3">
+        <!-- Secured Card -->
+        <div class="col-12 col-md-6">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 4</div>
+                    <img src="{{ asset('assets/img/CryReason4.avif') }}" alt="Security Lock" class="reason-icon" style="height: 180px; width: 180px">
+                </div>
+                <h3 class="reason-title">Bitcoin as digital gold</h3>
+                <p class="reason-description">
+                    Bitcoin & Co. are not controlled by a central authority or government. This protects against political influences and interventions that can affect the value and stability of traditional currencies.
+                </p>
             </div>
-        </div>  
+        </div>
+
+        <!-- Leverage Card -->
+        <div class="col-12 col-md-6">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 5</div>
+                    <img src="https://capitalfidel.com/assets/images/site/CryReason5.avif" alt="Rocket" class="reason-icon" style="height: 180px; width: 180px">
+                </div>
+                <h3 class="reason-title">Growing acceptance as a means of payment</h3>
+                <p class="reason-description">
+                    The acceptance of cryptocurrencies as a means of payment is growing steadily. Companies such as Tesla, PayPal and Microsoft already accept Bitcoin for payments. This increasing use in everyday life increases the legitimacy and trust in cryptocurrencies as a means of payment.
+                </p>
+            </div>
+        </div>
+
     </div>
-</section> -->
+
+    <div class="row g-4">
+        <!-- Secured Card -->
+        <div class="col-12 col-md-6">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 6</div>
+                    <img src="https://capitalfidel.com/assets/images/site/CryReason6.avif" alt="Security Lock" class="reason-icon" style="height: 180px; width: 180px">
+                </div>
+                <h3 class="reason-title">Low entry barrier</h3>
+                <p class="reason-description">
+                    Getting started in the crypto market is easy and does not require large investments. Regulated platforms allow even beginners to invest in cryptocurrencies easily and with small amounts.
+                </p>
+            </div>
+        </div>
+
+        <!-- Leverage Card -->
+        <div class="col-12 col-md-6">
+            <div class="reason-card">
+                <div class="card-header">
+                    <div class="reason-label">REASON 7</div>
+                    <img src="https://capitalfidel.com/assets/images/site/CryReason7.avif" alt="Rocket" class="reason-icon" style="height: 180px; width: 180px">
+                </div>
+                <h3 class="reason-title">A new era has dawned</h3>
+                <p class="reason-description">
+                    Blockchain technology marks the beginning of a new era that is revolutionizing finance and commerce. These innovations are changing traditional structures and paving the way for a digital future.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container section-container">
+    <h2 class="section-reason-title my-5 text-start" style="color: #CBD5E1">
+        Profit from the market in record time with the<span class="gradient-text"> Interactive Capital Pro framework
+        </span>
+
+    </h2>
+
+    <div class="row g-4 mb-3">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                    <img src="https://capitalfidel.com/assets/images/site/CryIcon3.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
+                </div>
+                <h3 class="reason-title">Learn to recognize and understand market movements</h3>
+                <p class="reason-description">
+                    Achieve better returns through superior market understanding. Those who can read price movements profit. We show you how to precisely find the best entry and exit points. This way you can generate regular income regardless of the market situation.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                    <img src="https://capitalfidel.com/assets/images/site/CryIcon1.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
+                </div>
+                <h3 class="reason-title">Understanding Bitcoin & Blockchain</h3>
+                <p class="reason-description">
+                    Only those who truly understand blockchain technology can benefit from the next big crypto trends. We will show you how blockchain works, how it is changing the financial markets for the long term and how you can profit from it to the maximum.
+                </p>
+            </div>
+        </div> 
+        
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="reason-card">
+                <div class="card-header d-flex justify-content-start rounded" style="background: #141432; width: 74px;">
+                    <img src="https://capitalfidel.com/assets/images/site/CryIcon4.avif" alt="Bitcoin" class="reason-icon" style="width: 70px; height: 70px;">
+                </div>
+                <h3 class="reason-title">Proven Strategies & Systematization</h3>
+                <p class="reason-description">
+                    The last step to be 3 steps ahead of the other market participants: systematize your trading strategy to ensure success in the coming years. This will protect your capital and build wealth sustainably.
+                </p>
+            </div>
+        </div> 
+    </div>
+</div>
+
+
+
+
 <div class="container home-faq">
     <h2 class="section-heading text-center py-4">
         <span class="gradient-text">Frequently Asked</span> Questions

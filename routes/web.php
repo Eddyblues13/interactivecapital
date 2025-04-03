@@ -61,6 +61,30 @@ Route::get('/dogecoin-mining', function () {
 Route::get('/terms-of-service', function () {
     return view('home.terms-of-service');
 });
+Route::get('/what-is-leverage', function () {
+    return view('home.leverage');
+});
+Route::get('/responsible-trading', function () {
+    return view('home.responsible-trading');
+});
+Route::get('/general-risk-disclosure', function () {
+    return view('home.risk-disclosure');
+});
+Route::get('/tesla-chart', function () {
+    return view('home.tesla');
+});
+Route::get('/apple-chart', function () {
+    return view('home.apple');
+});
+Route::get('/nvidia-chart', function () {
+    return view('home.nvidia');
+});
+Route::get('/msft-chart', function () {
+    return view('home.msft');
+});
+
+
+
 
 
 

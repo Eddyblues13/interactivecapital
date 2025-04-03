@@ -27,7 +27,7 @@
 <body>
     <nav class="navbar navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <div class="brand-icon"><img src="assets/img/android-chrome-36x36.png" alt=""></div>
                 Interactive Capital Pro
             </a>

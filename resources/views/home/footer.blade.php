@@ -1,16 +1,33 @@
-<footer class="footer">
+<footer class="footer mx-2">
     <div class="footer-content">
         <div class="brand">Interactive Capital Pro</div>
 
-        <h2 class="heading">
-            Build your wealth with<br>
-            <span class="gradient-crypto">cryptocurrencies</span>
-            <span class="gradient-step">step by step.</span>
-        </h2>
+        <div class="row">
+            <div class="col-6 col-md-4 mb-5">
+                <h6>Top Instrument</h6>
+                <p><a href="{{ url('/tesla-chart') }}">Tesla</a></p>
+                <p><a href="{{ url('/apple-chart') }}">Apple</a></p>
+                <p><a href="{{ url('/nvidia-chart') }}">Nvidia</a></p>
+                <p><a href="{{ url('/msft-chart') }}">Microsoft</a></p>
+            </div>
+            <div class="col-6 col-md-4 mb-5">
+                    <h6>Learn More</h6>
+                    <p><a href="{{ url('/about') }}">About Us</a></p>
+                    <p><a href="{{ url('/what-is-leverage') }}">What is Leverage</a></p>
+                    <p><a href="{{ url('/responsible-trading') }}">Responsible Trading</a></p>
+                    <p><a href="{{ url('/copy-trade') }}">How Copy Trading Works</a></p>
+            </div>
+            <div class="col-6 col-md-4 mb-5">
+                <h6>Privacy</h6>
+                <p><a href="{{ url('/cookie-policy') }}">Cookie Policy</a></p>
+                <p><a href="{{ url('/privacy-policy') }}">Privacy Policy</a></p>
+                <p><a href="{{ url('/terms-of-service') }}">Terms and Condition</a></p>
+                <p><a href="{{ url('/general-risk-disclosure') }}">General Risk Disclosure</a></p>
+            </div>
+        </div>
 
         <div class="footer-bottom">
             <div class="copyright">Copyright © 2024 by Interactive Capital Pro</div>
-            <a href="#" class="terms">Terms and Conditions</a>
         </div>
     </div>
     <div class="glow-arc"></div>

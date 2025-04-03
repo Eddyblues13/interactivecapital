@@ -112,6 +112,9 @@
             .sidebar.show {
                 transform: translateX(0);
             }
+            .about-page-title {
+                font-size: 2rem !important;
+            }
         }
 
         .category-label {
@@ -621,13 +624,18 @@ a{
 
 /* about */
 .about-page-title {
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 500;
     margin: 2.5rem 0;
 }
 
 .about-content-section {
     background-color: #1a1f2b;
+    padding: 1.5rem;
+    border-radius: 8px;
+    line-height: 1.7;
+}
+.stock-content-section {
     padding: 1.5rem;
     border-radius: 8px;
     line-height: 1.7;
@@ -718,4 +726,13 @@ a{
 .section-reason-title{
     font-size: 35px;
     text-align: center;
+}
+.footer-content p {
+    font-size: 11px;
+}
+.footer-content h6 {
+    color: rgba(255, 255, 255, 0.6);
+}
+.footer-content a {
+    color: #fff;
 }

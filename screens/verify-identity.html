@@ -105,33 +105,41 @@
     </div>
 
     <!-- Main Content -->
-    <div class="depost-form-main w-100">
-      <h2 class="heading text-white fs-4 py-3">Update Photo</h2>
+    <div class="depost-form-main w-100 px-2">
       <div class="fund-same-card" style="background-color: #121825;">
         <form>
+      <h2 class="heading fs-4 py-3 text-center text-primary">Verify your identity</h2>
           <div class="row">
-            <div class="col-md-12">
-              <div class="text-center mb-5">
-                <img src="assets/img/human.png" class="account-profile-avatar mx-auto mb-1"></img>
-              </div>
-            </div>
+            <p class="text-header">Please verify your identity by uploading a valid government issued identification card. You may experience difficulties when uploading from an ios device. Make sure your browser has camera access in your ios settings.</p>
           </div>
           <div class="row mb-3">
             <div class="col-12">
               <div class="d-flex gap-3 align-items-center">
                 <input type="file" id="photoInput" accept="image/*">
                 <button class="btn btn-select" type="button" onclick="document.getElementById('photoInput').click(); return false;">
-                    select photo
+                    select front
                 </button>
                 <div class="file-name-display flex-grow-1 text-white" style="background-color: transparent;"></div>
             </div>
             </div>
           </div>
-          <button class="withdrawal-btn">Update</button>
 
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="d-flex gap-3 align-items-center">
+                <input type="file" id="photoInput" accept="image/*">
+                <button class="btn btn-select" type="button" onclick="document.getElementById('photoInput').click(); return false;">
+                    select back
+                </button>
+                <div class="file-name-display flex-grow-1 text-white" style="background-color: transparent;"></div>
+            </div>
+            </div>
+          </div>
+          <button class="withdrawal-btn">Upload</button>
       </div>
+      <button class="withdrawal-btn my-4 w-25" style="background: transparent; border: 1px solid #0287df";>LOGOUT</button>
         </form>
-        
+
       </div>
     </div>
 

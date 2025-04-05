@@ -105,33 +105,37 @@
     </div>
 
     <!-- Main Content -->
-    <div class="depost-form-main w-100">
-      <h2 class="heading text-white fs-4 py-3">Update Photo</h2>
+    <div class="depost-form-main w-100 px-2 my-4">
       <div class="fund-same-card" style="background-color: #121825;">
         <form>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="text-center mb-5">
-                <img src="assets/img/human.png" class="account-profile-avatar mx-auto mb-1"></img>
-              </div>
-            </div>
-          </div>
+      <h2 class="heading fs-4 py-3 text-center text-white">Address Verification</h2>
+      <div>
+        <p class="text-header">City Yen</p>
+        <p class="text-header">State</p>
+        <p class="text-header">Zip Code</p>
+        <p class="text-header">Country Afghanistan</p>
+        <p class="text-header">Street Address</p>
+      </div>
           <div class="row mb-3">
             <div class="col-12">
               <div class="d-flex gap-3 align-items-center">
                 <input type="file" id="photoInput" accept="image/*">
                 <button class="btn btn-select" type="button" onclick="document.getElementById('photoInput').click(); return false;">
-                    select photo
+                    select bill
                 </button>
                 <div class="file-name-display flex-grow-1 text-white" style="background-color: transparent;"></div>
             </div>
             </div>
           </div>
-          <button class="withdrawal-btn">Update</button>
-
+          <button class="withdrawal-btn mb-3">Submit</button>
+          <button class="withdrawal-btn mb-3" style="background: transparent; border: 1px solid #0287df">Skip</button>
+          <div class="d-flex justify-content-center">
+            <button class="withdrawal-btn my-4 w-25" style="background: transparent; border: 1px solid #0287df">LOGOUT</button>
+          </div>
+          
       </div>
         </form>
-        
+
       </div>
     </div>
 

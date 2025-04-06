@@ -2,78 +2,94 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Plan;
 use App\Models\TradingPlan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TradingPlanController extends Controller
 {
-    public function create()
+    public function index()
     {
-        return view('admin.create-trading-plan');
+        $plans = Plan::all();
+        return view('admin.plans.index', compact('plans'));
     }
 
-    // Store a new trading plan
+    public function create()
+    {
+        return view('admin.plans.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'min_amount' => 'required|numeric',
-            'max_amount' => 'required|numeric',
-            'duration' => 'required|string|max:255'
+            'price' => 'required|numeric|min:0',
+            'swap_fee' => 'boolean',
+            'pairs' => 'required|integer|min:1',
+            'leverage' => 'nullable|string|max:50',
+            'spread' => 'nullable|string|max:50',
         ]);
 
-        TradingPlan::create([
-            'name' => $request->name,
-            'min_amount' => $request->min_amount,
-            'max_amount' => $request->max_amount,
-            'duration' => $request->duration
-        ]);
-
-        return redirect()->back()->with('message', 'Trading plan added successfully.');
+        try {
+            Plan::create($request->all());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Plan created successfully!',
+                'redirect' => route('admin.plans.index')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error creating plan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    // View all trading plans
-    public function index()
+    public function edit(Plan $plan)
     {
-        $tradingPlans = TradingPlan::all();
-        return view('admin.view-trading-plans', compact('tradingPlans'));
+        return view('admin.plans.edit', compact('plan'));
     }
 
-    // Show the form for editing a trading plan
-    public function edit($id)
-    {
-        $tradingPlan = TradingPlan::findOrFail($id);
-        return view('admin.edit-trading-plan', compact('tradingPlan'));
-    }
-
-    // Update the trading plan
-    public function update(Request $request, $id)
+    public function update(Request $request, Plan $plan)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'min_amount' => 'required|numeric',
-            'max_amount' => 'required|numeric',
-            'duration' => 'required|string|max:255'
+            'price' => 'required|numeric|min:0',
+            'swap_fee' => 'boolean',
+            'pairs' => 'required|integer|min:1',
+            'leverage' => 'nullable|string|max:50',
+            'spread' => 'nullable|string|max:50',
         ]);
 
-        $tradingPlan = TradingPlan::findOrFail($id);
-        $tradingPlan->update([
-            'name' => $request->name,
-            'min_amount' => $request->min_amount,
-            'max_amount' => $request->max_amount,
-            'duration' => $request->duration
-        ]);
-
-        return redirect()->route('admin.view-trading-plans')->with('message', 'Trading plan updated successfully.');
+        try {
+            $plan->update($request->all());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Plan updated successfully!',
+                'redirect' => route('admin.plans.index')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error updating plan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    // Delete the trading plan
-    public function destroy($id)
+    public function destroy(Plan $plan)
     {
-        $tradingPlan = TradingPlan::findOrFail($id);
-        $tradingPlan->delete();
-
-        return redirect()->route('admin.view-trading-plans')->with('message', 'Trading plan deleted successfully.');
+        try {
+            $plan->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Plan deleted successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error deleting plan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

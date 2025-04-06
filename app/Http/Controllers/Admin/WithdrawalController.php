@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Withdrawal;
+use App\Models\User;
+use App\Models\User\Withdrawal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,38 +11,70 @@ class WithdrawalController extends Controller
 {
     public function index()
     {
-        $withdrawals = Withdrawal::join('users', 'withdrawals.user_id', '=', 'users.id')
-            ->select('withdrawals.*', 'users.first_name as name', 'users.email as user_email') // You can select any user fields you need
-            ->get();
-
+        $withdrawals = Withdrawal::with('user')->latest()->get();
         return view('admin.withdrawals.index', compact('withdrawals'));
-    }
-
-
-    public function edit($id)
-    {
-        $withdrawal = Withdrawal::findOrFail($id);
-        return view('admin.withdrawals.edit', compact('withdrawal'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $withdrawal = Withdrawal::findOrFail($id);
-        $withdrawal->update($request->all());
-        return redirect()->route('withdrawals.index')->with('success', 'Withdrawal updated successfully');
-    }
-
-    public function destroy($id)
-    {
-        $withdrawal = Withdrawal::findOrFail($id);
-        $withdrawal->delete();
-        return redirect()->route('withdrawals.index')->with('success', 'Withdrawal deleted successfully');
     }
 
     public function approve($id)
     {
-        $withdrawal = Withdrawal::findOrFail($id);
-        $withdrawal->update(['status' => '1']);
-        return redirect()->route('withdrawals.index')->with('success', 'Withdrawal approved successfully');
+        try {
+            $withdrawal = Withdrawal::findOrFail($id);
+
+            if ($withdrawal->status != 'pending') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Withdrawal has already been processed'
+                ], 400);
+            }
+
+            // Update withdrawal status
+            $withdrawal->update(['status' => 'approved']);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Withdrawal approved successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error approving withdrawal: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            $withdrawal = Withdrawal::findOrFail($id);
+
+            if ($withdrawal->status != 'pending') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Withdrawal has already been processed'
+                ], 400);
+            }
+
+            // Refund the amount if rejected
+            $user = User::find($withdrawal->user_id);
+            if ($withdrawal->account_type == 'crypto') {
+                $user->crypto_balance += $withdrawal->amount;
+            } else {
+                $user->balance += $withdrawal->amount;
+            }
+            $user->save();
+
+            // Update withdrawal status
+            $withdrawal->update(['status' => 'rejected']);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Withdrawal rejected and amount refunded!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error rejecting withdrawal: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -53,14 +53,11 @@
                                                 <a href="#" data-toggle="modal" data-target="#referralBalanceModal"
                                                     class="dropdown-item">Credit/Debit Referral Balance</a>
 
-                                                <a href="#" data-toggle="modal" data-target="#resetpswdModal"
-                                                    class="dropdown-item">Reset Password</a>
-                                                <a href="#" data-toggle="modal" data-target="#clearacctModal"
-                                                    class="dropdown-item">Clear Account</a>
-                                                <a href="#" data-toggle="modal" data-target="#TradingModal"
-                                                    class="dropdown-item">Add Signal Strength</a>
-                                                <a href="#" data-toggle="modal" data-target="#edituser"
-                                                    class="dropdown-item">Edit</a>
+                                                <a href="{{ route('admin.users.deposits.index', ['user' => $user->id]) }}"
+                                                    class="dropdown-item">Edit Deposit</a>
+                                                <a href="{{ route('admin.users.withdrawals.index', ['user' => $user->id]) }}"
+                                                    class="dropdown-item">Edit Withdrawal</a>
+
                                                 <a href="#" data-toggle="modal" data-target="#sendmailtooneuserModal"
                                                     class="dropdown-item">Send Email</a>
                                                 <a href="#" data-toggle="modal" data-target="#switchuserModal"
@@ -107,7 +104,17 @@
                                     <h5>Trades</h5>
 
                                     <a class="btn btn-sm btn-primary d-inline"
-                                        href="{{ route('admin.user.trades', $user->id) }}">Add Trade</a>
+                                        href="{{ route('admin.users.trading-histories.index', ['user' => $user->id]) }}">Add
+                                        Trade</a>
+
+
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>Manage User</h5>
+
+                                    <a class="btn btn-sm btn-primary d-inline"
+                                        href="{{ route('admin.users.edit', ['user' => $user->id]) }}">Edit
+                                        User</a>
 
 
                                 </div>

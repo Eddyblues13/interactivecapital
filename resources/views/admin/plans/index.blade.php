@@ -2,18 +2,31 @@
 
 <div class="main-panel">
     <div class="content-wrapper">
-        @if(session('message'))
-        <div class="alert alert-success mb-2">{{ session('message') }}</div>
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         @endif
 
         <div class="content bg-dark">
             <div class="page-inner">
-                <div class="mt-2 mb-4">
-                </div>
+                <div class="mt-2 mb-4"></div>
 
                 <div class="mt-2 mb-4 d-flex justify-content-between align-items-center">
                     <h1 class="title1 text-light">Manage Account Plans</h1>
-                    <a href="{{ route('admin.create-trading-plan') }}" class="btn btn-primary">Create New Plan</a>
+                    <a href="{{ route('admin.plans.create') }}" class="btn btn-primary">Create New Plan</a>
                 </div>
 
                 <div class="mb-5 row">
@@ -41,10 +54,10 @@
                                         <td>{{ $plan->leverage ?? 'N/A' }}</td>
                                         <td>{{ $plan->spread ?? 'N/A' }}</td>
                                         <td>
-                                            <a href="{{ route('admin.edit-trading-plan', $plan->id) }}"
+                                            <a href="{{ route('admin.plans.edit', $plan->id) }}"
                                                 class="btn btn-warning">Edit</a>
-                                            <form action="{{ route('admin.delete-trading-plan', $plan->id) }}"
-                                                method="POST" class="d-inline">
+                                            <form action="{{ route('admin.plans.destroy', $plan->id) }}" method="POST"
+                                                class="d-inline" data-ajax-delete>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -57,7 +70,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -65,29 +77,22 @@
 
 @include('admin.footer')
 
-<script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-</script>
-
-<script type="text/javascript">
-    var badWords = [
-        '<!--Start of Tawk.to Script-->',
-        '<script type="text/javascript">',
-        '<!--End of Tawk.to Script-->'
-    ];
-
-    $(':input').on('blur', function(){
-        var value = $(this).val();
-        $.each(badWords, function(idx, word){
-            value = value.replace(word, '');
-        });
-        $(this).val(value);
-    });
-</script>
+<!-- Toastr -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000"
+    };
+
     $(document).ready(function () {
         $('#PlanTable').DataTable({
             order: [[0, 'desc']],
@@ -97,15 +102,37 @@
 
         $(".dataTables_length select").addClass("bg-dark text-light");
         $(".dataTables_filter input").addClass("bg-dark text-light");
-    });
-</script>
 
-<script>
-    $(document).ready(function () {
-        $('.UserTable').DataTable({
-            order: [[0, 'desc']]
+        // Handle delete with AJAX
+        $('form[data-ajax-delete]').submit(function(e) {
+            e.preventDefault();
+            
+            const form = $(this);
+            const button = form.find('[type="submit"]');
+            
+            if(confirm('Are you sure you want to delete this plan?')) {
+                // Show loading state
+                button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+                
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        if(response.status === 'success') {
+                            toastr.success(response.message);
+                            form.closest('tr').fadeOut(300, function() {
+                                $(this).remove();
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        const response = xhr.responseJSON;
+                        toastr.error(response.message || 'An error occurred');
+                        button.prop('disabled', false).html('Delete');
+                    }
+                });
+            }
         });
-        $(".dataTables_length select").addClass("bg-dark text-light");
-        $(".dataTables_filter input").addClass("bg-dark text-light");
     });
 </script>

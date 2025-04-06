@@ -119,12 +119,22 @@
 
                                 </div>
                                 <div class="col-md-3">
-                                    <h5>KYC</h5>
-                                    {{-- @if($kyc_status=="0")
-                                    <span class="badge badge-danger">Not Verified Yet</span>
-                                    @elseif($kyc_status=="1")
-                                    <span class="badge badge-success">Verified</span>@endif --}}
+                                    <h5>ID Verification</h5>
+
+                                    <a class="btn btn-sm btn-primary d-inline"
+                                        href="{{ route('admin.users.identity-verifications.index', ['user' => $user->id]) }}">View</a>
+
+
                                 </div>
+                                <div class="col-md-3">
+                                    <h5>Address Verification</h5>
+
+                                    <a class="btn btn-sm btn-primary d-inline"
+                                        href="{{ route('admin.users.address-verifications.index', ['user' => $user->id]) }}">View</a>
+
+
+                                </div>
+
                                 <div class="col-md-3">
                                     <h5>Signal Strength</h5>
                                     <span class="badge badge-success">{{$user->signal_strength}}%</span>

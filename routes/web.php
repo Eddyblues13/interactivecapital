@@ -148,6 +148,12 @@ Route::prefix('user')->middleware('user')->group(function () {
 
     Route::prefix('verifications')->name('verifications.')->group(function () {
         Route::get('/', [App\Http\Controllers\User\VerificationController::class, 'index'])->name('index');
+        Route::get('/identity', [App\Http\Controllers\User\VerificationController::class, 'identity'])->name('identity');
+        // Identity verification route
+        Route::post('/identity', [App\Http\Controllers\User\VerificationController::class, 'identityVerify'])
+            ->name('user.identity');
+        Route::get('/address', [App\Http\Controllers\User\VerificationController::class, 'address'])->name('address');
+        Route::post('/address', [App\Http\Controllers\User\VerificationController::class, 'addressVerify'])->name('user.address');
     });
 
     Route::get('/plans', [App\Http\Controllers\User\PlanController::class, 'index'])->name('plans');
@@ -393,6 +399,29 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{withdrawal}', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'destroy'])->name('admin.users.withdrawals.destroy');
             Route::post('/{withdrawal}/approve', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'approve'])->name('admin.users.withdrawals.approve');
             Route::post('/{withdrawal}/reject', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'reject'])->name('admin.users.withdrawals.reject');
+        });
+
+
+
+        // Identity Verification Routes
+        Route::prefix('users/{user}/identity-verifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'index'])->name('admin.users.identity-verifications.index');
+            Route::get('/{verification}', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'show'])->name('admin.users.identity-verifications.show');
+            Route::post('/{verification}/approve', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'approve'])->name('admin.users.identity-verifications.approve');
+            Route::post('/{verification}/reject', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'reject'])->name('admin.users.identity-verifications.reject');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'destroy'])
+                ->name('admin.users.identity-verifications.destroy');
+        });
+
+
+        // address Verification Routes
+        Route::prefix('users/{user}/address-verifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'index'])->name('admin.users.address-verifications.index');
+            Route::get('/{verification}', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'show'])->name('admin.users.address-verifications.show');
+            Route::post('/{verification}/approve', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'approve'])->name('admin.users.address-verifications.approve');
+            Route::post('/{verification}/reject', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'reject'])->name('admin.users.address-verifications.reject');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'destroy'])
+                ->name('admin.users.address-verifications.destroy');
         });
     });
 });

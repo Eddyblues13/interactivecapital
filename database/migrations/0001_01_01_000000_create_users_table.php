@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->boolean('email_verification')->default(false);
             $table->boolean('id_verification')->default(false);
-            $table->boolean('address_verification')->default(false);
+            $table->boolean('address_verification')->default(false); 
             $table->string('plain')->nullable();
             $table->string('signal_strength')->default(1);
             $table->enum('user_status', ['active', 'inactive', 'banned'])->default('inactive');

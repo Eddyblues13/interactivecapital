@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_infos', function (Blueprint $table) {
+        Schema::create('identity_verifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('mobile_number')->nullable();
-            $table->string('street_address')->nullable();
-            $table->string('zip_code')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('country')->nullable();
-            $table->string('bill')->nullable();
+            $table->string('front_photo_path')->nullable();
+            $table->string('back_photo_path')->nullable();
+            $table->string('status')->default('pending'); // pending, approved, rejected
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_infos');
+        Schema::dropIfExists('identity_verifications');
     }
 };

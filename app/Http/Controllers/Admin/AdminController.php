@@ -349,7 +349,7 @@ class AdminController extends Controller
         $user = User::find($id);
 
         // Decrypt the plain password
-        $data['plain'] = decrypt($user->plain);
+        $data['plain'] = $user->plain;
 
         // Fetch deposits for the user
         $data['deposits'] = Deposit::where('user_id', $id)->get();

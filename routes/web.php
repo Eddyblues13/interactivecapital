@@ -169,6 +169,7 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::get('/crypto-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'cryptoWithdrawal'])->name('crypto.withdrawal');
     Route::post('/submit', [App\Http\Controllers\User\WithdrawalController::class, 'submit'])->name('withdraw.submit');
     Route::get('/deposit', [App\Http\Controllers\User\DepositController::class, 'index'])->name('deposit.page');
+    Route::get('/buy-crypto', [App\Http\Controllers\User\DepositController::class, 'buyCrypto'])->name('buy.crypto.page');
     Route::get('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOne'])->name('deposit.one');
     Route::post('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOneSubmit'])->name('deposit.one.submit');
     Route::get('fund/step-two', [App\Http\Controllers\User\DepositController::class, 'stepTwo'])->name('deposit.two');
@@ -176,6 +177,13 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::get('fund/step-three', [App\Http\Controllers\User\DepositController::class, 'stepThree'])->name('deposit.three');
     Route::post('fund/step-three', [App\Http\Controllers\User\DepositController::class, 'stepThreeSubmit'])->name('deposit.three.submit');
     Route::get('fund/pay-crypto', [App\Http\Controllers\User\DepositController::class, 'payCrypto'])->name('pay.crypto');
+    Route::post('fund/pay-crypto', [App\Http\Controllers\User\DepositController::class, 'payment'])->name('user.pay.crypto');
+    Route::get('/payment-failed', function () {
+        return view('user.deposit.failed');
+    })->name('payment.failed');
+
+    Route::post('/verify-payment', [App\Http\Controllers\User\DepositController::class, 'verifyPayment'])->name('verify.payment');
+    Route::get('/check-payment-status', [App\Http\Controllers\User\DepositController::class, 'checkPaymentStatus'])->name('check.payment.status');
 });
 
 Route::get('admin/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'adminLoginForm'])->name('admin.login');

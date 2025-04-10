@@ -148,6 +148,12 @@ Route::prefix('user')->middleware('user')->group(function () {
 
     Route::prefix('verifications')->name('verifications.')->group(function () {
         Route::get('/', [App\Http\Controllers\User\VerificationController::class, 'index'])->name('index');
+        Route::get('/identity', [App\Http\Controllers\User\VerificationController::class, 'identity'])->name('identity');
+        // Identity verification route
+        Route::post('/identity', [App\Http\Controllers\User\VerificationController::class, 'identityVerify'])
+            ->name('user.identity');
+        Route::get('/address', [App\Http\Controllers\User\VerificationController::class, 'address'])->name('address');
+        Route::post('/address', [App\Http\Controllers\User\VerificationController::class, 'addressVerify'])->name('user.address');
     });
 
     Route::get('/plans', [App\Http\Controllers\User\PlanController::class, 'index'])->name('plans');
@@ -163,6 +169,7 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::get('/crypto-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'cryptoWithdrawal'])->name('crypto.withdrawal');
     Route::post('/submit', [App\Http\Controllers\User\WithdrawalController::class, 'submit'])->name('withdraw.submit');
     Route::get('/deposit', [App\Http\Controllers\User\DepositController::class, 'index'])->name('deposit.page');
+    Route::get('/buy-crypto', [App\Http\Controllers\User\DepositController::class, 'buyCrypto'])->name('buy.crypto.page');
     Route::get('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOne'])->name('deposit.one');
     Route::post('fund/step-one', [App\Http\Controllers\User\DepositController::class, 'stepOneSubmit'])->name('deposit.one.submit');
     Route::get('fund/step-two', [App\Http\Controllers\User\DepositController::class, 'stepTwo'])->name('deposit.two');
@@ -170,6 +177,13 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::get('fund/step-three', [App\Http\Controllers\User\DepositController::class, 'stepThree'])->name('deposit.three');
     Route::post('fund/step-three', [App\Http\Controllers\User\DepositController::class, 'stepThreeSubmit'])->name('deposit.three.submit');
     Route::get('fund/pay-crypto', [App\Http\Controllers\User\DepositController::class, 'payCrypto'])->name('pay.crypto');
+    Route::post('fund/pay-crypto', [App\Http\Controllers\User\DepositController::class, 'payment'])->name('user.pay.crypto');
+    Route::get('/payment-failed', function () {
+        return view('user.deposit.failed');
+    })->name('payment.failed');
+
+    Route::post('/verify-payment', [App\Http\Controllers\User\DepositController::class, 'verifyPayment'])->name('verify.payment');
+    Route::get('/check-payment-status', [App\Http\Controllers\User\DepositController::class, 'checkPaymentStatus'])->name('check.payment.status');
 });
 
 Route::get('admin/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'adminLoginForm'])->name('admin.login');
@@ -315,14 +329,107 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/trading-plans/create', [App\Http\Controllers\Admin\TradingPlanController::class, 'create'])->name('admin.create-trading-plan');
         Route::post('/trading-plans/store', [App\Http\Controllers\Admin\TradingPlanController::class, 'store'])->name('admin.store-trading-plan');
-        Route::get('/trading-plans', [App\Http\Controllers\Admin\TradingPlanController::class, 'index'])->name('admin.view-trading-plans');
-        Route::get('/trading-plans/edit/{id}', [App\Http\Controllers\Admin\TradingPlanController::class, 'edit'])->name('admin.edit-trading-plan');
-        Route::post('/trading-plans/update/{id}', [App\Http\Controllers\Admin\TradingPlanController::class, 'update'])->name('admin.update-trading-plan');
-        Route::delete('/trading-plans/delete/{id}', [App\Http\Controllers\Admin\TradingPlanController::class, 'destroy'])->name('admin.delete-trading-plan');
+
         Route::post('/add-signal-strength', [App\Http\Controllers\Admin\AdminController::class, 'addSignalStrength'])->name('admin.add_signal_strength');
         Route::get('/user/{id}/trades', [App\Http\Controllers\Admin\TradeController::class, 'index'])->name('admin.user.trades');
         Route::post('/trades', [App\Http\Controllers\Admin\TradeController::class, 'store'])->name('admin.trades.store');
         Route::put('/trades/{trade}', [App\Http\Controllers\Admin\TradeController::class, 'update'])->name('admin.trades.update');
         Route::delete('/trades/{trade}', [App\Http\Controllers\Admin\TradeController::class, 'destroy'])->name('admin.trades.destroy');
+
+
+        // admin Plans Routes
+        Route::get('/plans', [App\Http\Controllers\Admin\TradingPlanController::class, 'index'])->name('admin.plans.index');
+        Route::get('/plans/create', [App\Http\Controllers\Admin\TradingPlanController::class, 'create'])->name('admin.plans.create');
+        Route::post('/plans', [App\Http\Controllers\Admin\TradingPlanController::class, 'store'])->name('admin.plans.store');
+        Route::get('/plans/{plan}/edit', [App\Http\Controllers\Admin\TradingPlanController::class, 'edit'])->name('admin.plans.edit');
+        Route::put('/plans/{plan}', [App\Http\Controllers\Admin\TradingPlanController::class, 'update'])->name('admin.plans.update');
+        Route::delete('/plans/{plan}', [App\Http\Controllers\Admin\TradingPlanController::class, 'destroy'])->name('admin.plans.destroy');
+
+
+        // Deposits Routes
+        Route::get('/deposits', [App\Http\Controllers\Admin\DepositController::class, 'index'])->name('admin.deposits.index');
+        Route::post('/deposits/{id}/approve', [App\Http\Controllers\Admin\DepositController::class, 'approve'])->name('admin.deposits.approve');
+        Route::post('/deposits/{id}/reject', [App\Http\Controllers\Admin\DepositController::class, 'reject'])->name('admin.deposits.reject');
+
+
+        // Withdrawals Routes
+        Route::get('/withdrawals', [App\Http\Controllers\Admin\WithdrawalController::class, 'index'])->name('admin.withdrawals.index');
+        Route::post('/withdrawals/{id}/approve', [App\Http\Controllers\Admin\WithdrawalController::class, 'approve'])->name('admin.withdrawals.approve');
+        Route::post('/withdrawals/{id}/reject', [App\Http\Controllers\Admin\WithdrawalController::class, 'reject'])->name('admin.withdrawals.reject');
+
+
+        // Trading Histories Routes
+        Route::get('/trading-histories', [App\Http\Controllers\Admin\TradingHistoryController::class, 'index'])->name('admin.trading-histories.index');
+        Route::post('/trading-histories', [App\Http\Controllers\Admin\TradingHistoryController::class, 'store'])->name('admin.trading-histories.store');
+        Route::put('/trading-histories/{id}', [App\Http\Controllers\Admin\TradingHistoryController::class, 'update'])->name('admin.trading-histories.update');
+        Route::delete('/trading-histories/{id}', [App\Http\Controllers\Admin\TradingHistoryController::class, 'destroy'])->name('admin.trading-histories.destroy');
+
+
+        // User specific Trading Histories Routes
+        Route::prefix('users/{user}/trading-histories')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'index'])->name('admin.users.trading-histories.index');
+            Route::get('/create', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'create'])->name('admin.users.trading-histories.create');
+            Route::post('/', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'store'])->name('admin.users.trading-histories.store');
+            Route::get('/{id}/edit', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'edit'])->name('admin.users.trading-histories.edit');
+            Route::put('/{id}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.users.trading-histories.update');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.users.trading-histories.destroy');
+        });
+
+        // Users Routes
+        Route::get('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/create', [App\Http\Controllers\Admin\ManageUserController::class, 'create'])->name('admin.users.create');
+        Route::post('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'store'])->name('admin.users.store');
+        Route::get('/users/{user}/edit', [App\Http\Controllers\Admin\ManageUserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/users/{user}', [App\Http\Controllers\Admin\ManageUserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{user}', [App\Http\Controllers\Admin\ManageUserController::class, 'destroy'])->name('admin.users.destroy');
+
+
+
+        // User Deposits Routes
+        Route::prefix('users/{user}/deposits')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'index'])->name('admin.users.deposits.index');
+            Route::get('/create', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'create'])->name('admin.users.deposits.create');
+            Route::post('/', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'store'])->name('admin.users.deposits.store');
+            Route::get('/{deposit}/edit', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'edit'])->name('admin.users.deposits.edit');
+            Route::put('/{deposit}', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'update'])->name('admin.users.deposits.update');
+            Route::delete('/{deposit}', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'destroy'])->name('admin.users.deposits.destroy');
+            Route::post('/{deposit}/approve', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'approve'])->name('admin.users.deposits.approve');
+            Route::post('/{deposit}/reject', [App\Http\Controllers\Admin\ManageUserDepositController::class, 'reject'])->name('admin.users.deposits.reject');
+        });
+
+        // Withdrawals Routes
+        Route::prefix('users/{user}/withdrawals')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'index'])->name('admin.users.withdrawals.index');
+            Route::get('/create', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'create'])->name('admin.users.withdrawals.create');
+            Route::post('/', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'store'])->name('admin.users.withdrawals.store');
+            Route::get('/{withdrawal}/edit', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'edit'])->name('admin.users.withdrawals.edit');
+            Route::put('/{withdrawal}', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'update'])->name('admin.users.withdrawals.update');
+            Route::delete('/{withdrawal}', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'destroy'])->name('admin.users.withdrawals.destroy');
+            Route::post('/{withdrawal}/approve', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'approve'])->name('admin.users.withdrawals.approve');
+            Route::post('/{withdrawal}/reject', [App\Http\Controllers\Admin\ManageUserWithdrawalController::class, 'reject'])->name('admin.users.withdrawals.reject');
+        });
+
+
+
+        // Identity Verification Routes
+        Route::prefix('users/{user}/identity-verifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'index'])->name('admin.users.identity-verifications.index');
+            Route::get('/{verification}', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'show'])->name('admin.users.identity-verifications.show');
+            Route::post('/{verification}/approve', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'approve'])->name('admin.users.identity-verifications.approve');
+            Route::post('/{verification}/reject', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'reject'])->name('admin.users.identity-verifications.reject');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\ManageUserIdentityVerificationController::class, 'destroy'])
+                ->name('admin.users.identity-verifications.destroy');
+        });
+
+
+        // address Verification Routes
+        Route::prefix('users/{user}/address-verifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'index'])->name('admin.users.address-verifications.index');
+            Route::get('/{verification}', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'show'])->name('admin.users.address-verifications.show');
+            Route::post('/{verification}/approve', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'approve'])->name('admin.users.address-verifications.approve');
+            Route::post('/{verification}/reject', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'reject'])->name('admin.users.address-verifications.reject');
+            Route::delete('/{id}', [App\Http\Controllers\Admin\ManageUserAddressVerificationController::class, 'destroy'])
+                ->name('admin.users.address-verifications.destroy');
+        });
     });
 });

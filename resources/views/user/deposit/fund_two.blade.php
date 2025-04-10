@@ -2,7 +2,9 @@
 <!-- Main Content -->
 <div class="deposit-succes-main-content">
     <div class="total-label">FUND {{ strtoupper($account) }} BALANCE TOTAL</div>
-    <div class="amount text-white">${{ $amount }}</div>
+    <div class="amount text-white" style="font-size: 4rem; color: white !important;">{{ config('currencies.' .
+        auth()->user()->currency, '$') }}{{ number_format($amount, 2) }}
+    </div>
 
     <div class="payment-label">SELECT PAYMENT METHOD</div>
 
@@ -11,7 +13,7 @@
         <div class="payment-description">Send supported crypto currencies</div>
     </div>
 
-    <a href="#" class="buy-crypto">BUY CRYPTO</a>
+    <a href="{{route('buy.crypto.page')}}" class="buy-crypto">BUY CRYPTO</a>
 </div>
 
 <!-- Include jQuery and Toastr -->

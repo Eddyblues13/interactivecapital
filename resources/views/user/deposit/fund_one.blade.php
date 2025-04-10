@@ -6,16 +6,26 @@
 
     <div class="fund-card">
         <div class="input-group">
-            <div class="input-label">Amount (USD)</div>
-            <input type="text" class="amount-input" id="amount" value="0">
+            <div class="input-label">Amount ({{ config('currencies.' . auth()->user()->currency, '$') }})</div>
+            <input type="text" class="amount-input" id="amount" value="0" required>
         </div>
-
         <div class="input-group">
             <div class="input-label">Account</div>
-            <select class="select-account" id="account">
-                <option value="trading">Trading Balance</option>
-                <option value="holding">Holding Balance</option>
-                <option value="staking">Staking Balance</option>
+            <select class="select-account" id="account" name="account" required>
+                <option value="">Select Account Type</option>
+                <option value="trading" @if(old('account')=='holding' ) selected @endif>
+                    Holding Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
+                    number_format($holdingBalance ?? 0, 2) }})
+                </option>
+                <option value="trading" @if(old('account')=='trading' ) selected @endif>
+                    Trading Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
+                    number_format($tradingBalance ?? 0, 2) }})
+                </option>
+                <option value="mining" @if(old('account')=='mining' ) selected @endif>
+                    Mining Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
+                    number_format($miningBalance ?? 0, 2) }})
+                </option>
+
             </select>
         </div>
 

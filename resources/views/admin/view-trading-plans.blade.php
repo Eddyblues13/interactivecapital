@@ -9,11 +9,10 @@
         <div class="content bg-dark">
             <div class="page-inner">
                 <div class="mt-2 mb-4">
-
                 </div>
 
                 <div class="mt-2 mb-4 d-flex justify-content-between align-items-center">
-                    <h1 class="title1 text-light">Manage Trading Plans</h1>
+                    <h1 class="title1 text-light">Manage Account Plans</h1>
                     <a href="{{ route('admin.create-trading-plan') }}" class="btn btn-primary">Create New Plan</a>
                 </div>
 
@@ -24,19 +23,23 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Minimum Amount ($)</th>
-                                        <th>Maximum Amount ($)</th>
-                                        <th>Duration</th>
+                                        <th>Price ($)</th>
+                                        <th>Swap Fee</th>
+                                        <th>Trading Pairs</th>
+                                        <th>Leverage</th>
+                                        <th>Spread</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($tradingPlans as $plan)
+                                    @foreach($plans as $plan)
                                     <tr>
                                         <td>{{ $plan->name }}</td>
-                                        <td>{{ $plan->min_amount }}</td>
-                                        <td>{{ $plan->max_amount }}</td>
-                                        <td>{{ $plan->duration }} Months</td>
+                                        <td>{{ number_format($plan->price, 2) }}</td>
+                                        <td>{{ $plan->swap_fee ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $plan->pairs }}</td>
+                                        <td>{{ $plan->leverage ?? 'N/A' }}</td>
+                                        <td>{{ $plan->spread ?? 'N/A' }}</td>
                                         <td>
                                             <a href="{{ route('admin.edit-trading-plan', $plan->id) }}"
                                                 class="btn btn-warning">Edit</a>

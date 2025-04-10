@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('contact_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('mobile_number');
-            $table->string('street_address');
-            $table->string('zip_code');
-            $table->string('city');
-            $table->string('state');
-            $table->string('country');
+            $table->string('mobile_number')->nullable();
+            $table->string('street_address')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('bill')->nullable();
             $table->timestamps();
         });
     }

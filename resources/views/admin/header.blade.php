@@ -243,38 +243,18 @@
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a href="{{route('admin.view-trading-plans')}}">
+                                <a href="{{route('admin.plans.index')}}">
                                     <i class="fas fa-cubes " aria-hidden="true"></i>
                                     <p>Manage Plans</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item   ">
+                            <li class="nav-item">
                                 <a href="{{route('traders.index')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
+                                    <i class="fas fa-cubes" aria-hidden="true"></i>
                                     <p>Manage Copy Trader</p>
                                 </a>
                             </li>
-                            <li class="nav-item ">
-                                <a href="{{route('admin.trade_histories')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Copied Traders Investment</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item   ">
-                                <a href="{{route('stock.index')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Add Stock</p>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a href="{{route('admin.stock.history')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Purchased Stock</p>
-                                </a>
-                            </li>
-
 
                             <li class="nav-item">
                                 <a href="{{route('manage.users.page')}}">
@@ -283,24 +263,30 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{route('manage.kyc.page')}}">
                                     <i class="fa fa-user-circle" aria-hidden="true"></i>
                                     <p>Manage KYC</p>
                                 </a>
-                            </li>
+                            </li> --}}
 
-                            <li class="nav-item   ">
-                                <a href="{{route('manage.deposits.page')}}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.deposits.index')}}">
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                     <p>Manage Deposits</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item    ">
-                                <a href="{{route('manage.withdrawals.page')}}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.withdrawals.index')}}">
                                     <i class="fa fa-arrow-alt-circle-up" aria-hidden="true"></i>
                                     <p>Manage Withdrawal</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trading-histories.index') }}">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    <p>Trading History</p>
                                 </a>
                             </li>
 

@@ -28,6 +28,19 @@ class UserController extends Controller
 
 
 
+        $data['openTrades'] = $user->trades()
+            ->where('status', 'active')
+            ->orderBy('entry_date', 'desc')
+            ->get();
+
+        $data['closedTrades'] = $user->trades()
+            ->where('status', 'closed')
+            ->orderBy('exit_date', 'desc')
+            ->get();
+
+
+
+
 
         return view('user.home', $data);
     }

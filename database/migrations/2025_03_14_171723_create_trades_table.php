@@ -12,15 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trades', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
-            $table->string('asset'); // Asset being traded (e.g., "lyxe")
-            $table->string('category'); // Trade category (e.g., "stocks", "crypto")
-            $table->string('company'); // Company related to the trade
-            $table->decimal('amount', 15, 2); // Trade amount
-            $table->decimal('take_profit', 10, 2)->nullable(); // Optional take-profit value
-            $table->decimal('stop_loss', 10, 2)->nullable(); // Optional stop-loss value
-            $table->timestamps(); // Created at and updated at
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('symbol'); // ETHUSD, TONUSD, XRPUSD etc.
+            $table->string('type')->default('spot'); // spot, futures, margin
+            $table->string('direction'); // UP (long), DOWN (short)
+            $table->decimal('entry_price', 16, 4);
+            $table->decimal('exit_price', 16, 4)->nullable();
+            $table->decimal('amount', 16, 4); // 0.4 ETH, 0.7 TON etc.
+            $table->decimal('profit', 16, 4)->nullable();
+            $table->string('status'); // active, closed
+            $table->dateTime('entry_date');
+            $table->dateTime('exit_date')->nullable();
+            $table->string('trader_name')->nullable(); // VirtualBacon etc.
+            $table->text('notes')->nullable();
+            $table->timestamps();
         });
     }
 

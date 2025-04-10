@@ -375,6 +375,12 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{id}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.users.trading-histories.destroy');
         });
 
+        Route::get('/user/{user}/create', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'create'])->name('admin.trades.create');
+        Route::post('/store', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'store'])->name('admin.trades.store');
+        Route::get('/{trade}/edit', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'edit'])->name('admin.trades.edit');
+        Route::put('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.trades.update');
+        Route::delete('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.trades.destroy');
+
         // Users Routes
         Route::get('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/create', [App\Http\Controllers\Admin\ManageUserController::class, 'create'])->name('admin.users.create');

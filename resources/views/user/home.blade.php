@@ -11,17 +11,14 @@
                 <div class="dashboard-balance-label">TRADING BALANCE</div>
                 <div class="signal-strength">
                     <div class="progress-bar">
-                        <!-- Set the width of the progress bar dynamically -->
                         <div class="progress-fill" style="width: {{ Auth::user()->signal_strength }}%;"></div>
                     </div>
-                    <!-- Display the signal strength value dynamically -->
                     <div class="signal-label">SIGNAL STRENGTH ({{ Auth::user()->signal_strength }}%)</div>
                 </div>
             </div>
 
             <div class="dashboard-action-grid">
                 <a href="{{route('deposit.one')}}" class="dashboard-action-button fund-account">
-
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#fff">
@@ -30,11 +27,9 @@
                         </svg>
                     </span>
                     FUND ACCOUNT
-
                 </a>
 
                 <a href="{{route('copy.trade')}}" class="dashboard-action-button copy-experts">
-
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#fff">
@@ -43,11 +38,9 @@
                         </svg>
                     </span>
                     COPY EXPERTS
-
                 </a>
 
                 <a href="{{route('current.trade')}}" class="dashboard-action-button asset-market">
-
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#fff">
@@ -56,11 +49,9 @@
                         </svg>
                     </span>
                     ASSET MARKET
-
                 </a>
 
                 <a href="{{route('trading')}}" class="dashboard-action-button trading-room">
-
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#fff">
@@ -68,33 +59,89 @@
                         </svg>
                     </span>
                     TRADING ROOM
-
                 </a>
             </div>
         </div>
 
         <!-- Right Section -->
         <div class="trades-card">
-            <div class="trades-toggle">
+            <div class="trades-toggle px-5">
                 <button class="toggle-button active" data-type="closed">
-                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#0287df">
                             <path
                                 d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120Zm160-360q66 0 113-47t47-113v-120H320v120q0 66 47 113t113 47ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Closed
                 </button>
                 <button class="toggle-button" data-type="active">
-                    <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#0287df">
                             <path
                                 d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
-                        </svg></span>
+                        </svg>
+                    </span>
                     Active
                 </button>
             </div>
+
             <div class="no-trades d-flex justify-content-center align-items-center" id="trades-message">
                 NO CLOSED TRADES
+            </div>
+
+            <div id="opentrades" style="display: none;">
+                @forelse($openTrades as $trade)
+                <div class="asset-card mt-3">
+                    <div class="date-section">
+                        <div class="month fs-6 fw-bold text-header">{{ $trade->entry_date->format('M') }}</div>
+                        <div class="day fs-2 text-header">{{ $trade->entry_date->format('d') }}</div>
+                    </div>
+                    <img src="{{ $trade->symbol_icon }}" alt="{{ $trade->symbol }}" class="asset-icon bg-primary"> 
+                    <div class="asset-info">
+                        <div class="staked-section">
+                            <div class="section-label">{{ strtoupper($trade->direction) }} {{ $trade->formattedAmount }}
+                                {{ $trade->symbol }}</div>
+                            <div class="crypto-amount">{{ $trade->trader_name ?? 'N/A' }}</div>
+                        </div>
+                        <div class="usd-value {{ $trade->profit >= 0 ? 'text-success' : 'text-danger' }}">
+                            {{ $trade->formattedProfit }}
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="no-trades d-flex justify-content-center align-items-center">
+                    NO OPEN TRADES
+                </div>
+                @endforelse
+            </div>
+
+            <div id="closetrades" style="display: none;">
+                @forelse($closedTrades as $trade)
+                <div class="asset-card mt-3">
+                    <div class="date-section">
+                        <div class="month fs-6 fw-bold text-header">{{ $trade->exit_date->format('M') }}</div>
+                        <div class="day fs-2 text-header">{{ $trade->exit_date->format('d') }}</div>
+                    </div>
+                    <img src="{{ $trade->symbol_icon }}" alt="{{ $trade->symbol }}" class="asset-icon bg-primary">
+                    <div class="asset-info">
+                        <div class="staked-section">
+                            <div class="section-label">{{ strtoupper($trade->direction) }} {{ $trade->formattedAmount }}
+                                {{ $trade->symbol }}</div>
+                            <div class="crypto-amount">{{ $trade->trader_name ?? 'N/A' }}</div>
+                        </div>
+                        <div class="usd-value {{ $trade->profit >= 0 ? 'text-success' : 'text-danger' }}">
+                            {{ $trade->formattedProfit }}
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="no-trades d-flex justify-content-center align-items-center">
+                    NO CLOSED TRADES
+                </div>
+                @endforelse
             </div>
         </div>
     </div>
@@ -131,33 +178,58 @@
         <span>Staking</span>
     </a>
 </div>
+
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Toggle functionality with message update
+    document.addEventListener("DOMContentLoaded", () => {
+        // Toggle functionality with message update
         const toggleButtons = document.querySelectorAll('.toggle-button');
         const tradesMessage = document.getElementById('trades-message');
+        const openTrades = document.getElementById("opentrades");
+        const closeTrades = document.getElementById("closetrades");
+        
+        // Check if there are any trades to determine initial state
+        const hasOpenTrades = document.querySelectorAll('#opentrades .asset-card').length > 0;
+        const hasClosedTrades = document.querySelectorAll('#closetrades .asset-card').length > 0;
+        
+        // Initial setup
+        if (hasOpenTrades) {
+            openTrades.style.display = 'block';
+            closeTrades.style.display = 'none';
+            tradesMessage.style.display = 'none';
+        } else if (hasClosedTrades) {
+            openTrades.style.display = 'none';
+            closeTrades.style.display = 'block';
+            tradesMessage.style.display = 'none';
+        } else {
+            openTrades.style.display = 'none';
+            closeTrades.style.display = 'none';
+            tradesMessage.style.display = 'flex';
+        }
         
         toggleButtons.forEach(button => {
             button.addEventListener('click', () => {
                 // Update active state
                 toggleButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                // button.style.color = "#0287df"
-
                 
-                
-                // Update message based on which button was clicked
                 const type = button.getAttribute('data-type');
-                if (type === 'closed') {
-                    tradesMessage.textContent = 'NO CLOSED TRADES';
-                } else if (type === 'active') {
+                
+                if (type === 'active') {
+                    openTrades.style.display = 'block';
+                    closeTrades.style.display = 'none';
+                    tradesMessage.style.display = hasOpenTrades ? 'none' : 'flex';
                     tradesMessage.textContent = 'NO OPEN TRADES';
+                } else {
+                    openTrades.style.display = 'none';
+                    closeTrades.style.display = 'block';
+                    tradesMessage.style.display = hasClosedTrades ? 'none' : 'flex';
+                    tradesMessage.textContent = 'NO CLOSED TRADES';
                 }
             });
         });
-        
+    });  
 </script>
-
 
 @include('user.layouts.footer')

@@ -93,6 +93,12 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'referred_by');
     }
 
+
+    public function trades()
+    {
+        return $this->hasOne(Trade::class);
+    }
+
     // Generate a unique referral code
     public static function generateReferralCode()
     {

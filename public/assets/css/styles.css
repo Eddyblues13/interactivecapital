@@ -203,7 +203,6 @@
         .trading-room { background-color: #8b5cf6; }
 
         .trades-card {
-            background-color: #1a1f2b;
             height: 50%;
             border-radius: 12px;
             padding: 20px;
@@ -212,6 +211,7 @@
 
         .trades-toggle {
             display: flex;
+            background-color: #1a1f2b;
             justify-content: space-between;
             margin-bottom: 20px;
             position: relative;
@@ -244,9 +244,12 @@
         }
 
         .no-trades {
+            background-color: #1a1f2b;
             text-align: center;
             color: #6b7280;
             padding: 40px 0;
+            border-radius: 15px
+            
         }
 
         .nav-item.active {
@@ -1214,320 +1217,7 @@
     color: #a5bdd9;
 }
 
-<<<<<<< HEAD
-/* trading styles */
-
-.form-select, .form-control {
-    background-color: transparent;
-    border: 1px solid #30363d;
-    color: white;
-}
-.form-select {
-    background-color: transparent;
-    border: 1px solid #30363d;
-    color: grey;
-}
-
-.form-select:focus, .form-control:focus {
-    background-color: transparent;
-    border-color: #30363d;
-    color: grey;
-    box-shadow: none;
-}
-
-.time-tabs {
-    background-color: #1a1f2b;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 1rem 0;
-}
-
-.time-tabs .nav-link {
-    color: #6c757d;
-    border: none;
-    border-radius: 0;
-    padding: 0.75rem 0;
-}
-
-.time-tabs .nav-link.active {
-    background-color: transparent;
-    color: white;
-}
-
-.t-asset-card {
-    background-color: #1a1f2b;
-    border-radius: 8px;
-    padding: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-.t-asset-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #2a3042;
-}
-
-.t-asset-icon img {
-    width: 32px;
-    height: 32px;
-}
-
-.t-asset-name {
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-.t-asset-symbol {
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.t-asset-price {
-    font-weight: 500;
-}
-
-.performance-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.75rem;
-}
-
-.performance-cell {
-    text-align: center;
-    width: 33.33%;
-}
-
-.positive {
-    color: #00c853;
-}
-
-.negative {
-    color: #ff3d00;
-}
-
-.star-icon {
-    color: #ffc107;
-    cursor: pointer;
-    font-size: 1.25rem;
-}
-
-.star-icon-empty {
-    color: #6c757d;
-    cursor: pointer;
-    font-size: 1.25rem;
-}
-
- /* Desktop layout */
- @media (min-width: 768px) {
-    .performance-row {
-        display: none; /* Hide mobile performance row on desktop */
-    }
-
-    .desktop-performance {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-    }
-
-    .desktop-performance-cell {
-        text-align: center;
-        width: 100px;
-        margin: 0 15px;
-    }
-
-    .time-label {
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-    }
-
-    .star-container {
-        margin-left: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-    }
-
-    .t-asset-info {
-        min-width: 200px;
-    }
-}
-
-/* Mobile layout */
-@media (max-width: 767px) {
-    .desktop-performance {
-        display: none; /* Hide desktop performance on mobile */
-    }
-}
-
-.content-area .form-control {
-    background-color: transparent !important;
-    border-radius: 0;
-    border: 1px solid #30363d !important;
-    font-size: 0.7rem;
-}
-
-.content-area .form-select {
-    background-color: transparent !important;
-    border-radius: 0;
-    border: 1px solid #30363d !important;
-    font-size: 1rem;
-}
-
-.content-area .form-select:focus, .form-control:focus {
-    background-color: transparent !important;
-    border-color: #30363d !important;
-    box-shadow: none !important;
-}
-
-.chart-container {
-    background-color: #0a0d14;
-    position: relative;
-    height: 400px;
-    overflow: hidden;
-}
-
-.price-levels {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px 0;
-    font-size: 0.8rem;
-    color: #6c757d;
-}
-
-.chart-area {
-    position: absolute;
-    left: 0;
-    right: 80px;
-    top: 0;
-    bottom: 0;
-}
-
-.chart-highlight {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 30%;
-    bottom: 30%;
-    background-color: rgba(13, 110, 253, 0.2);
-}
-
-.chart-line {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: #0d6efd;
-    bottom: 60%;
-    border-top: 1px dashed #0d6efd;
-}
-
-.ct-trades-card {
-    background-color: #1a1f2b;
-    border-radius: 8px;
-    padding: 1.5rem;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
-}
-
-.ct-input-group-text {
-    background-color: #1a1f2b;
-    border: 1px solid #30363d;
-    color: #6c757d;
-}
-
-.ct-input-label {
-    font-size: 0.7rem;
-    color: #6c757d;
-    margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: center;
-}
-
-.btn-up {
-    background: linear-gradient(225deg, #3045ff, #ae2aff 76%, #ff5d02);
-    border: none;
-    color: white;
-    padding: 0.7rem;
-    border-radius: 15px;
-    font-weight: 500;
-    margin-bottom: 1rem;
-}
-
-.btn-down {
-    background: linear-gradient(225deg, #3045ff, #ae2aff 76%, #ff5d02);
-    border: none;
-    color: white;
-    padding: 0.7rem;
-    border-radius: 15px;
-    font-weight: 500;
-    margin-bottom: 1rem;
-}
-
-.content-area {
-    margin-bottom: 80px; /* Space for bottom nav */
-}
-
-.asset-title {
-    font-size: 2.5rem;
-    font-weight: 500;
-    margin: 1rem 0;
-}
-
-/* Mobile specific styles */
-@media (max-width: 767px) {
-    .chart-container {
-        height: calc(100vh - 300px);
-        min-height: 300px;
-    }
-    
-    .mobile-trading-buttons {
-        position: fixed;
-        bottom: 80px;
-        left: 0;
-        right: 0;
-        padding: 1rem;
-        display: flex;
-        gap: 1rem;
-        z-index: 999;
-    }
-    
-    .mobile-trading-buttons .btn {
-        flex: 1;
-    }
-    
-    .desktop-only {
-        display: none !important;
-    }
-    
-    .asset-title {
-        display: none;
-    }
-}
-
-/* Desktop specific styles */
-@media (min-width: 768px) {
-    .mobile-only {
-        display: none;
-    }
-}
-=======
 .small-amount {
     font-size: 18px; /* Adjust the size as needed */
     font-weight: bold; /* Optional: Keep the text bold */
 }
->>>>>>> f6cd5547efe39456f7bf0f32bceba7d7ac1e8e28

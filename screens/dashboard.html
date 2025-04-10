@@ -143,7 +143,7 @@
 
             <!-- Right Section -->
             <div class="trades-card">
-                <div class="trades-toggle">
+                <div class="trades-toggle px-5">
                     <button class="toggle-button active" data-type="closed">
                         <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0287df"><path d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120Zm160-360q66 0 113-47t47-113v-120H320v120q0 66 47 113t113 47ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z"/></svg></span>
                         Closed
@@ -156,6 +156,56 @@
                 <div class="no-trades d-flex justify-content-center align-items-center" id="trades-message">
                     NO CLOSED TRADES
                 </div>
+
+                    <div id="opentrades">
+                        <div class="asset-card mt-3">
+                            <div class="date-section">
+                                <div class="month fs-6 fw-bold text-header">JUN</div>
+                                <div class="day fs-2 text-header">23</div>
+                            </div>
+                            <img src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg" alt="ETH" class="asset-icon bg-primary">
+                            <div class="asset-info">
+                                <div class="staked-section">
+                                    <div class="section-label">UP 0.4 ETHUSD</div>
+                                    <div class="crypto-amount">VirtualBacon</div>
+                                </div>
+                                <div class="usd-value text-success">2187.84 USD</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-card mt-3">
+                            <div class="date-section">
+                                <div class="month fs-6 fw-bold text-header">DEC</div>
+                                <div class="day fs-2 text-header">09</div>
+                            </div>
+                            <img src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg" alt="ETH" class="asset-icon bg-primary">
+                            <div class="asset-info">
+                                <div class="staked-section">
+                                    <div class="section-label">UP 0.7 TONUSD</div>
+                                    <div class="crypto-amount">VirtualBacon</div>
+                                </div>
+                                <div class="usd-value text-success">40087 USD</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="closetrades">
+                        <div class="asset-card mt-3">
+                            <div class="date-section">
+                                <div class="month fs-6 fw-bold text-header">MAR</div>
+                                <div class="day fs-2 text-header">05</div>
+                            </div>
+                            <img src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg" alt="ETH" class="asset-icon bg-primary">
+                            <div class="asset-info">
+                                <div class="staked-section">
+                                    <div class="section-label">UP 0.2 XRPUSD</div>
+                                    <div class="crypto-amount">VirtualBacon</div>
+                                </div>
+                                <div class="usd-value text-success">1237.84 USD</div>
+                            </div>
+                        </div>
+                    </div>
+                
             </div>
         </div>
     </div>
@@ -185,9 +235,15 @@
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle functionality with message update
+        document.addEventListener("DOMContentLoaded", ()=>{
+            // Toggle functionality with message update
         const toggleButtons = document.querySelectorAll('.toggle-button');
         const tradesMessage = document.getElementById('trades-message');
+        const openTrades = document.getElementById("opentrades");
+        const closeTrades = document.getElementById("closetrades");
+        openTrades.classList.add("d-none");
+
+        
         
         toggleButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -202,12 +258,17 @@
                 const type = button.getAttribute('data-type');
                 if (type === 'closed') {
                     tradesMessage.textContent = 'NO CLOSED TRADES';
+                    closeTrades.classList.remove("d-none");
+                    openTrades.classList.add("d-none");
                 } else if (type === 'active') {
                     tradesMessage.textContent = 'NO OPEN TRADES';
+                    closeTrades.classList.add("d-none");
+                    openTrades.classList.remove("d-none");
                 }
             });
         });
-        
+
+        })  
     </script>
 </body>
 </html>

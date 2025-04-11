@@ -469,30 +469,29 @@
         $('#deleteTradeModal').modal('show');
     });
 
-    // Confirm Delete Button Click
     $('#confirmDeleteBtn').click(function() {
-        const tradeId = $(this).data('trade-id');
-        const deleteBtn = $(this);
-        
-        deleteBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
-        
-        $.ajax({
-            url: "{{ route('admin.trade.history.destroy', '') }}/" + tradeId,
-            type: 'DELETE',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                toastr.success(response.message);
-                $('#trade-row-' + tradeId).remove();
-                $('#deleteTradeModal').modal('hide');
-            },
-            error: function(xhr) {
-                toastr.error(xhr.responseJSON.message || 'Error deleting trade');
-                deleteBtn.prop('disabled', false).html('<i class="fas fa-trash"></i> Delete');
-            }
-        });
+    const tradeId = $(this).data('trade-id');
+    const deleteBtn = $(this);
+    
+    deleteBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
+    
+    $.ajax({
+        url: "{{ route('admin.trade.history.destroy', '') }}/" + tradeId,
+        type: 'DELETE',
+        data: {
+            _token: "{{ csrf_token() }}"
+        },
+        success: function(response) {
+            toastr.success(response.message);
+            $('#trade-row-' + tradeId).remove();
+            $('#deleteTradeModal').modal('hide');
+        },
+        error: function(xhr) {
+            toastr.error(xhr.responseJSON.message || 'Error deleting trade');
+            deleteBtn.prop('disabled', false).html('<i class="fas fa-trash"></i> Delete');
+        }
     });
+});
 
     // Edit Status Change
     $('#editStatus').change(function() {

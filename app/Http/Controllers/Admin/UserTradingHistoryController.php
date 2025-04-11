@@ -7,8 +7,10 @@ use App\Models\Trade;
 use App\Models\Trader;
 use Illuminate\Http\Request;
 use App\Models\TradingHistory;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserTradingHistoryController extends Controller
 {
@@ -59,108 +61,99 @@ class UserTradingHistoryController extends Controller
         return view('admin.user.trading.index', compact('histories', 'user', 'traders', 'trades', 'symbols'));
     }
 
-    public function create($userId)
-    {
-        $user = User::findOrFail($userId);
-        $traders = Trader::all();
-        return view('admin.user.trading.create', compact('user', 'traders'));
-    }
-
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'nullable|exists:users,id',
-            'symbol' => 'nullable|string|max:10',
-            'trader_name' => 'nullable|string|max:100',
-            'type' => 'nullable|in:spot,futures,margin',
-            'direction' => 'nullable|in:up,down',
-            'entry_price' => 'nullable|numeric|min:0',
-            'exit_price' => 'nullable|numeric|min:0',
-            'amount' => 'required|numeric|min:0',
-            'profit' => 'nullable|numeric',
-            'status' => 'nullable|in:active,closed',
-            'entry_date' => 'nullable|date',
-            'exit_date' => 'nullable|date|after_or_equal:entry_date',
-            'notes' => 'nullable|string|max:500',
-        ]);
-
-        // Calculate profit if not provided
-        if (!isset($validated['profit'])) {
-            if ($validated['status'] === 'closed' && isset($validated['exit_price'])) {
-                $priceDiff = $validated['direction'] === 'up'
-                    ? ($validated['exit_price'] - $validated['entry_price'])
-                    : ($validated['entry_price'] - $validated['exit_price']);
-                $validated['profit'] = $priceDiff * $validated['amount'];
-            } else {
-                $validated['profit'] = 0;
-            }
-        }
-
-        Trade::create($validated);
-
-        return redirect()->back()->with('message', 'Trade created successfully!');
-    }
-
-
-    public function edit($userId, $id)
-    {
-        $user = User::findOrFail($userId);
-        $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-        $traders = Trader::all();
-
-        return view('admin.user.trading.edit', compact('user', 'history', 'traders'));
-    }
-
-    public function update(Request $request, $userId, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'trader_id' => 'required|exists:traders,id',
-            'amount' => 'required|numeric|min:0.01',
-            'status' => 'required|in:pending,completed,failed'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-            $history->update([
-                'trader_id' => $request->trader_id,
-                'amount' => $request->amount,
-                'status' => $request->status
+            $validated = $request->validate([
+                'user_id' => 'nullable|exists:users,id',
+                'symbol' => 'nullable|string|max:20',
+                'type' => 'nullable|in:spot,futures,margin',
+                'direction' => 'nullable|in:up,down',
+                'entry_price' => 'nullable|numeric|min:0',
+                'exit_price' => 'nullable|numeric|min:0',
+                'amount' => 'nullable|numeric|min:0',
+                'profit' => 'nullable|numeric',
+                'status' => 'nullable|in:active,closed',
+                'entry_date' => 'nullable|date',
+                'exit_date' => 'nullable|date',
+                'trader_name' => 'nullable|string|max:255',
+                'notes' => 'nullable|string'
             ]);
+
+            $trade = Trade::create($validated);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Trading history updated successfully!',
-                'redirect' => route('admin.users.trading-histories.index', $userId)
+                'message' => 'Trade created successfully!',
+                'trade' => $trade
             ]);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error updating trading history: ' . $e->getMessage()
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error creating trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create trade. Please try again.'
             ], 500);
         }
     }
 
-    public function destroy($userId, $id)
+    public function update(Request $request, Trade $trade)
     {
         try {
-            $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-            $history->delete();
+            $validated = $request->validate([
+                'symbol' => 'required|string|max:20',
+                'type' => 'required|in:spot,futures,margin',
+                'direction' => 'required|in:up,down',
+                'entry_price' => 'required|numeric|min:0',
+                'exit_price' => 'nullable|numeric|min:0|required_if:status,closed',
+                'amount' => 'required|numeric|min:0',
+                'profit' => 'nullable|numeric',
+                'status' => 'required|in:active,closed',
+                'entry_date' => 'required|date',
+                'exit_date' => 'nullable|date|required_if:status,closed',
+                'trader_name' => 'nullable|string|max:255',
+                'notes' => 'nullable|string'
+            ]);
+
+            $trade->update($validated);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Trading history deleted successfully!'
+                'message' => 'Trade updated successfully!',
+                'trade' => $trade
             ]);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error deleting trading history: ' . $e->getMessage()
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error updating trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update trade. Please try again.'
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $trade = Trade::findOrFail($id);
+            $trade->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Trade deleted successfully!'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Trade not found'
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error deleting trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to delete trade. Please try again.'
             ], 500);
         }
     }

@@ -41,20 +41,36 @@ class Trade extends Model
 
     public function getSymbolIconAttribute()
     {
-        $symbol = strtoupper($this->symbol);
-        $symbol = str_replace('USD', '', $symbol);
+        // Get first 3 uppercase letters from symbol
+        $symbol = substr(strtoupper(preg_replace('/[^a-zA-Z]/', '', $this->symbol)), 0, 3);
 
-        //return "https://s3-symbol-logo.tradingview.com/crypto/XTVC{$symbol}--big.svg";
-        return "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg";
+        // Fallback if symbol is too short
+        if (strlen($symbol) < 3) {
+            $symbol = str_pad($symbol, 3, 'BTC');
+        }
+
+        return "https://s3-symbol-logo.tradingview.com/crypto/XTVC{$symbol}--big.svg";
     }
 
     public function getFormattedProfitAttribute()
     {
-        return number_format($this->profit, 2) . ' USD';
+        $currencySymbol = config('currencies.' . $this->user->currency, '$');
+        return $currencySymbol . number_format($this->profit, 2);
     }
 
     public function getFormattedAmountAttribute()
     {
-        return number_format($this->amount, 2);
+        $currencySymbol = config('currencies.' . $this->user->currency, '$');
+        return $currencySymbol . number_format($this->amount, 2);
+    }
+
+    public function getFormattedEntryPriceAttribute()
+    {
+        return number_format($this->entry_price, 4);
+    }
+
+    public function getFormattedExitPriceAttribute()
+    {
+        return $this->exit_price ? number_format($this->exit_price, 4) : null;
     }
 }

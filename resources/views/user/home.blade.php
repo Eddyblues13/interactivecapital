@@ -64,7 +64,9 @@
         </div>
 
         <!-- Right Section -->
+        <!-- Right Section -->
         <div class="trades-card">
+            <!-- Toggle Buttons -->
             <div class="trades-toggle px-5">
                 <button class="toggle-button active" data-type="closed">
                     <span>
@@ -76,6 +78,7 @@
                     </span>
                     Closed
                 </button>
+
                 <button class="toggle-button" data-type="active">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -88,18 +91,15 @@
                 </button>
             </div>
 
-            <div class="no-trades d-flex justify-content-center align-items-center" id="trades-message">
-                NO CLOSED TRADES
-            </div>
-
-            <div id="opentrades" style="display: none;">
+            <!-- Open Trades -->
+            <div id="opentrades">
                 @forelse($openTrades as $trade)
                 <div class="asset-card mt-3">
                     <div class="date-section">
                         <div class="month fs-6 fw-bold text-header">{{ $trade->entry_date->format('M') }}</div>
                         <div class="day fs-2 text-header">{{ $trade->entry_date->format('d') }}</div>
                     </div>
-                    <img src="{{ $trade->symbol_icon }}" alt="{{ $trade->symbol }}" class="asset-icon bg-primary"> 
+                    <img src="{{ $trade->symbol_icon }}" alt="{{ $trade->symbol }}" class="asset-icon bg-primary">
                     <div class="asset-info">
                         <div class="staked-section">
                             <div class="section-label">{{ strtoupper($trade->direction) }} {{ $trade->formattedAmount }}
@@ -118,6 +118,7 @@
                 @endforelse
             </div>
 
+            <!-- Closed Trades -->
             <div id="closetrades" style="display: none;">
                 @forelse($closedTrades as $trade)
                 <div class="asset-card mt-3">
@@ -144,6 +145,7 @@
                 @endforelse
             </div>
         </div>
+
     </div>
 </div>
 
@@ -182,54 +184,17 @@
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // Toggle functionality with message update
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-        const tradesMessage = document.getElementById('trades-message');
-        const openTrades = document.getElementById("opentrades");
-        const closeTrades = document.getElementById("closetrades");
-        
-        // Check if there are any trades to determine initial state
-        const hasOpenTrades = document.querySelectorAll('#opentrades .asset-card').length > 0;
-        const hasClosedTrades = document.querySelectorAll('#closetrades .asset-card').length > 0;
-        
-        // Initial setup
-        if (hasOpenTrades) {
-            openTrades.style.display = 'block';
-            closeTrades.style.display = 'none';
-            tradesMessage.style.display = 'none';
-        } else if (hasClosedTrades) {
-            openTrades.style.display = 'none';
-            closeTrades.style.display = 'block';
-            tradesMessage.style.display = 'none';
-        } else {
-            openTrades.style.display = 'none';
-            closeTrades.style.display = 'none';
-            tradesMessage.style.display = 'flex';
-        }
-        
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Update active state
-                toggleButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                const type = button.getAttribute('data-type');
-                
-                if (type === 'active') {
-                    openTrades.style.display = 'block';
-                    closeTrades.style.display = 'none';
-                    tradesMessage.style.display = hasOpenTrades ? 'none' : 'flex';
-                    tradesMessage.textContent = 'NO OPEN TRADES';
-                } else {
-                    openTrades.style.display = 'none';
-                    closeTrades.style.display = 'block';
-                    tradesMessage.style.display = hasClosedTrades ? 'none' : 'flex';
-                    tradesMessage.textContent = 'NO CLOSED TRADES';
-                }
-            });
+    document.querySelectorAll('.toggle-button').forEach(button => {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            const type = this.getAttribute('data-type');
+            document.getElementById('opentrades').style.display = type === 'active' ? 'block' : 'none';
+            document.getElementById('closetrades').style.display = type === 'closed' ? 'block' : 'none';
         });
-    });  
+    });
 </script>
+
 
 @include('user.layouts.footer')

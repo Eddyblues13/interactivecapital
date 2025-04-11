@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('trades', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('symbol'); // ETHUSD, TONUSD, XRPUSD etc.
+            $table->string('symbol')->nullable(); // ETHUSD, TONUSD, XRPUSD etc.
             $table->string('type')->default('spot'); // spot, futures, margin
-            $table->string('direction'); // UP (long), DOWN (short)
-            $table->decimal('entry_price', 16, 4);
+            $table->string('direction')->nullable(); // UP (long), DOWN (short)
+            $table->decimal('entry_price', 16, 4)->nullable();
             $table->decimal('exit_price', 16, 4)->nullable();
-            $table->decimal('amount', 16, 4); // 0.4 ETH, 0.7 TON etc.
+            $table->decimal('amount', 16, 4)->nullable(); // 0.4 ETH, 0.7 TON etc.
             $table->decimal('profit', 16, 4)->nullable();
-            $table->string('status'); // active, closed
-            $table->dateTime('entry_date');
+            $table->string('status')->nullable(); // active, closed
+            $table->dateTime('entry_date')->nullable();
             $table->dateTime('exit_date')->nullable();
             $table->string('trader_name')->nullable(); // VirtualBacon etc.
             $table->text('notes')->nullable();

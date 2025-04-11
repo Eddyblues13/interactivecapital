@@ -25,7 +25,7 @@ class UserController extends Controller
         $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
 
-
+ 
 
 
         $data['openTrades'] = $user->trades()

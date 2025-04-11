@@ -376,10 +376,10 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::get('/user/{user}/create', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'create'])->name('admin.trades.create');
-        Route::post('/store', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'store'])->name('admin.trades.store');
+        Route::post('/store', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'store'])->name('admin.trade.history.store');
         Route::get('/{trade}/edit', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'edit'])->name('admin.trades.edit');
-        Route::put('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.trades.update');
-        Route::delete('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.trades.destroy');
+        Route::put('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.trade.history.update');
+        Route::delete('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.trade.history.destroy');
 
         // Users Routes
         Route::get('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');

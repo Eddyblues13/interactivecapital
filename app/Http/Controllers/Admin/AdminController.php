@@ -665,6 +665,7 @@ class AdminController extends Controller
         if (!session()->has('impersonate')) {
             session()->put('impersonate', Auth::id());
         }
+        $data['user'] = $user;
 
         // Impersonate the specified user
         Auth::loginUsingId($user->id);

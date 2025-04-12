@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Trade;
-use App\Models\Profit;
+use App\Models\User\Profit;
 use App\Models\Document;
 use App\Mail\sendUserEmail;
 use App\Models\StockHistory;
@@ -243,6 +243,9 @@ class AdminController extends Controller
         // Clear Trading Balance
         TradingBalance::where('user_id', $userId)->update(['amount' => 0]);
 
+        // Clear profit Balance
+        Profit::where('user_id', $userId)->update(['amount' => 0]);
+
         return redirect()->back()->with('success', 'All balances cleared successfully.');
     }
 
@@ -389,6 +392,20 @@ class AdminController extends Controller
         // Sum of trading balance
         $data['mining_balance'] = MiningBalance::where('user_id', $id)
             ->sum('amount');
+
+        // Sum of profit
+        $data['profit_balance'] = Profit::where('user_id', $id)
+            ->sum('amount');
+
+
+
+        // Total sum of all balances
+        $data['total_balance'] =
+            ($data['holding_balance'] ?? 0) +
+            ($data['trading_balance'] ?? 0) +
+            ($data['referral_balance'] ?? 0) +
+            ($data['mining_balance'] ?? 0) +
+            ($data['profit_balance'] ?? 0);
 
 
 
@@ -653,42 +670,29 @@ class AdminController extends Controller
         Auth::loginUsingId($user->id);
 
         // Get deposits and sums for the impersonated user
-        $data['deposits'] = Deposit::where('user_id', $user->id)->get();
-        $data['pending_deposits_sum'] = Deposit::where('user_id', $user->id)->where('status', 'pending')->sum('amount');
-        $data['successful_deposits_sum'] = Deposit::where('user_id', $user->id)->where('status', 'successful')->sum('amount');
-        $data['pending_withdrawals_sum'] = Withdrawal::where('user_id', $user->id)->where('status', 'pending')->sum('amount');
-        $data['successful_withdrawals_sum'] = Withdrawal::where('user_id', $user->id)->where('status', 'successful')->sum('amount');
-        $data['balance_sum'] = AccountBalance::where('user_id', $user->id)->sum('amount');
-        $data['profit_sum'] = Profit::where('user_id', $user->id)->sum('amount');
+        $data['holdingBalance'] = HoldingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['profit'] = Profit::where('user_id', $user->id)->sum('amount') ?? 0;
 
-        $data['trades']  = Trade::with('user')->where('user_id', $user->id)->get();
+        $data['totalBalance'] =
+            $data['holdingBalance'] +
+            $data['stakingBalance'] +
+            $data['tradingBalance'] +
+            $data['referralBalance'] +
+            $data['profit'];
 
 
-        // Total sum of all calculations
-        $total_sum =
-            $data['successful_deposits_sum'] +
-            $data['successful_withdrawals_sum'] +
-            $data['balance_sum'] +
-            $data['profit_sum'];
-
-        $data['total_sum'] = $total_sum;
-
-        $data['open_trades'] = Trade::with('user')
-            ->where('user_id', $user->id)
-            ->where('status', 'open')
+        $data['openTrades'] = $user->trades()
+            ->where('status', 'active')
+            ->orderBy('entry_date', 'desc')
             ->get();
 
-        $data['closed_trades'] = Trade::with('user')
-            ->where('user_id', $user->id)
-            ->where('status', 'close')
+        $data['closedTrades'] = $user->trades()
+            ->where('status', 'closed')
+            ->orderBy('exit_date', 'desc')
             ->get();
-
-        // Fetching the user's KYC status
-        $data['kyc_status'] = User::where('id', $user->id)->pluck('kyc_status')->first();
-
-
-        // Check if the status is 1, meaning KYC is approved
-        $data['kyc_required'] = $data['kyc_status'] != 1;
 
 
         // Redirect to the user's home page with the relevant data

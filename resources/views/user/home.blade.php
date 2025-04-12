@@ -7,8 +7,8 @@
         <div>
             <div class="dashboard-balance-card">
                 <div class="dashboard-balance-amount">{{ config('currencies.' . $user->currency, '$') }}{{
-                    number_format($tradingBalance, 2) }}</div>
-                <div class="dashboard-balance-label">TRADING BALANCE</div>
+                    number_format($totalBalance, 2) }}</div>
+                <div class="dashboard-balance-label">Account BALANCE</div>
                 <div class="signal-strength">
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: {{ Auth::user()->signal_strength }}%;"></div>

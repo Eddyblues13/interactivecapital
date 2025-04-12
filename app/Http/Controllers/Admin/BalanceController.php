@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\User\Profit;
 use Illuminate\Http\Request;
 use App\Models\User\MiningBalance;
 use App\Models\User\HoldingBalance;
@@ -91,6 +92,32 @@ class BalanceController extends Controller
         );
 
         return redirect()->back()->with('success', 'Referral balance updated successfully.');
+    }
+
+
+    public function updateProfitBalance(Request $request)
+    {
+        $ProfitBalance = Profit::firstOrCreate(['user_id' => $request->user_id]);
+
+        // Determine transaction type
+        $transactionType = $request->type === 'credit' ? 'Credit' : 'Debit';
+
+        // Update balance
+        if ($request->type === 'credit') {
+            $ProfitBalance->increment('amount', $request->amount);
+        } else {
+            $ProfitBalance->decrement('amount', $request->amount);
+        }
+
+        // Send transaction email
+        $this->sendTransactionEmail(
+            $request->user_id, // User ID
+            $transactionType,  // Transaction type (Credit/Debit)
+            $request->amount,  // Amount
+            'Profit Balance' // Transaction category
+        );
+
+        return redirect()->back()->with('success', 'Profit  updated successfully.');
     }
 
     // Update Staking Balance

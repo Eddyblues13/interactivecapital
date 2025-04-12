@@ -38,7 +38,7 @@
                                     </select>
                                     <small id="symbol-error" class="text-danger"></small>
                                 </div>
-                                <div class="form-group col-md-4">
+                                {{-- <div class="form-group col-md-4">
                                     <h5 class="text-light">Type</h5>
                                     <select name="type" class="form-control text-light bg-dark" required>
                                         <option value="spot">Spot</option>
@@ -46,7 +46,7 @@
                                         <option value="margin">Margin</option>
                                     </select>
                                     <small id="type-error" class="text-danger"></small>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="form-row">

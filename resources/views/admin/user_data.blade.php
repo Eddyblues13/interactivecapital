@@ -52,6 +52,8 @@
                                                     class="dropdown-item">Credit/Debit Mining Balance</a>
                                                 <a href="#" data-toggle="modal" data-target="#referralBalanceModal"
                                                     class="dropdown-item">Credit/Debit Referral Balance</a>
+                                                <a href="#" data-toggle="modal" data-target="#profitBalanceModal"
+                                                    class="dropdown-item">Credit/Debit Profit</a>
 
                                                 <a href="{{ route('admin.users.deposits.index', ['user' => $user->id]) }}"
                                                     class="dropdown-item">Edit Deposit</a>
@@ -72,10 +74,16 @@
                             </div>
                             <div class="p-3 mt-4 border rounded row text-light">
                                 <div class="col-md-3">
+                                    <h5 class="text-bold">Total Balance</h5>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($total_balance, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
                                     <h5 class="text-bold">Holding Balance</h5>
                                     <p>{{ config('currencies.' . $user->currency, '$')
                                         }}{{number_format($holding_balance, 2, '.', ',')}}</p>
                                 </div>
+
                                 <div class="col-md-3">
                                     <h5 class="text-bold">Trading Balance</h5>
                                     <p>{{ config('currencies.' . $user->currency, '$')
@@ -90,6 +98,11 @@
                                     <h5 class="text-bold">Referral Balance</h5>
                                     <p>{{ config('currencies.' . $user->currency, '$')
                                         }}{{number_format($referral_balance, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-bold">Profit</h5>
+                                    <p>{{ config('currencies.' . $user->currency, '$')
+                                        }}{{number_format($profit_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5>Total Deposit</h5>
@@ -555,7 +568,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Update {{$user->name}}'s Holding Balance</h4>
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Holding Balance</h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">
@@ -591,7 +604,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Update {{$user->name}}'s Mining Balance</h4>
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Mining Balance</h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">
@@ -627,7 +640,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Update {{$user->name}}'s Referral Balance</h4>
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Referral Balance</h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">
@@ -663,11 +676,47 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Update {{$user->name}}'s Staking Balance</h4>
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Staking Balance</h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">
                     <form action="{{ route('update.staking.balance') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="form-group">
+                            <label class="text-light">Amount</label>
+                            <input class="form-control bg-dark text-light" type="number" name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Type</label>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Description</label>
+                            <textarea class="form-control bg-dark text-light" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profit Balance Modal -->
+    <div id="profitBalanceModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Profit</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{ route('update.profit.balance') }}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
                         <div class="form-group">
@@ -699,7 +748,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Update {{$user->name}}'s Trading Balance</h4>
+                    <h4 class="modal-title text-light">Update {{$user->first_name}}'s Trading Balance</h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">

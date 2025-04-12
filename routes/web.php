@@ -212,6 +212,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/holding-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateHoldingBalance'])->name('update.holding.balance');
         Route::post('/update/mining-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateMiningBalance'])->name('update.mining.balance');
         Route::post('/update/referral-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateReferralBalance'])->name('update.referral.balance');
+        Route::post('/update/profit-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateProfitBalance'])->name('update.profit.balance');
         Route::post('/update/staking-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateStakingBalance'])->name('update.staking.balance');
         Route::post('/update/trading-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateTradingBalance'])->name('update.trading.balance');
 

@@ -67,7 +67,7 @@ class UserTradingHistoryController extends Controller
             $validated = $request->validate([
                 'user_id' => 'nullable|exists:users,id',
                 'symbol' => 'nullable|string|max:20',
-                'type' => 'nullable|in:spot,futures,margin',
+                // 'type' => 'nullable|in:spot,futures,margin',
                 'direction' => 'nullable|in:up,down',
                 'entry_price' => 'nullable|numeric|min:0',
                 'exit_price' => 'nullable|numeric|min:0',
@@ -103,10 +103,10 @@ class UserTradingHistoryController extends Controller
     {
         try {
             $validated = $request->validate([
-                'symbol' => 'required|string|max:20',
-                'type' => 'required|in:spot,futures,margin',
-                'direction' => 'required|in:up,down',
-                'entry_price' => 'required|numeric|min:0',
+                'symbol' => 'nullable|string|max:20',
+                // 'type' => 'required|in:spot,futures,margin',
+                'direction' => 'nullable|in:up,down',
+                'entry_price' => 'nullable|numeric|min:0',
                 'exit_price' => 'nullable|numeric|min:0|required_if:status,closed',
                 'amount' => 'required|numeric|min:0',
                 'profit' => 'nullable|numeric',

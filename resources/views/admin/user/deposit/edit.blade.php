@@ -34,12 +34,14 @@
                                     <div class="form-group">
                                         <label class="text-light">Account Type</label>
                                         <select name="account_type" class="form-control bg-dark text-light" required>
-                                            <option value="main" {{ $deposit->account_type == 'main' ? 'selected' : ''
-                                                }}>Main Account</option>
-                                            <option value="investment" {{ $deposit->account_type == 'investment' ?
-                                                'selected' : '' }}>Investment Account</option>
-                                            <option value="bonus" {{ $deposit->account_type == 'bonus' ? 'selected' : ''
-                                                }}>Bonus Account</option>
+                                            <option value="holding" {{ $deposit->account_type == 'holding' ? 'selected'
+                                                : '' }}>Holding Account</option>
+                                            <option value="trading" {{ $deposit->account_type == 'trading' ? 'selected'
+                                                : '' }}>Trading Account</option>
+                                            <option value="mining" {{ $deposit->account_type == 'mining' ? 'selected' :
+                                                '' }}>Mining Account</option>
+                                            <option value="staking" {{ $deposit->account_type == 'staking' ? 'selected'
+                                                : '' }}>Staking Account</option>
                                         </select>
                                     </div>
 

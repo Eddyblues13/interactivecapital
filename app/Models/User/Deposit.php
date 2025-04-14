@@ -13,7 +13,7 @@ class Deposit extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'account_type',
+        'account_type', 
         'status',
     ];
 

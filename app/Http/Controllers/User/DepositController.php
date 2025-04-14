@@ -16,11 +16,13 @@ class DepositController extends Controller
 {
     public function index()
     {
-        $deposits = Deposit::latest()
+        $deposits = Deposit::where('user_id', auth()->id())
+            ->latest()
             ->paginate(10); // Adjust pagination as needed
 
         return view('user.deposit.home', compact('deposits'));
     }
+
     public function buyCrypto()
     {
         // Adjust pagination as needed

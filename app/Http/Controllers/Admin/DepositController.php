@@ -29,14 +29,25 @@ class DepositController extends Controller
 
             $deposit->update(['status' => 'approved']);
 
-            // Credit user's account
-            $user = User::find($deposit->user_id);
-            if ($deposit->account_type == 'main') {
-                $user->balance += $deposit->amount;
-            } else {
-                $user->investment_balance += $deposit->amount;
+            // Credit user's account based on account type
+            $user = User::findOrFail($deposit->user_id);
+
+            switch ($deposit->account_type) {
+                case 'holding':
+                    $user->holdingBalance()->increment('amount', $deposit->amount);
+                    break;
+                case 'trading':
+                    $user->tradingBalance()->increment('amount', $deposit->amount);
+                    break;
+                case 'mining': // Note: Make sure this matches your actual account type spelling
+                    $user->miningBalance()->increment('amount', $deposit->amount);
+                    break;
+                case 'staking':
+                    $user->stakingBalance()->increment('amount', $deposit->amount);
+                    break;
+                default:
+                    throw new \Exception("Unknown account type: {$deposit->account_type}");
             }
-            $user->save();
 
             return response()->json([
                 'status' => 'success',

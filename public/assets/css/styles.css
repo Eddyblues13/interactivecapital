@@ -1214,7 +1214,6 @@
     color: #a5bdd9;
 }
 
-<<<<<<< HEAD
 /* trading styles */
 
 .form-select, .form-control {
@@ -1525,9 +1524,8 @@
         display: none;
     }
 }
-=======
+
 .small-amount {
     font-size: 18px; /* Adjust the size as needed */
     font-weight: bold; /* Optional: Keep the text bold */
 }
->>>>>>> f6cd5547efe39456f7bf0f32bceba7d7ac1e8e28

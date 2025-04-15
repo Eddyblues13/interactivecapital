@@ -70,11 +70,13 @@ class ManageUserDepositController extends Controller
         return view('admin.user.deposit.edit', compact('user', 'deposit'));
     }
 
+
+
     public function update(Request $request, $userId, $id)
     {
         $validator = Validator::make($request->all(), [
             'amount' => 'required|numeric|min:0.01',
-            'account_type' => 'required|in:main,investment,bonus',
+            'account_type' => 'required|in:holding,trading,mining,staking',
             'status' => 'required|in:pending,approved,rejected'
         ]);
 
@@ -87,7 +89,32 @@ class ManageUserDepositController extends Controller
 
         try {
             $deposit = Deposit::where('user_id', $userId)->findOrFail($id);
+            $originalStatus = $deposit->status;
             $deposit->update($request->all());
+
+            // Only increment balance if status changed to approved
+            // if ($request->status === 'approved' && $originalStatus !== 'approved')
+            if ($request->status === 'approved') {
+                $user = User::findOrFail($userId);
+                $accountType = $request->account_type;
+                $amount = $request->amount;
+
+                switch ($accountType) {
+                    case 'holding':
+                        $user->holdingBalance()->increment('amount', $amount);
+                        break;
+                    case 'trading':
+                        $user->tradingBalance()->increment('amount', $amount);
+                        break;
+                    case 'mining':
+                        // Assuming mining uses the same balance as staking or needs separate handling
+                        $user->stakingBalance()->increment('amount', $amount);
+                        break;
+                    case 'staking':
+                        $user->stakingBalance()->increment('amount', $amount);
+                        break;
+                }
+            }
 
             return response()->json([
                 'status' => 'success',

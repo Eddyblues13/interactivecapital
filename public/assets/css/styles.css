@@ -203,7 +203,6 @@
         .trading-room { background-color: #8b5cf6; }
 
         .trades-card {
-            background-color: #1a1f2b;
             height: 50%;
             border-radius: 12px;
             padding: 20px;
@@ -212,6 +211,7 @@
 
         .trades-toggle {
             display: flex;
+            background-color: #1a1f2b;
             justify-content: space-between;
             margin-bottom: 20px;
             position: relative;
@@ -244,9 +244,12 @@
         }
 
         .no-trades {
+            background-color: #1a1f2b;
             text-align: center;
             color: #6b7280;
             padding: 40px 0;
+            border-radius: 15px
+            
         }
 
         .nav-item.active {
@@ -1214,6 +1217,7 @@
     color: #a5bdd9;
 }
 
+<<<<<<< HEAD
 /* trading styles */
 
 .form-select, .form-control {
@@ -1525,6 +1529,8 @@
     }
 }
 
+=======
+>>>>>>> 8c535f9b2acd755632bd640bef7cef4e054e7df9
 .small-amount {
     font-size: 18px; /* Adjust the size as needed */
     font-weight: bold; /* Optional: Keep the text bold */

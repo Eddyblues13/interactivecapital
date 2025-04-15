@@ -45,23 +45,23 @@ class RegisterController extends Controller
             'password' => 'required|string|min:4|confirmed',
             'referral_code' => 'nullable|string|exists:users,referral_code',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
             ], 422);
         }
-    
+
         // Find the referrer if a valid referral code is provided
         $referrer = null;
         if ($request->referral_code) {
             $referrer = User::where('referral_code', $request->referral_code)->first();
         }
-    
+
         // Generate verification code
         $verificationCode = rand(1000, 9999);
-        
+
         // Create the user
         $user = User::create([
             'first_name' => $request->first_name,
@@ -79,12 +79,13 @@ class RegisterController extends Controller
             'referral_code' => $this->generateReferralCode(),
             'referred_by' => $referrer ? $referrer->id : null,
         ]);
-    
+
         // Create related balances for the user
         $user->holdingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
         $user->stakingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
         $user->tradingBalance()->create(['user_id' => $user->id, 'amount' => 0]);
-    
+        $user->profitBalance()->create(['user_id' => $user->id, 'amount' => 0]);
+
         // Add referral bonus to the referrer's balance
         if ($referrer) {
             $referrer->referralBalance()->updateOrCreate(
@@ -92,7 +93,7 @@ class RegisterController extends Controller
                 ['amount' => DB::raw('amount + 10')]
             );
         }
-    
+
         // Prepare and send verification email
         $full_name = $request->first_name . ' ' . $request->last_name;
         $vmessage = "
@@ -118,13 +119,13 @@ class RegisterController extends Controller
         Don't hesitate to get in touch if you have any questions; we'll always get back to you.
         </p>
         ";
-    
+
         // Send the email
         Mail::to($user->email)->send(new VerificationEmail($vmessage));
-    
+
         // Log in the user
         auth()->login($user);
-    
+
         return response()->json([
             'success' => true,
             'message' => 'Registration successful! Please check your email for verification code.',

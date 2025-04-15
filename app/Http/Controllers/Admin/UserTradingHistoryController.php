@@ -3,127 +3,157 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Trade;
 use App\Models\Trader;
 use Illuminate\Http\Request;
 use App\Models\TradingHistory;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserTradingHistoryController extends Controller
 {
     public function index($userId)
     {
+        // Get list of available traders (you might have a Trader model)
+        $traders = Trader::get();
+
+        // List of common trading symbols
+        $symbols = [
+            'BTCUSD',
+            'ETHUSD',
+            'XRPUSD',
+            'SOLUSD',
+            'ADAUSD',
+            'DOTUSD',
+            'DOGEUSD',
+            'AVAXUSD',
+            'MATICUSD',
+            'LTCUSD',
+            'ATOMUSD',
+            'XLMUSD',
+            'EURUSD',
+            'GBPUSD',
+            'USDJPY',
+            'AUDUSD',
+            'USDCAD',
+            'USDCHF',
+            'GOLD',
+            'SILVER',
+            'OIL',
+            'SPX500',
+            'NAS100',
+            'DJ30'
+        ];
+
+        $trades = Trade::with('user')
+            ->orderBy('entry_date', 'desc')
+            ->paginate(20);
+
+
         $user = User::findOrFail($userId);
         $histories = TradingHistory::with(['user', 'trader'])
             ->where('user_id', $userId)
             ->latest()
             ->get();
 
-        return view('admin.user.trading.index', compact('histories', 'user'));
+        return view('admin.user.trading.index', compact('histories', 'user', 'traders', 'trades', 'symbols'));
     }
 
-    public function create($userId)
+    public function store(Request $request)
     {
-        $user = User::findOrFail($userId);
-        $traders = Trader::all();
-        return view('admin.user.trading.create', compact('user', 'traders'));
-    }
-
-    public function store(Request $request, $userId)
-    {
-        $validator = Validator::make($request->all(), [
-            'trader_id' => 'required|exists:traders,id',
-            'amount' => 'required|numeric|min:0.01',
-            'status' => 'required|in:pending,completed,failed'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            TradingHistory::create([
-                'user_id' => $userId,
-                'trader_id' => $request->trader_id,
-                'amount' => $request->amount,
-                'status' => $request->status
+            $validated = $request->validate([
+                'user_id' => 'nullable|exists:users,id',
+                'symbol' => 'nullable|string|max:20',
+                // 'type' => 'nullable|in:spot,futures,margin',
+                'direction' => 'nullable|in:up,down',
+                'entry_price' => 'nullable|numeric|min:0',
+                'exit_price' => 'nullable|numeric|min:0',
+                'amount' => 'nullable|numeric|min:0',
+                'profit' => 'nullable|numeric',
+                'status' => 'nullable|in:active,closed',
+                'entry_date' => 'nullable|date',
+                'exit_date' => 'nullable|date',
+                'trader_name' => 'nullable|string|max:255',
+                'notes' => 'nullable|string'
             ]);
+
+            $trade = Trade::create($validated);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Trading history created successfully!',
-                'redirect' => route('admin.users.trading-histories.index', $userId)
+                'message' => 'Trade created successfully!',
+                'trade' => $trade
             ]);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error creating trading history: ' . $e->getMessage()
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error creating trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create trade. Please try again.'
             ], 500);
         }
     }
 
-    public function edit($userId, $id)
+    public function update(Request $request, Trade $trade)
     {
-        $user = User::findOrFail($userId);
-        $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-        $traders = Trader::all();
-
-        return view('admin.user.trading.edit', compact('user', 'history', 'traders'));
-    }
-
-    public function update(Request $request, $userId, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'trader_id' => 'required|exists:traders,id',
-            'amount' => 'required|numeric|min:0.01',
-            'status' => 'required|in:pending,completed,failed'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-            $history->update([
-                'trader_id' => $request->trader_id,
-                'amount' => $request->amount,
-                'status' => $request->status
+            $validated = $request->validate([
+                'symbol' => 'nullable|string|max:20',
+                // 'type' => 'required|in:spot,futures,margin',
+                'direction' => 'nullable|in:up,down',
+                'entry_price' => 'nullable|numeric|min:0',
+                'exit_price' => 'nullable|numeric|min:0|required_if:status,closed',
+                'amount' => 'required|numeric|min:0',
+                'profit' => 'nullable|numeric',
+                'status' => 'required|in:active,closed',
+                'entry_date' => 'required|date',
+                'exit_date' => 'nullable|date|required_if:status,closed',
+                'trader_name' => 'nullable|string|max:255',
+                'notes' => 'nullable|string'
             ]);
+
+            $trade->update($validated);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Trading history updated successfully!',
-                'redirect' => route('admin.users.trading-histories.index', $userId)
+                'message' => 'Trade updated successfully!',
+                'trade' => $trade
             ]);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error updating trading history: ' . $e->getMessage()
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error updating trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update trade. Please try again.'
             ], 500);
         }
     }
 
-    public function destroy($userId, $id)
+    public function destroy($id)
     {
         try {
-            $history = TradingHistory::where('user_id', $userId)->findOrFail($id);
-            $history->delete();
+            $trade = Trade::findOrFail($id);
+            $trade->delete();
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Trading history deleted successfully!'
+                'message' => 'Trade deleted successfully!'
             ]);
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Error deleting trading history: ' . $e->getMessage()
+                'message' => 'Trade not found'
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error deleting trade: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to delete trade. Please try again.'
             ], 500);
         }
     }

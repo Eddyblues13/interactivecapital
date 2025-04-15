@@ -13,10 +13,42 @@ class TradingHistoryController extends Controller
 {
     public function index()
     {
+        // Get list of available traders (you might have a Trader model)
+        $traders = User::where('role', 'trader')->get();
+
+        // List of common trading symbols
+        $symbols = [
+            'BTCUSD',
+            'ETHUSD',
+            'XRPUSD',
+            'SOLUSD',
+            'ADAUSD',
+            'DOTUSD',
+            'DOGEUSD',
+            'AVAXUSD',
+            'MATICUSD',
+            'LTCUSD',
+            'ATOMUSD',
+            'XLMUSD',
+            'EURUSD',
+            'GBPUSD',
+            'USDJPY',
+            'AUDUSD',
+            'USDCAD',
+            'USDCHF',
+            'GOLD',
+            'SILVER',
+            'OIL',
+            'SPX500',
+            'NAS100',
+            'DJ30'
+        ];
+
+        return view('admin.trades.create', compact('user', 'traders', 'symbols'));
         $histories = TradingHistory::with(['user', 'trader'])->latest()->get();
         $users = User::all();
         $traders = Trader::all();
-        return view('admin.trading-histories.index', compact('histories', 'users', 'traders'));
+        return view('admin.trading-histories.index', compact('histories', 'users', 'traders', 'user', 'traders', 'symbols'));
     }
 
     public function store(Request $request)

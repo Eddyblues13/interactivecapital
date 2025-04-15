@@ -124,6 +124,7 @@ class AuthController extends Controller
         $request->session()->invalidate(); // Invalidates the session
         $request->session()->regenerateToken(); // Regenerates the CSRF token
 
+
         return redirect('/login'); // Redirects to the homepage or login page
     }
 }

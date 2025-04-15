@@ -116,7 +116,7 @@ Route::post('/forgot-password', [App\Http\Controllers\Auth\AuthController::class
 // Password Reset routes
 Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [App\Http\Controllers\Auth\AuthController::class, 'reset'])->name('password.update');
-Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('user.logout');
 
 // Email & User Verification
 Route::get('user/v', [App\Http\Controllers\Auth\EmailVerificationController::class, 'emailVerify'])->name('email_verify');
@@ -212,6 +212,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/holding-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateHoldingBalance'])->name('update.holding.balance');
         Route::post('/update/mining-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateMiningBalance'])->name('update.mining.balance');
         Route::post('/update/referral-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateReferralBalance'])->name('update.referral.balance');
+        Route::post('/update/profit-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateProfitBalance'])->name('update.profit.balance');
         Route::post('/update/staking-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateStakingBalance'])->name('update.staking.balance');
         Route::post('/update/trading-balance', [App\Http\Controllers\Admin\BalanceController::class, 'updateTradingBalance'])->name('update.trading.balance');
 
@@ -374,6 +375,12 @@ Route::prefix('admin')->group(function () {
             Route::put('/{id}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.users.trading-histories.update');
             Route::delete('/{id}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.users.trading-histories.destroy');
         });
+
+        Route::get('/user/{user}/create', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'create'])->name('admin.trades.create');
+        Route::post('/store', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'store'])->name('admin.trade.history.store');
+        Route::get('/{trade}/edit', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'edit'])->name('admin.trades.edit');
+        Route::put('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'update'])->name('admin.trade.history.update');
+        Route::delete('/{trade}', [App\Http\Controllers\Admin\UserTradingHistoryController::class, 'destroy'])->name('admin.trade.history.destroy');
 
         // Users Routes
         Route::get('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');

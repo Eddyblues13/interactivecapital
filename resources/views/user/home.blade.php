@@ -6,7 +6,7 @@
         <!-- Left Section -->
         <div>
             <div class="dashboard-balance-card">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-center">
                     <div>
                         <div class="dashboard-balance-amount small-amount">{{ config('currencies.' .
                             Auth::user()->currency, '$') }}{{ number_format($depositBalance, 1) }}</div>

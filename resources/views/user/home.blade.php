@@ -2,7 +2,7 @@
 
 <!-- Main Content -->
 <div class="main-content">
-    <div class="dashboard mx-2">
+    <div class="row g-4">
         <!-- Left Section -->
         <div>
             <div class="dashboard-balance-card">

@@ -6,9 +6,18 @@
         <!-- Left Section -->
         <div>
             <div class="dashboard-balance-card">
-                <div class="dashboard-balance-amount">{{ config('currencies.' . $user->currency, '$') }}{{
-                    number_format($totalBalance, 2) }}</div>
-                <div class="dashboard-balance-label">Account BALANCE</div>
+                <div class="h-balance-section d-flex align-items-center">
+                    <div class="h-balance-box">
+                        <div class="h-balance-value text-white small-amount">{{ config('currencies.' .
+                            Auth::user()->currency, '$') }}{{ number_format($depositBalance, 1) }}</div>
+                        <div class="h-balance-label text-white">DEPOSIT BALANCE</div>
+                    </div>
+                    <div class="h-balance-box">
+                        <div class="h-balance-value text-white small-amount">{{ config('currencies.' .
+                            Auth::user()->currency, '$') }}{{ number_format($profit, 1) }}</div>
+                        <div class="h-balance-label text-white">PROFIT BALANCE</div>
+                    </div>
+                </div>
                 <div class="signal-strength">
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: {{ Auth::user()->signal_strength }}%;"></div>

@@ -5,7 +5,7 @@
     <div class="dashboard">
         <!-- Left Section -->
         <div>
-            <div class="dashboard-balance-card">
+            <div class="chart-bg h-50">
                 <div class="h-balance-section d-flex align-items-center">
                     <div class="h-balance-box">
                         <div class="h-balance-value text-white small-amount">{{ config('currencies.' .

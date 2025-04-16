@@ -675,6 +675,9 @@ class AdminController extends Controller
         $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['depositBalance'] = Deposit::where('user_id', $user->id)
+            ->where('status', 'approved') // Only include approved deposits
+            ->sum('amount') ?? 0;
         $data['profit'] = Profit::where('user_id', $user->id)->sum('amount') ?? 0;
 
         $data['totalBalance'] =

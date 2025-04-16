@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\User\Profit;
+use App\Models\User\Deposit;
 use Illuminate\Http\Request;
 use App\Models\User\Withdrawal;
 use Illuminate\Support\Facades\DB;
@@ -25,8 +27,12 @@ class WithdrawalController extends Controller
         $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['depositBalance'] = Deposit::where('user_id', $user->id)
+            ->where('status', 'approved') // Only include approved deposits
+            ->sum('amount') ?? 0;
+        $data['profit'] = Profit::where('user_id', $user->id)->sum('amount') ?? 0;
 
-        $data['totalBalance'] =    $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'];
+        $data['totalBalance'] =    $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'] +  $data['depositBalance'] +  $data['profit'];
 
         return view('user.withdrawal', $data);
     }
@@ -40,9 +46,13 @@ class WithdrawalController extends Controller
         $data['stakingBalance'] = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['tradingBalance'] = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $data['referralBalance'] = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['depositBalance'] = Deposit::where('user_id', $user->id)
+            ->where('status', 'approved') // Only include approved deposits
+            ->sum('amount') ?? 0;
+        $data['profit'] = Profit::where('user_id', $user->id)->sum('amount') ?? 0;
 
+        $data['totalBalance'] =    $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'] +  $data['depositBalance'] +  $data['profit'];
 
-        $data['totalBalance'] =   $data['holdingBalance'] +  $data['stakingBalance'] +   $data['tradingBalance']  +  $data['referralBalance'];
 
         return view('user.crypto_withdrawal', $data);
     }
@@ -51,7 +61,7 @@ class WithdrawalController extends Controller
     {
         // Validate the request
         $request->validate([
-            'account' => 'required|string|in:trading,holding,staking',
+            'account' => 'required|string|in:trading,holding,staking,profit,deposit',
             'crypto_currency' => 'required|string|in:btc,usdt,eth',
             'amount' => 'required|numeric|min:0.01',
             'wallet_address' => 'required|string',
@@ -68,6 +78,10 @@ class WithdrawalController extends Controller
         $stakingBalance = StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $tradingBalance = TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0;
         $referralBalance = ReferralBalance::where('user_id', $user->id)->sum('amount') ?? 0;
+        $data['depositBalance'] = Deposit::where('user_id', $user->id)
+            ->where('status', 'approved') // Only include approved deposits
+            ->sum('amount') ?? 0;
+        $data['profit'] = Profit::where('user_id', $user->id)->sum('amount') ?? 0;
 
         // Validate the withdrawal amount
         switch ($accountType) {
@@ -105,8 +119,14 @@ class WithdrawalController extends Controller
                 case 'trading':
                     TradingBalance::where('user_id', $user->id)->decrement('amount', $amount);
                     break;
-                case 'trading':
+                case 'referral':
                     referralBalance::where('user_id', $user->id)->decrement('amount', $amount);
+                    break;
+                case 'profit':
+                    Profit::where('user_id', $user->id)->decrement('amount', $amount);
+                    break;
+                case 'deposit':
+                    Deposit::where('user_id', $user->id)->decrement('amount', $amount);
                     break;
             }
 

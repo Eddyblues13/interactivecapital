@@ -165,6 +165,13 @@ Route::prefix('user')->middleware('user')->group(function () {
     Route::get('/mining', [App\Http\Controllers\User\UserController::class, 'mining'])->name('mining');
     Route::get('/copy-trade', [App\Http\Controllers\User\CopyTradeController::class, 'index'])->name('copy.trade');
     Route::post('/copy-trade', [App\Http\Controllers\User\CopyTradeController::class, 'copyTrader'])->name('copy.trader');
+    // Display copied traders
+    Route::get('/copied-traders', [App\Http\Controllers\User\CopiedTradeController::class, 'index'])
+        ->name('copied.traders');
+    Route::post('/copied-traders/stop', [App\Http\Controllers\User\CopiedTradeController::class, 'stop'])
+        ->name('copied.traders.stop');
+    Route::post('/copy-trader', [App\Http\Controllers\User\CopiedTradeController::class, 'copyTrader'])
+        ->name('copy.trader');
     Route::get('/withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'index'])->name('withdrawal');
     Route::get('/crypto-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'cryptoWithdrawal'])->name('crypto.withdrawal');
     Route::post('/submit', [App\Http\Controllers\User\WithdrawalController::class, 'submit'])->name('withdraw.submit');

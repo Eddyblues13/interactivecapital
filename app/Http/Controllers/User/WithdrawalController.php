@@ -99,6 +99,18 @@ class WithdrawalController extends Controller
                 if ($amount > $tradingBalance) {
                     return response()->json(['message' => 'Insufficient balance in Trading Account.'], 400);
                 }
+            case 'referral':
+                if ($amount > $tradingBalance) {
+                    return response()->json(['message' => 'Insufficient balance in Referral Account.'], 400);
+                }
+            case 'profit':
+                if ($amount > $tradingBalance) {
+                    return response()->json(['message' => 'Insufficient balance in Profit Account.'], 400);
+                }
+            case 'deposit':
+                if ($amount > $tradingBalance) {
+                    return response()->json(['message' => 'Insufficient balance in Deposit Account.'], 400);
+                }
                 break;
             default:
                 return response()->json(['message' => 'Invalid account selected.'], 400);

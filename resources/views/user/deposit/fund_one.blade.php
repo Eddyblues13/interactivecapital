@@ -14,6 +14,10 @@
             <select class="select-account" id="account" name="account" required>
                 <option value="">Select Account Type</option>
                 <option value="trading" @if(old('account')=='holding' ) selected @endif>
+                    Trading Balance Deposit ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
+                    number_format($holdingBalance ?? 0, 2) }})
+                </option>
+                <option value="trading" @if(old('account')=='holding' ) selected @endif>
                     Holding Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
                     number_format($holdingBalance ?? 0, 2) }})
                 </option>

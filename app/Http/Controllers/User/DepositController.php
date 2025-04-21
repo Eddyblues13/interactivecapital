@@ -39,6 +39,7 @@ class DepositController extends Controller
             'tradingBalance' => TradingBalance::where('user_id', $user->id)->sum('amount') ?? 0,
             'miningBalance' => MiningBalance::where('user_id', $user->id)->sum('amount') ?? 0,
             'stakingBalance' => StakingBalance::where('user_id', $user->id)->sum('amount') ?? 0,
+
         ]);
     }
 

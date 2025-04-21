@@ -13,7 +13,7 @@
         <div class="input-group">
             <div class="input-label">Account</div>
             <select class="select-account">
-                <option>Trading Balance</option>
+                <option>Trading Balanceee</option>
                 <option>Holding Balance</option>
                 <option>Staking Balance</option>
             </select>

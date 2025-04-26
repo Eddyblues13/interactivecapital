@@ -13,8 +13,9 @@
             <div class="input-group">
                 <div class="input-label">Account</div>
                 <select class="select-account" name="account">
-                    <option value="trading">Trading Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{
-                        number_format($tradingBalance, 2) }})</option>
+                    {{-- <option value="trading">Trading Balance ({{ config('currencies.' . Auth::user()->currency, '$')
+                        }}{{
+                        number_format($tradingBalance, 2) }})</option> --}}
                     <option value="holding">Holding Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{
                         number_format($holdingBalance, 2) }})</option>
                     <option value="staking">Staking Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{

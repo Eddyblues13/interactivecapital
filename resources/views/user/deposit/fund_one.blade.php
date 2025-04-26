@@ -21,10 +21,10 @@
                     Holding Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
                     number_format($holdingBalance ?? 0, 2) }})
                 </option>
-                <option value="trading" @if(old('account')=='trading' ) selected @endif>
+                {{-- <option value="trading" @if(old('account')=='trading' ) selected @endif>
                     Trading Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
                     number_format($tradingBalance ?? 0, 2) }})
-                </option>
+                </option> --}}
                 <option value="mining" @if(old('account')=='mining' ) selected @endif>
                     Mining Balance ({{ config('currencies.' . auth()->user()->currency, '$') }}{{
                     number_format($miningBalance ?? 0, 2) }})

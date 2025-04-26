@@ -344,7 +344,7 @@ class AdminController extends Controller
     public function viewUser($id)
     {
         $data['user'] = User::where('id', $id)
-            ->first();;
+            ->first();
 
         if (!$data['user']) {
             abort(404, 'User not found');

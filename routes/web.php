@@ -367,7 +367,7 @@ Route::prefix('admin')->group(function () {
 
 
         // Trading Histories Routes
-        Route::get('/trading-histories', [App\Http\Controllers\Admin\TradingHistoryController::class, 'index'])->name('admin.trading-histories.index');
+        Route::get('/trading-histories', [App\Http\Controllers\Admin\TradingHistoryController::class, 'index'])->name('admin.trading-histories.index'); 
         Route::post('/trading-histories', [App\Http\Controllers\Admin\TradingHistoryController::class, 'store'])->name('admin.trading-histories.store');
         Route::put('/trading-histories/{id}', [App\Http\Controllers\Admin\TradingHistoryController::class, 'update'])->name('admin.trading-histories.update');
         Route::delete('/trading-histories/{id}', [App\Http\Controllers\Admin\TradingHistoryController::class, 'destroy'])->name('admin.trading-histories.destroy');

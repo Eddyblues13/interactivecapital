@@ -56,7 +56,7 @@ class UserTradingHistoryController extends Controller
         $histories = TradingHistory::with(['user', 'trader'])
             ->where('user_id', $userId)
             ->latest()
-            ->get();
+            ->get(); 
 
         return view('admin.user.trading.index', compact('histories', 'user', 'traders', 'trades', 'symbols'));
     }

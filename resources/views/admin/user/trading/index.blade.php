@@ -22,6 +22,9 @@
                                         <option value="VirtualBacon">VirtualBacon</option>
                                         <option value="CryptoRover">CryptoRover</option>
                                         <option value="BitBoy">BitBoy</option>
+                                        @foreach(App\Models\Trader::all() as $trader)
+                                        <option value="{{ $trader->name }}">{{ $trader->name }}</option>
+                                        @endforeach
                                         <option value="Other">Other</option>
                                     </select>
                                     <small id="trader_name-error" class="text-danger"></small>

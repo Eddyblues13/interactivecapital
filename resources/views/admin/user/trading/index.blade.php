@@ -33,12 +33,25 @@
                                     <h5 class="text-light">Symbol</h5>
                                     <select name="symbol" class="form-control text-light bg-dark" required>
                                         <option value="">Select Symbol</option>
+                                        
+                                        <!-- Cryptocurrencies -->
                                         <option value="BTCUSDT">BTC/USDT</option>
                                         <option value="ETHUSDT">ETH/USDT</option>
                                         <option value="TONUSDT">TON/USDT</option>
                                         <option value="XRPUSDT">XRP/USDT</option>
                                         <option value="SOLUSDT">SOL/USDT</option>
+                                        <option value="TSLA">Tesla (TSLA)</option>
+                                        <option value="AAPL">Apple (AAPL)</option>
+                                        <option value="GOOGL">Alphabet (GOOGL)</option>
+                                        <option value="AMZN">Amazon (AMZN)</option>
+                                        <option value="MSFT">Microsoft (MSFT)</option>
+                                        <option value="NFLX">Netflix (NFLX)</option>
+                                        <option value="META">Meta Platforms (META)</option>
+                                        <option value="NVDA">NVIDIA (NVDA)</option>
+                                        <option value="BRK.A">Berkshire Hathaway (BRK.A)</option>
+                                        <option value="JPM">JPMorgan Chase (JPM)</option>
                                     </select>
+                                    
                                     <small id="symbol-error" class="text-danger"></small>
                                 </div>
                                 {{-- <div class="form-group col-md-4">

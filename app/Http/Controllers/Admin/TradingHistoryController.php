@@ -48,7 +48,7 @@ class TradingHistoryController extends Controller
         $histories = TradingHistory::with(['user', 'trader'])->latest()->get();
         $users = User::all();
         $traders = Trader::all(); 
-        return view('admin.trading-histories.index', compact('histories', 'users', 'traders', 'user', 'traders', 'symbols'));
+        return view('admin.trading-histories.index', compact('histories', 'users', 'traders', 'user', 'traders', 'symbols')); 
     }
 
     public function store(Request $request)

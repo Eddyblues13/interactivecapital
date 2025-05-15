@@ -74,9 +74,9 @@
                             </div>
                             <div class="p-3 mt-4 border rounded row text-light">
                                 <div class="col-md-3">
-                                    <h5 class="text-bold">Total Balance</h5>
+                                    <h5 class="text-bold">Deposit Balance</h5>
                                     <p>{{ config('currencies.' . $user->currency, '$')
-                                        }}{{number_format($total_balance, 2, '.', ',')}}</p>
+                                        }}{{number_format($trading_balance, 2, '.', ',')}}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <h5 class="text-bold">Holding Balance</h5>

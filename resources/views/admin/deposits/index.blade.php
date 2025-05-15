@@ -61,7 +61,7 @@
                                             <div class="btn-group">
                                                 <form action="{{ route('admin.deposits.approve', $deposit->id) }}"
                                                     method="POST" class="d-inline" data-ajax-form>
-                                                    @csrf
+                                                    @csrf 
                                                     <button type="submit"
                                                         class="btn btn-success btn-sm">Approve</button>
                                                 </form>

@@ -5,7 +5,7 @@
     <div class="row g-4">
         <!-- Left Section -->
         <div class="col-md-4 col-12">
-            <div>
+            <div> 
                 <div class="dashboard-balance-card">
                     <div class="d-flex justify-content-between">
                         <div>

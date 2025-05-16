@@ -97,7 +97,8 @@ class CopyTradeController extends Controller
 
             DB::commit();
 
-            $newBalance = $currentBalance - $amount;
+            // $newBalance = $currentBalance - $amount;
+            $newBalance = $currentBalance;
 
             return response()->json([
                 'success' => true,

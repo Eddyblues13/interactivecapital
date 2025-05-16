@@ -100,8 +100,8 @@ class CopiedTradeController extends Controller
             }
 
             // Decrement trading balance
-            TradingBalance::where('user_id', $user->id)
-                ->decrement('amount', $validated['amount']);
+            // TradingBalance::where('user_id', $user->id)
+            //     ->decrement('amount', $validated['amount']);
 
             // Create trading history record
             $trade = TradingHistory::create([

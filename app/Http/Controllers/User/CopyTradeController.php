@@ -84,7 +84,7 @@ class CopyTradeController extends Controller
             }
 
             // Decrement the balance
-            // $balanceRecord->decrement('amount', $amount);
+            $balanceRecord->decrement('amount', $amount);
 
             // Record the transaction
             $transaction = TradingHistory::create([

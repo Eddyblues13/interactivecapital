@@ -69,10 +69,10 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-3">
+                                {{-- <div class="mt-3">
                                     <small class="text-muted">Min. Investment: ${{ number_format($trader->min_amount, 2)
                                         }}</small>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

@@ -2,207 +2,106 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\WalletOption;
 use Illuminate\Http\Request;
 use App\Models\PaymentSetting;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentSettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $payments = PaymentSetting::all();
-        return view('admin.payment_settings.index', compact('payments'));
+        $payments = WalletOption::all();
+        return view('admin.payments.index', compact('payments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('admin.payment_settings.create');
+        return view('admin.payments.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'min_amount' => 'nullable|string|max:255',
-            'max_amount' => 'nullable|string|max:255',
-            'charges' => 'nullable|string|max:255',
-            'charge_type' => 'nullable|string|max:255',
-            'type' => 'nullable|string|max:255',
-            'bank_name' => 'nullable|string|max:255',
-            'account_name' => 'nullable|string|max:255',
-            'account_number' => 'nullable|string|max:255',
-            'code' => 'nullable|string|max:255',
-            'bar_code' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'wallet_address' => 'nullable|string|max:250',
-            'wallet_type' => 'nullable|string|max:250',
-            'wallet_network' => 'nullable|string|max:250',
-            'icon' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'status' => 'nullable|string|max:255',
-            'type_for' => 'nullable|string|max:255',
-            'optional_note' => 'nullable|string|max:255',
+        $request->validate([
+            'coin_code' => 'required|string|max:10',
+            'coin_name' => 'required|string|max:100',
+            'wallet_name' => 'required|string|max:100',
+            'wallet_type' => 'required|string|max:50',
+            'network_type' => 'required|string|max:50',
+            'wallet_address' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|in:enabled,disabled',
         ]);
 
+        $data = $request->except('icon');
+
         if ($request->hasFile('icon')) {
-            $icon = $request->file('icon');
-            $validated['icon'] = $icon->store('uploads/icons', 'public');
+            $data['icon'] = $request->file('icon')->store('payment-icons', 'public');
         }
 
-        if ($request->hasFile('bar_code')) {
-            $barCode = $request->file('bar_code');
-            $validated['bar_code'] = $barCode->store('uploads/barcodes', 'public');
-        }
+        WalletOption::create($data);
 
-        PaymentSetting::create($validated);
-
-        return redirect()->route('payment.index')->with('success', 'Payment setting created successfully.');
+        return redirect()->route('payment.index')
+            ->with('message', 'Payment method created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PaymentSetting  $paymentSetting
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PaymentSetting $paymentSetting)
+    public function edit($id)
     {
-        return view('admin.payment_settings.show', compact('paymentSetting'));
+        $payment = WalletOption::findOrFail($id);
+        return view('admin.payments.edit', compact('payment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PaymentSetting  $paymentSetting
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PaymentSetting $paymentSetting)
+    public function update(Request $request, $id)
     {
-        return view('admin.payment_settings.edit', compact('paymentSetting'));
-    }
+        $payment = WalletOption::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PaymentSetting  $paymentSetting
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PaymentSetting $paymentSetting)
-    {
-        $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'min_amount' => 'nullable|string|max:255',
-            'max_amount' => 'nullable|string|max:255',
-            'charges' => 'nullable|string|max:255',
-            'charge_type' => 'nullable|string|max:255',
-            'type' => 'nullable|string|max:255',
-            'bank_name' => 'nullable|string|max:255',
-            'account_name' => 'nullable|string|max:255',
-            'account_number' => 'nullable|string|max:255',
-            'code' => 'nullable|string|max:255',
-            'bar_code' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'wallet_address' => 'nullable|string|max:250',
-            'wallet_type' => 'nullable|string|max:250',
-            'wallet_network' => 'nullable|string|max:250',
-            'icon' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'status' => 'nullable|string|max:255',
-            'type_for' => 'nullable|string|max:255',
-            'optional_note' => 'nullable|string|max:255',
+        $request->validate([
+            'coin_code' => 'required|string|max:10',
+            'coin_name' => 'required|string|max:100',
+            'wallet_name' => 'required|string|max:100',
+            'wallet_type' => 'required|string|max:50',
+            'network_type' => 'required|string|max:50',
+            'wallet_address' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|in:enabled,disabled',
         ]);
 
-        if ($request->hasFile('icon')) {
-            $icon = $request->file('icon');
-            $validated['icon'] = $icon->store('uploads/icons', 'public');
-        }
-
-        if ($request->hasFile('bar_code')) {
-            $barCode = $request->file('bar_code');
-            $validated['bar_code'] = $barCode->store('uploads/barcodes', 'public');
-        }
-
-        $paymentSetting->update($validated);
-
-        return redirect()->route('payment.index')->with('success', 'Payment setting updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PaymentSetting  $paymentSetting
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentSetting $paymentSetting)
-    {
-        $paymentSetting->delete();
-
-        return redirect()->route('payment.index')->with('success', 'Payment setting deleted successfully.');
-    }
-
-    /**
-     * Display payment settings in admin view.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function paymentSettings()
-    {
-        $paymentSettings = PaymentSetting::all();
-        return view('admin.payment_settings', compact('paymentSettings'));
-    }
-
-    /**
-     * Add a new payment setting.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function addPayment(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'min_amount' => 'nullable|string|max:255',
-            'max_amount' => 'nullable|string|max:255',
-            'charges' => 'nullable|string|max:255',
-            'charge_type' => 'nullable|string|max:255',
-            'type' => 'nullable|string|max:255',
-            'bank_name' => 'nullable|string|max:255',
-            'account_name' => 'nullable|string|max:255',
-            'account_number' => 'nullable|string|max:255',
-            'code' => 'nullable|string|max:255',
-            'bar_code' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'wallet_address' => 'nullable|string|max:250',
-            'wallet_type' => 'nullable|string|max:250',
-            'icon' => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'status' => 'nullable|string|max:255',
-            'type_for' => 'nullable|string|max:255',
-            'optional_note' => 'nullable|string|max:255',
-        ]);
+        $data = $request->except('icon');
 
         if ($request->hasFile('icon')) {
-            $validated['icon'] = $request->file('icon')->store('uploads/icons', 'public');
+            // Delete old icon if exists
+            if ($payment->icon) {
+                Storage::disk('public')->delete($payment->icon);
+            }
+            $data['icon'] = $request->file('icon')->store('payment-icons', 'public');
         }
 
-        if ($request->hasFile('bar_code')) {
-            $validated['bar_code'] = $request->file('bar_code')->store('uploads/barcodes', 'public');
+        $payment->update($data);
+
+        return redirect()->route('payment.index')
+            ->with('message', 'Payment method updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $payment = WalletOption::findOrFail($id);
+
+        // Don't allow deletion of default payment methods
+        if (in_array($payment->wallet_name, ['Ethereum', 'Bitcoin', 'Litecoin'])) {
+            return redirect()->route('payment.index')
+                ->with('error', 'Default payment methods cannot be deleted');
         }
 
-        PaymentSetting::create($validated);
+        // Delete icon if exists
+        if ($payment->icon) {
+            Storage::disk('public')->delete($payment->icon);
+        }
 
-        return back()->with('message', 'Payment created successfully.');
+        $payment->delete();
+
+        return redirect()->route('payment.index')
+            ->with('message', 'Payment method deleted successfully');
     }
 }

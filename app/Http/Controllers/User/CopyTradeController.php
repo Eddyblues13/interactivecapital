@@ -76,12 +76,12 @@ class CopyTradeController extends Controller
                 ->orderBy('created_at', 'asc') // FIFO approach
                 ->first();
 
-            if (!$balanceRecord) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No available balance to deduct from'
-                ], 400);
-            }
+            // if (!$balanceRecord) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'No available balance to deduct from'
+            //     ], 400);
+            // }
 
             // Decrement the balance
             // $balanceRecord->decrement('amount', $amount);

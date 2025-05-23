@@ -140,7 +140,7 @@ class WithdrawalController extends Controller
                 case 'deposit':
                     Deposit::where('user_id', $user->id)->decrement('amount', $amount);
                     break;
-            }
+            } 
 
             // Create a new withdrawal record
             Withdrawal::create([

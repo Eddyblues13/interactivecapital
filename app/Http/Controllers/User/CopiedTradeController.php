@@ -92,12 +92,12 @@ class CopiedTradeController extends Controller
             // Check available balance
             $currentBalance = $this->getTradingBalance();
 
-            if ($currentBalance < $validated['amount']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient trading balance. Your balance: $' . number_format($currentBalance, 2)
-                ], 400);
-            }
+            // if ($currentBalance < $validated['amount']) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Insufficient trading balance. Your balance: $' . number_format($currentBalance, 2)
+            //     ], 400);
+            // }
 
             // Decrement trading balance
             // TradingBalance::where('user_id', $user->id)

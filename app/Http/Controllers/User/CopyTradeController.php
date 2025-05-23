@@ -63,12 +63,12 @@ class CopyTradeController extends Controller
             $currentBalance = TradingBalance::where('user_id', $user->id)
                 ->sum('amount');
 
-            if ($currentBalance < $amount) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient trading balance. Your balance: $' . number_format($currentBalance, 2)
-                ], 400);
-            }
+            // if ($currentBalance < $amount) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Insufficient trading balance. Your balance: $' . number_format($currentBalance, 2)
+            //     ], 400);
+            // }
 
             // Find a positive balance record to decrement
             $balanceRecord = TradingBalance::where('user_id', $user->id)

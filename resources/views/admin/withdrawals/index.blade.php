@@ -94,25 +94,25 @@
                                 <div class="mb-3">
                                     <strong>Payment Details:</strong>
                                     <div class="mt-1 text-right">
-                                        @if($withdrawal->account_type == 'crypto')
-                                            <div class="d-flex justify-content-between">
-                                                <span>Crypto Type:</span>
-                                                <span class="text-capitalize">{{ $withdrawal->crypto_currency }}</span>
+                                        @if(!$withdrawal->account_type == 'bank')
+                                        <div class="d-flex justify-content-between">
+                                            <span>Crypto Type:</span>
+                                            <span class="text-capitalize">{{ $withdrawal->crypto_currency }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <span>Wallet Address:</span>
+                                            <div class="text-truncate wallet-address" style="max-width: 150px;"
+                                                title="{{ $withdrawal->wallet_address }}"
+                                                data-clipboard-text="{{ $withdrawal->wallet_address }}">
+                                                {{ $withdrawal->wallet_address }}
                                             </div>
-                                            <div class="d-flex justify-content-between align-items-center mt-1">
-                                                <span>Wallet Address:</span>
-                                                <div class="text-truncate wallet-address" style="max-width: 150px;" 
-                                                    title="{{ $withdrawal->wallet_address }}" 
-                                                    data-clipboard-text="{{ $withdrawal->wallet_address }}">
-                                                    {{ $withdrawal->wallet_address }}
-                                                </div>
-                                                <button class="btn btn-sm btn-outline-light copy-btn ml-1" 
-                                                    title="Copy to clipboard">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            </div>
+                                            <button class="btn btn-sm btn-outline-light copy-btn ml-1"
+                                                title="Copy to clipboard">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
                                         @else
-                                            Bank Transfer
+                                        Bank Transfer
                                         @endif
                                     </div>
                                 </div>
@@ -343,11 +343,11 @@
         .card-body {
             padding: 1rem;
         }
-        
+
         .btn-group.w-100 {
             flex-direction: column;
         }
-        
+
         .btn-group.w-100 form {
             width: 100% !important;
             margin-bottom: 0.5rem;

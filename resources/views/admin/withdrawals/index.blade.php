@@ -87,14 +87,14 @@
                                 <div class="mb-3">
                                     <strong>Account Type:</strong>
                                     <span class="float-right text-capitalize">
-                                        {{ $withdrawal->account_type }}
+                                        {{ $withdrawal->crypto_currency }}
                                     </span>
                                 </div>
 
                                 <div class="mb-3">
                                     <strong>Payment Details:</strong>
                                     <div class="mt-1 text-right">
-                                        @if(!$withdrawal->account_type == 'bank')
+
                                         <div class="d-flex justify-content-between">
                                             <span>Crypto Type:</span>
                                             <span class="text-capitalize">{{ $withdrawal->crypto_currency }}</span>
@@ -111,9 +111,7 @@
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </div>
-                                        @else
-                                        Bank Transfer
-                                        @endif
+
                                     </div>
                                 </div>
 

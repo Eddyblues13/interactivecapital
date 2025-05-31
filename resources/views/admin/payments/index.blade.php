@@ -9,7 +9,7 @@
             @endif
 
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-light">Payment Settings</h1>
+                <h1 class="title1 text-light">Payment Setting</h1>
             </div>
 
             <div class="mb-5 row">

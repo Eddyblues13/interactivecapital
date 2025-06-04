@@ -92,7 +92,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-<script>
+{{-- <script>
     $(document).ready(function() {
     // Search functionality
     $('#searchInput').on('input', function() {
@@ -158,6 +158,69 @@ toastr.options = {
     "positionClass": "toast-top-right",
     "timeOut": "5000"
 };
+</script> --}}
+
+
+<script>
+    $(document).ready(function() {
+        // Search functionality
+        $('#searchInput').on('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            $('.trader-card-wrapper').each(function() {
+                const traderName = $(this).find('.h4').text().toLowerCase();
+                $(this).toggle(traderName.includes(searchQuery));
+            });
+        });
+
+        // Copy trade functionality
+        $('.copy-button').on('click', function() {
+            const button = $(this);
+            const traderId = button.data('trader-id');
+            const amount = parseFloat(button.data('min-amount'));
+            
+            button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+
+            $.ajax({
+                url: '{{ route("copy.trader") }}',
+                type: 'POST',
+                data: {
+                    trader_id: traderId,
+                    amount: amount,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        button.removeClass('btn-primary')
+                             .addClass('btn-success')
+                             .html('<i class="fas fa-check"></i> Copied');
+                        
+                        // Update balance display
+                        if (response.new_balance !== undefined) {
+                            $('#currentTradingBalance').text(response.new_balance.toFixed(2));
+                        }
+                        
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                        button.prop('disabled', false).text('COPY TRADE');
+                    }
+                },
+                error: function(xhr) {
+                    const errorMsg = xhr.responseJSON?.message || 'Failed to process request';
+                    toastr.error(errorMsg);
+                    button.prop('disabled', false).text('COPY TRADE');
+                }
+            });
+        });
+    });
+
+    // Initialize Toastr
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000"
+    };
 </script>
 
 <style>

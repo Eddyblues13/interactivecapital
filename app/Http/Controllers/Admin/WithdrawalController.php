@@ -61,13 +61,13 @@ class WithdrawalController extends Controller
             }
 
             // Refund the amount if rejected
-            $user = User::find($withdrawal->user_id);
-            if ($withdrawal->account_type == 'crypto') {
-                $user->crypto_balance += $withdrawal->amount;
-            } else {
-                $user->balance += $withdrawal->amount;
-            }
-            $user->save();
+            // $user = User::find($withdrawal->user_id);
+            // if ($withdrawal->account_type == 'crypto') {
+            //     $user->crypto_balance += $withdrawal->amount;
+            // } else {
+            //     $user->balance += $withdrawal->amount;
+            // }
+            // $user->save();
 
             // Update withdrawal status
             $withdrawal->update(['status' => 'rejected']);

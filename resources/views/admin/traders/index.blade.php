@@ -46,9 +46,9 @@
                             <div class="feature text-light">
                                 Return Rate: <span class="text-light">{{ $trader->return_rate }}%</span>
                             </div>
-                            <div class="feature text-light">
+                            {{-- <div class="feature text-light">
                                 Minimum Amount: <span class="text-light">${{ $trader->min_amount }}</span>
-                            </div>
+                            </div> --}}
                             <div class="feature text-light">
                                 Maximum Amount: <span class="text-light">${{ $trader->max_amount }}</span>
                             </div>

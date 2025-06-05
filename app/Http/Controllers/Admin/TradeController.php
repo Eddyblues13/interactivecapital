@@ -26,7 +26,7 @@ class TradeController extends Controller
             'name' => 'required|string|max:255',
             'followers' => 'required|integer',
             'return_rate' => 'required|numeric',
-            'min_amount' => 'required|numeric',
+            // 'min_amount' => 'required|numeric',
             'max_amount' => 'required|numeric',
             'profit_share' => 'required|numeric',
             'is_verified' => 'required|boolean',
@@ -52,7 +52,7 @@ class TradeController extends Controller
             'name' => $request->name,
             'followers' => $request->followers,
             'return_rate' => $request->return_rate,
-            'min_amount' => $request->min_amount,
+            // 'min_amount' => $request->min_amount,
             'max_amount' => $request->max_amount,
             'profit_share' => $request->profit_share,
             'is_verified' => $request->is_verified,
@@ -73,7 +73,7 @@ class TradeController extends Controller
             'name' => 'required|string|max:255',
             'followers' => 'required|integer',
             'return_rate' => 'required|numeric',
-            'min_amount' => 'required|numeric',
+            // 'min_amount' => 'required|numeric',
             'max_amount' => 'required|numeric',
             'profit_share' => 'required|numeric',
             'is_verified' => 'required|boolean',
@@ -104,7 +104,7 @@ class TradeController extends Controller
         $trader->name = $request->name;
         $trader->followers = $request->followers;
         $trader->return_rate = $request->return_rate;
-        $trader->min_amount = $request->min_amount;
+        // $trader->min_amount = $request->min_amount;
         $trader->max_amount = $request->max_amount;
         $trader->profit_share = $request->profit_share;
         $trader->is_verified = $request->is_verified;

@@ -46,11 +46,11 @@
                                     <input class="form-control text-light bg-dark" placeholder="Enter return rate"
                                         type="text" name="return_rate" value="{{ old('return_rate') }}" required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                {{-- <div class="form-group col-md-6">
                                     <h5 class="text-light">Minimum Amount</h5>
                                     <input class="form-control text-light bg-dark" placeholder="Enter minimum amount"
                                         type="text" name="min_amount" value="{{ old('min_amount') }}" required>
-                                </div>
+                                </div> --}}
                                 <div class="form-group col-md-6">
                                     <h5 class="text-light">Maximum Amount</h5>
                                     <input class="form-control text-light bg-dark" placeholder="Enter maximum amount"

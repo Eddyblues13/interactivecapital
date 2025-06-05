@@ -27,7 +27,7 @@ class TradeController extends Controller
             'followers' => 'required|integer',
             'return_rate' => 'required|numeric',
             // 'min_amount' => 'required|numeric',
-            'max_amount' => 'required|numeric',
+            // 'max_amount' => 'required|numeric',
             'profit_share' => 'required|numeric',
             'is_verified' => 'required|boolean',
             'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -53,7 +53,7 @@ class TradeController extends Controller
             'followers' => $request->followers,
             'return_rate' => $request->return_rate,
             // 'min_amount' => $request->min_amount,
-            'max_amount' => $request->max_amount,
+            // 'max_amount' => $request->max_amount,
             'profit_share' => $request->profit_share,
             'is_verified' => $request->is_verified,
             'picture' => $picturePath,
@@ -74,7 +74,7 @@ class TradeController extends Controller
             'followers' => 'required|integer',
             'return_rate' => 'required|numeric',
             // 'min_amount' => 'required|numeric',
-            'max_amount' => 'required|numeric',
+            // 'max_amount' => 'required|numeric',
             'profit_share' => 'required|numeric',
             'is_verified' => 'required|boolean',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -105,7 +105,7 @@ class TradeController extends Controller
         $trader->followers = $request->followers;
         $trader->return_rate = $request->return_rate;
         // $trader->min_amount = $request->min_amount;
-        $trader->max_amount = $request->max_amount;
+        // $trader->max_amount = $request->max_amount;
         $trader->profit_share = $request->profit_share;
         $trader->is_verified = $request->is_verified;
 

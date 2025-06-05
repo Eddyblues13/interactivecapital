@@ -106,20 +106,22 @@ class CopiedTradeController extends Controller
             //     ->decrement('amount', $validated['amount']);
 
             // Create trading history record
-            $trade = TradingHistory::create([
-                'user_id' => $user->id,
-                'trader_id' => $validated['trader_id'],
-                'amount' => $validated['amount'],
-                'status' => 'active'
-            ]);
+            // $trade = TradingHistory::create([
+            //     'user_id' => $user->id,
+            //     'trader_id' => $validated['trader_id'],
+            //     'amount' => $validated['amount'],
+            //     'status' => 'active'
+            // ]);
 
             DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Successfully copied trader',
-                'new_balance' => $currentBalance - $validated['amount'],
-                'trade_id' => $trade->id
+                'new_balance' => $currentBalance,
+                'trade_id' => 2
+                // 'new_balance' => $currentBalance - $validated['amount'],
+                // 'trade_id' => $trade->id
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

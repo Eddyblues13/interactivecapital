@@ -49,9 +49,9 @@
                             {{-- <div class="feature text-light">
                                 Minimum Amount: <span class="text-light">${{ $trader->min_amount }}</span>
                             </div> --}}
-                            <div class="feature text-light">
+                            {{-- <div class="feature text-light">
                                 Maximum Amount: <span class="text-light">${{ $trader->max_amount }}</span>
-                            </div>
+                            </div> --}}
                             <div class="feature text-light">
                                 Profit Share: <span class="text-light">{{ $trader->profit_share }}%</span>
                             </div>

@@ -88,13 +88,13 @@ class CopyTradeController extends Controller
             // $balanceRecord->decrement('amount', $amount);
 
             // Record the transaction
-            $transaction = TradingHistory::create([
-                'user_id' => $user->id,
-                'trader_id' => $traderId,
-                'amount' => $amount,
-                'status' => 'active',
+            // $transaction = TradingHistory::create([
+            //     'user_id' => $user->id,
+            //     'trader_id' => $traderId,
+            //     'amount' => $amount,
+            //     'status' => 'active',
 
-            ]);
+            // ]);
 
             DB::commit();
 
@@ -105,7 +105,8 @@ class CopyTradeController extends Controller
                 'success' => true,
                 'message' => 'Successfully copied trader',
                 'new_balance' => $newBalance,
-                'transaction_id' => $transaction->id
+                'transaction_id' => 3
+                // 'transaction_id' => $transaction->id
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

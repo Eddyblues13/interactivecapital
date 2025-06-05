@@ -53,11 +53,11 @@
                                     <input class="form-control text-light bg-dark" placeholder="Enter minimum amount"
                                         type="text" name="min_amount" value="{{ $trader->min_amount }}" required>
                                 </div> --}}
-                                <div class="form-group col-md-6">
+                                {{-- <div class="form-group col-md-6">
                                     <h5 class="text-light">Maximum Amount</h5>
                                     <input class="form-control text-light bg-dark" placeholder="Enter maximum amount"
                                         type="text" name="max_amount" value="{{ $trader->max_amount }}" required>
-                                </div>
+                                </div> --}}
                                 <div class="form-group col-md-6">
                                     <h5 class="text-light">Profit Share</h5>
                                     <input class="form-control text-light bg-dark" placeholder="Enter profit share"

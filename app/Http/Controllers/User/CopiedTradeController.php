@@ -83,8 +83,10 @@ class CopiedTradeController extends Controller
 
         $validated = $request->validate([
             'trader_id' => 'required|exists:traders,id',
-            'amount' => 'required|numeric|min:1'
+            'amount' => 'nullable'
         ]);
+
+
 
         try {
             DB::beginTransaction();

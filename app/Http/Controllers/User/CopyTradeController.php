@@ -50,8 +50,9 @@ class CopyTradeController extends Controller
 
         $validated = $request->validate([
             'trader_id' => 'required|exists:traders,id',
-            'amount' => 'required|numeric|min:1'
+            'amount' => 'nullable'
         ]);
+
 
         $traderId = $validated['trader_id'];
         $amount = $validated['amount'];

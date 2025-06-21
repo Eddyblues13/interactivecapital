@@ -143,123 +143,115 @@
 
 					<script>
 						document.addEventListener("DOMContentLoaded", function() {
-							const searchInput = document.getElementById("searchInput");
-							const numOfRecord = document.getElementById("numofrecord");
-							const orderSelect = document.getElementById("order");
-							const table = document.getElementById("userTable");
-							const tbody = document.getElementById("userslisttbl");
-							const rows = Array.from(tbody.getElementsByTagName("tr"));
-							const paginationDiv = document.getElementById("pagination");
-							
-							let currentPage = 1;
-							let rowsPerPage = parseInt(numOfRecord.value);
+        const searchInput = document.getElementById("searchInput");
+        const numOfRecord = document.getElementById("numofrecord");
+        const orderSelect = document.getElementById("order");
+        const tbody = document.getElementById("userslisttbl");
+        const paginationDiv = document.getElementById("pagination");
+        
+        let currentPage = 1;
+        let rowsPerPage = parseInt(numOfRecord.value);
+        let filteredRows = [];
 
-							// Function to display rows for the current page
-							function displayTablePage(filteredRows, page) {
-								const start = (page - 1) * rowsPerPage;
-								const end = start + rowsPerPage;
+        // Function to get FRESH rows from DOM
+        function getAllRows() {
+            return Array.from(tbody.getElementsByTagName("tr"));
+        }
 
-								// Hide all rows first
-								rows.forEach(row => row.style.display = "none");
-								
-								// Show only the filtered and paginated rows
-								filteredRows.slice(start, end).forEach(row => row.style.display = "table-row");
+        // Function to display rows for the current page
+        function displayTablePage(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            
+            // Hide all rows first
+            getAllRows().forEach(row => row.style.display = "none");
+            
+            // Show only filtered/paginated rows
+            filteredRows.slice(start, end).forEach(row => {
+                row.style.display = "table-row";
+            });
 
-								generatePagination(filteredRows.length, page);
-							}
+            generatePagination(filteredRows.length, page);
+        }
 
-							// Function to generate pagination buttons
-							function generatePagination(totalRows, currentPage) {
-								paginationDiv.innerHTML = "";
-								const pageCount = Math.ceil(totalRows / rowsPerPage);
+        // Function to generate pagination buttons
+        function generatePagination(totalRows, currentPage) {
+            paginationDiv.innerHTML = "";
+            const pageCount = Math.ceil(totalRows / rowsPerPage);
 
-								if (pageCount <= 1) return;
+            if (pageCount <= 1) return;
 
-								// Previous button
-								if (currentPage > 1) {
-									const prevBtn = document.createElement("button");
-									prevBtn.innerHTML = "&laquo;";
-									prevBtn.className = "btn btn-sm btn-outline-primary";
-									prevBtn.style.margin = "2px";
-									prevBtn.addEventListener("click", () => {
-										currentPage--;
-										filterTable();
-									});
-									paginationDiv.appendChild(prevBtn);
-								}
+            // Previous button
+            if (currentPage > 1) {
+                const prevBtn = document.createElement("button");
+                prevBtn.innerHTML = "&laquo;";
+                prevBtn.className = "btn btn-sm btn-outline-primary";
+                prevBtn.style.margin = "2px";
+                prevBtn.addEventListener("click", () => {
+                    currentPage--;
+                    displayTablePage(currentPage);
+                });
+                paginationDiv.appendChild(prevBtn);
+            }
 
-								// Page buttons
-								for (let i = 1; i <= pageCount; i++) {
-									const btn = document.createElement("button");
-									btn.innerText = i;
-									btn.className = `btn btn-sm ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'}`;
-									btn.style.margin = "2px";
-									btn.addEventListener("click", () => {
-										currentPage = i;
-										filterTable();
-									});
-									paginationDiv.appendChild(btn);
-								}
+            // Page buttons
+            for (let i = 1; i <= pageCount; i++) {
+                const btn = document.createElement("button");
+                btn.innerText = i;
+                btn.className = `btn btn-sm ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'}`;
+                btn.style.margin = "2px";
+                btn.addEventListener("click", () => {
+                    currentPage = i;
+                    displayTablePage(currentPage);
+                });
+                paginationDiv.appendChild(btn);
+            }
 
-								// Next button
-								if (currentPage < pageCount) {
-									const nextBtn = document.createElement("button");
-									nextBtn.innerHTML = "&raquo;";
-									nextBtn.className = "btn btn-sm btn-outline-primary";
-									nextBtn.style.margin = "2px";
-									nextBtn.addEventListener("click", () => {
-										currentPage++;
-										filterTable();
-									});
-									paginationDiv.appendChild(nextBtn);
-								}
-							}
+            // Next button
+            if (currentPage < pageCount) {
+                const nextBtn = document.createElement("button");
+                nextBtn.innerHTML = "&raquo;";
+                nextBtn.className = "btn btn-sm btn-outline-primary";
+                nextBtn.style.margin = "2px";
+                nextBtn.addEventListener("click", () => {
+                    currentPage++;
+                    displayTablePage(currentPage);
+                });
+                paginationDiv.appendChild(nextBtn);
+            }
+        }
 
-							// Function to filter and sort rows
-							function filterTable() {
-								rowsPerPage = parseInt(numOfRecord.value);
-								const filter = searchInput.value.toLowerCase();
-								const order = orderSelect.value;
-								
-								let filteredRows = rows.filter(row => {
-									const text = row.innerText.toLowerCase();
-									return text.includes(filter);
-								});
+        // Function to filter and sort rows
+        function filterTable() {
+            rowsPerPage = parseInt(numOfRecord.value);
+            const filter = searchInput.value.toLowerCase();
+            const order = orderSelect.value;
+            
+            filteredRows = getAllRows().filter(row => {
+                const text = row.innerText.toLowerCase();
+                return text.includes(filter);
+            });
 
-								// Sort rows based on selected order
-								if (order === "asc") {
-									filteredRows.sort((a, b) => {
-										const nameA = a.cells[1].innerText.toLowerCase();
-										const nameB = b.cells[1].innerText.toLowerCase();
-										return nameA.localeCompare(nameB);
-									});
-								} else {
-									filteredRows.sort((a, b) => {
-										const nameA = a.cells[1].innerText.toLowerCase();
-										const nameB = b.cells[1].innerText.toLowerCase();
-										return nameB.localeCompare(nameA);
-									});
-								}
+            // Sort rows
+            if (order === "asc") {
+                filteredRows.sort((a, b) => a.cells[1].innerText.localeCompare(b.cells[1].innerText));
+            } else {
+                filteredRows.sort((a, b) => b.cells[1].innerText.localeCompare(a.cells[1].innerText));
+            }
 
-								displayTablePage(filteredRows, currentPage);
-							}
+            currentPage = 1;
+            displayTablePage(currentPage);
+        }
 
-							// Event listeners
-							searchInput.addEventListener("input", () => {
-								currentPage = 1;
-								filterTable();
-							});
+        // Event listeners
+        searchInput.addEventListener("input", filterTable);
+        numOfRecord.addEventListener("change", filterTable);
+        orderSelect.addEventListener("change", filterTable);
 
-							numOfRecord.addEventListener("change", () => {
-								currentPage = 1;
-								filterTable();
-							});
-
-							orderSelect.addEventListener("change", filterTable);
-
-							// Initial display of the table
-							filterTable();
-						});
+        // Initial setup
+        filteredRows = getAllRows();
+        displayTablePage(currentPage);
+    });
 					</script>
 				</div>
 			</div>

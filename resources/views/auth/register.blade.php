@@ -16,6 +16,11 @@
     <h1 class="signup-title">Create An Account</h1>
     <form id="registerForm" class="signup-form">
         @csrf
+
+        <!-- Honeypot field -->
+        <input type="text" name="honeypot" style="display:none;">
+        <!-- Timestamp field -->
+        <input type="hidden" name="timestamp" value="{{ now()->timestamp }}">
         <!-- Other form fields -->
         <input type="hidden" name="referral_code" value="{{ $referral_code ?? '' }}">
 

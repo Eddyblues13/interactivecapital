@@ -61,11 +61,15 @@
                     </li>
                     @endif
                 </ul>
-                @if($totalBalance <= 0) <a href="{{ route('deposit.one') }}" class="fund-trading-btn">FUND TRADING</a>
+
+                <a href="{{ route('deposit.one') }}" class="fund-trading-btn">FUND TRADING</a>
+
+                {{-- @if($totalBalance <= 0) <a href="{{ route('deposit.one') }}" class="fund-trading-btn">FUND
+                    TRADING</a>
                     @else
                     <button class="fund-trading-btn" data-plan-id="{{ $plan->id }}" data-toggle="modal"
                         data-target="#fundTradingModal">BUY PLAN</button>
-                    @endif
+                    @endif --}}
             </div>
         </div>
         @endforeach

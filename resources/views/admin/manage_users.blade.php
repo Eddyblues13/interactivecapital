@@ -142,7 +142,7 @@
 					<div id="pagination" class="mt-3"></div>
 
 					<script>
-						document.addEventListener("DOMContentLoaded", function() {
+		document.addEventListener("DOMContentLoaded", function() {
         const searchInput = document.getElementById("searchInput");
         const numOfRecord = document.getElementById("numofrecord");
         const orderSelect = document.getElementById("order");

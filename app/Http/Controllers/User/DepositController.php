@@ -50,7 +50,7 @@ class DepositController extends Controller
 
         // Validate the request
         $validatedData = $request->validate([
-            'amount' => 'required|numeric|min:10', // Minimum deposit of 10
+            'amount' => 'required|numeric|min:1000', // Minimum deposit of 10
             'account' => 'required|string|in:holding,trading,mining,staking' // Match your select options
         ]);
 

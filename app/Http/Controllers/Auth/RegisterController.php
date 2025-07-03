@@ -43,6 +43,10 @@ class RegisterController extends Controller
         if (isset($data['timestamp']) && (now()->timestamp - $data['timestamp']) < 3) {
             abort(403, 'Submission too fast!');
         }
+        // JavaScript check
+        if ($request->js_enabled != 1) {
+            return back()->withErrors(['error' => 'JavaScript must be enabled to register.']);
+        }
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',

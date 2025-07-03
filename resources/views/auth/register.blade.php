@@ -21,6 +21,12 @@
         <input type="text" name="honeypot" style="display:none;">
         <!-- Timestamp field -->
         <input type="hidden" name="timestamp" value="{{ now()->timestamp }}">
+        <!-- JavaScript check (hidden field) -->
+        <input type="hidden" name="js_enabled" id="js_enabled" value="0">
+        <script>
+            document.getElementById('js_enabled').value = 1;
+        </script>
+
         <!-- Other form fields -->
         <input type="hidden" name="referral_code" value="{{ $referral_code ?? '' }}">
 

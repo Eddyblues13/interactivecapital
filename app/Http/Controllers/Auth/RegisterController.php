@@ -7,9 +7,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Mail\VerificationEmail;
 use App\Http\Controllers\Controller;
-use App\Models\User\ReferralBalance;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -21,8 +22,12 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(Request $request)
     {
-        $referral_code = $request->query('referral_code'); // Get referral code from URL
-        return view('auth.register', compact('referral_code')); // Pass referral code to the view
+        // Generate a unique form token
+        $formToken = md5(uniqid(rand(), true));
+        session(['form_token' => $formToken]);
+
+        $referral_code = $request->query('referral_code');
+        return view('auth.register', compact('referral_code', 'formToken'));
     }
 
     /**
@@ -33,31 +38,70 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-
-        // Check honeypot field
-        if (!empty($data['honeypot'])) {
-            abort(403, 'Bot detected!');
+        // Rate limiting (5 attempts per IP per hour)
+        $key = 'registration-' . $request->ip();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "Too many attempts. Please try again in {$seconds} seconds."
+            ], 429);
         }
+        RateLimiter::hit($key);
 
-        // Check timestamp (submission must take at least 3 seconds)
-        if (isset($data['timestamp']) && (now()->timestamp - $data['timestamp']) < 3) {
-            abort(403, 'Submission too fast!');
-        }
-        // JavaScript check
+        // 1. JavaScript check
         if ($request->js_enabled != 1) {
-            return back()->withErrors(['error' => 'JavaScript must be enabled to register.']);
+            return $this->botDetected($request);
         }
+
+        // 2. Form token validation
+        if ($request->form_token !== session('form_token')) {
+            return $this->botDetected($request);
+        }
+
+        // 3. Honeypot check
+        if (!empty($request->website)) {
+            return $this->botDetected($request);
+        }
+
+        // 4. Time-based check (minimum 5 seconds to fill form)
+        if (time() - $request->timestamp < 5) {
+            return $this->botDetected($request);
+        }
+
+        // 5. Time-check field (set by JavaScript after delay)
+        if ($request->time_check != 1) {
+            return $this->botDetected($request);
+        }
+
+        // 6. Block disposable email domains
+        $disposableDomains = ['mail.ru', 'inbox.ru', 'bk.ru', 'yopmail.com', 'tempmail.com'];
+        $emailDomain = explode('@', $request->email)[1] ?? '';
+        if (in_array(strtolower($emailDomain), $disposableDomains)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Disposable email addresses are not allowed.'
+            ], 422);
+        }
+
+        // 7. Browser fingerprint check
+        if ($this->suspiciousUserAgent($request->userAgent())) {
+            return $this->botDetected($request);
+        }
+
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255|regex:/^[a-zA-Z ]+$/',
+            'last_name' => 'required|string|max:255|regex:/^[a-zA-Z ]+$/',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone_number' => 'required|string|max:20',
-            'currency' => 'required|string|max:10',
+            'phone_number' => 'required|string|max:20|regex:/^[0-9]+$/',
+            'currency' => 'required|string|max:10|in:USD,EUR,GBP,JPY',
             'country' => 'required|string|max:100',
             'city' => 'required|string|max:100',
-            'password' => 'required|string|min:4|confirmed',
+            'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
             'referral_code' => 'nullable|string|exists:users,referral_code',
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter and one number.'
         ]);
 
         if ($validator->fails()) {
@@ -65,6 +109,11 @@ class RegisterController extends Controller
                 'success' => false,
                 'message' => $validator->errors()->first(),
             ], 422);
+        }
+
+        // Additional country-city validation
+        if ($this->suspiciousLocation($request->country, $request->city)) {
+            return $this->botDetected($request);
         }
 
         // Find the referrer if a valid referral code is provided
@@ -92,6 +141,8 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'referral_code' => $this->generateReferralCode(),
             'referred_by' => $referrer ? $referrer->id : null,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
         ]);
 
         // Create related balances for the user
@@ -137,6 +188,9 @@ class RegisterController extends Controller
         // Send the email
         Mail::to($user->email)->send(new VerificationEmail($vmessage));
 
+        // Clear form token after successful registration
+        session()->forget('form_token');
+
         // Log in the user
         auth()->login($user);
 
@@ -155,9 +209,63 @@ class RegisterController extends Controller
     protected function generateReferralCode()
     {
         do {
-            $code = strtoupper(substr(md5(uniqid()), 0, 8)); // Generate an 8-character code
-        } while (User::where('referral_code', $code)->exists()); // Ensure the code is unique
+            $code = strtoupper(substr(md5(uniqid()), 0, 8));
+        } while (User::where('referral_code', $code)->exists());
 
         return $code;
+    }
+
+    /**
+     * Handle bot detection
+     */
+    protected function botDetected($request)
+    {
+        Log::warning('Bot registration attempt detected', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'data' => $request->except(['password', 'password_confirmation'])
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Registration failed. Please contact support if you believe this is an error.'
+        ], 403);
+    }
+
+    /**
+     * Check for suspicious user agents
+     */
+    protected function suspiciousUserAgent($userAgent)
+    {
+        $userAgent = strtolower($userAgent);
+        $botIndicators = ['bot', 'spider', 'crawl', 'curl', 'python', 'java', 'wget', 'php', 'headless'];
+
+        foreach ($botIndicators as $indicator) {
+            if (str_contains($userAgent, $indicator)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check for suspicious location patterns
+     */
+    protected function suspiciousLocation($country, $city)
+    {
+        // Check for mismatches like GBP currency with Mauritania
+        $suspiciousPatterns = [
+            'GBP' => ['Mauritania', 'Azerbaijan', 'Micronesia'],
+            'USD' => ['Praia', 'Banjul'] // Example patterns
+        ];
+
+        foreach ($suspiciousPatterns as $currency => $countries) {
+            if (in_array($country, $countries)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -17,14 +17,24 @@
     <form id="registerForm" class="signup-form">
         @csrf
 
-        <!-- Honeypot field -->
-        <input type="text" name="honeypot" style="display:none;">
-        <!-- Timestamp field -->
-        <input type="hidden" name="timestamp" value="{{ now()->timestamp }}">
-        <!-- JavaScript check (hidden field) -->
+        <!-- Add these hidden fields to your form -->
         <input type="hidden" name="js_enabled" id="js_enabled" value="0">
+        <input type="hidden" name="form_token" value="{{ $formToken }}">
+        <input type="hidden" name="timestamp" id="timestamp" value="{{ now()->timestamp }}">
+        <input type="hidden" name="time_check" id="time_check" value="0">
+
+        <!-- Honeypot field (styled to be invisible) -->
+        <div style="position: absolute; left: -9999px;">
+            <label for="website">Leave this blank</label>
+            <input type="text" name="website" id="website">
+        </div>
+
+        <!-- JavaScript to set these values -->
         <script>
             document.getElementById('js_enabled').value = 1;
+    setTimeout(function() {
+        document.getElementById('time_check').value = 1;
+    }, 5000); // 5 second delay
         </script>
 
         <!-- Other form fields -->

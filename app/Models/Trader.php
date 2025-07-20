@@ -7,15 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Trader extends Model
 {
 
+
+    protected $table = 'traders';
+
     protected $fillable = [
-        'picture',
-        'is_verified',
-        'verified_badge',
         'name',
+        'followers',
         'return_rate',
         'min_amount',
         'max_amount',
-        'followers',
         'profit_share',
+        'is_verified',
+        'picture_url',
+        'picture_public_id'
     ];
 }

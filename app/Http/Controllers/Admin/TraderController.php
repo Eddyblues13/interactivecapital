@@ -5,24 +5,39 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Trader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Cloudinary\Cloudinary;
+use Cloudinary\Api\Upload\UploadApi;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class TraderController extends Controller
 {
+    protected $cloudinary;
+    protected $uploadApi;
+
+    public function __construct()
+    {
+        $this->cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                'api_key' => env('CLOUDINARY_API_KEY'),
+                'api_secret' => env('CLOUDINARY_API_SECRET'),
+            ]
+        ]);
+        $this->uploadApi = new UploadApi();
+    }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the resource with pagination
      */
     public function index()
     {
-        $traders = Trader::all();
+        $traders = Trader::latest()->paginate(10);
         return view('admin.traders.index', compact('traders'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -31,42 +46,71 @@ class TraderController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'trader_name' => 'required|string|max:255',
-            'followers' => 'required|numeric|min:0',  // Validate followers as a non-negative number
-            'copier_roi' => 'required|numeric|min:0',  // Validate copier ROI as a non-negative number
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validate picture as an optional image
-            'risk_index' => 'required|numeric|min:0|max:100',  // Validate risk index within a 0-100 range
-            'total_copied_trade' => 'required|numeric|min:0',  // Validate total copied trade as a non-negative number
-            'verified_status' => 'required|',  // Validate verified status field
+            'followers' => 'required|numeric|min:0',
+            'copier_roi' => 'required|numeric|min:0',
+            'risk_index' => 'required|numeric|min:0|max:100',
+            'total_copied_trade' => 'required|numeric|min:0',
+            'verified_status' => 'required',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/traders'), $fileName);
-            $validated['picture'] = 'uploads/traders/' . $fileName;
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        Trader::create($validated);
+        try {
+            $validated = $validator->validated();
+            $uploadResult = null;
 
-        return redirect()->route('traders.index')->with('success', 'Trader created successfully!');
+            // Handle picture upload to Cloudinary if provided
+            if ($request->hasFile('picture')) {
+                $uploadResult = $this->uploadApi->upload(
+                    $request->file('picture')->getRealPath(),
+                    [
+                        'folder' => 'traders/profiles',
+                        'transformation' => [
+                            'width' => 400,
+                            'height' => 400,
+                            'crop' => 'fill',
+                            'gravity' => 'face',
+                            'quality' => 'auto'
+                        ]
+                    ]
+                );
+            }
+
+            $trader = Trader::create([
+                'name' => $validated['trader_name'],
+                'followers' => $validated['followers'],
+                'return_rate' => $validated['copier_roi'],
+                'risk_index' => $validated['risk_index'],
+                'total_copied_trade' => $validated['total_copied_trade'],
+                'is_verified' => $validated['verified_status'],
+                'picture_url' => $uploadResult['secure_url'] ?? null,
+                'picture_public_id' => $uploadResult['public_id'] ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Trader created successfully!',
+                'redirect_url' => route('traders.index')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Trader creation failed: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Trader creation failed. Please try again.');
+        }
     }
-
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Trader  $trader
-     * @return \Illuminate\Http\Response
      */
     public function show(Trader $trader)
     {
@@ -75,9 +119,6 @@ class TraderController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Trader  $trader
-     * @return \Illuminate\Http\Response
      */
     public function edit(Trader $trader)
     {
@@ -86,55 +127,108 @@ class TraderController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Trader  $trader
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Trader $trader)
     {
-        // Validate input fields
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'trader_name' => 'required|string|max:255',
-            'followers' => 'required|numeric|min:0',  // Validate followers as a non-negative number
-            'copier_roi' => 'required|numeric|min:0',  // Validate copier ROI as a non-negative number
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validate picture as an optional image
-            'risk_index' => 'required|numeric|min:0|max:100',  // Validate risk index within a 0-100 range
-            'total_copied_trade' => 'required|numeric|min:0',  // Validate total copied trade as a non-negative number
-            'verified_status' => 'required|',  // Validate verified status field
+            'followers' => 'required|numeric|min:0',
+            'copier_roi' => 'required|numeric|min:0',
+            'risk_index' => 'required|numeric|min:0|max:100',
+            'total_copied_trade' => 'required|numeric|min:0',
+            'verified_status' => 'required',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_picture' => 'nullable|boolean',
         ]);
 
-        // Check if a new picture is uploaded
-        if ($request->hasFile('picture')) {
-            // Delete the old picture if it exists
-            if ($trader->picture && file_exists(public_path($trader->picture))) {
-                unlink(public_path($trader->picture));
-            }
-
-            // Save the new picture
-            $file = $request->file('picture');
-            $filename = time() . '_trader.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/traders/'), $filename);
-            $validated['picture'] = 'uploads/traders/' . $filename;
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // Update trader details
-        $trader->update($validated);
+        try {
+            $validated = $validator->validated();
+            $updateData = [
+                'name' => $validated['trader_name'],
+                'followers' => $validated['followers'],
+                'return_rate' => $validated['copier_roi'],
+                'risk_index' => $validated['risk_index'],
+                'total_copied_trade' => $validated['total_copied_trade'],
+                'is_verified' => $validated['verified_status'],
+            ];
 
-        return redirect()->route('traders.index')->with('success', 'Trader updated successfully!');
+            // Handle picture removal or update
+            if ($request->has('remove_picture') && $request->remove_picture) {
+                $this->deleteCloudinaryImage($trader->picture_public_id);
+                $updateData['picture_url'] = null;
+                $updateData['picture_public_id'] = null;
+            } elseif ($request->hasFile('picture')) {
+                $this->deleteCloudinaryImage($trader->picture_public_id);
+
+                $uploadResult = $this->uploadApi->upload(
+                    $request->file('picture')->getRealPath(),
+                    [
+                        'folder' => 'traders/profiles',
+                        'transformation' => [
+                            'width' => 400,
+                            'height' => 400,
+                            'crop' => 'fill',
+                            'gravity' => 'face',
+                            'quality' => 'auto'
+                        ]
+                    ]
+                );
+
+                $updateData['picture_url'] = $uploadResult['secure_url'];
+                $updateData['picture_public_id'] = $uploadResult['public_id'];
+            }
+
+            $trader->update($updateData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Trader updated successfully!',
+                'redirect_url' => route('traders.index')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Trader update failed: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Trader update failed. Please try again.');
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Trader  $trader
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Trader $trader)
     {
-        $trader->delete();
+        try {
+            // Delete picture from Cloudinary if exists
+            $this->deleteCloudinaryImage($trader->picture_public_id);
 
-        return redirect()->route('traders.index')->with('success', 'Trader deleted successfully!');
+            $trader->delete();
+
+            return redirect()->route('admin.traders.index')
+                ->with('success', 'Trader deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Trader deletion failed: ' . $e->getMessage());
+            return back()->with('error', 'Failed to delete trader. Please try again.');
+        }
+    }
+
+    /**
+     * Helper method to delete image from Cloudinary
+     */
+    protected function deleteCloudinaryImage($publicId)
+    {
+        if ($publicId) {
+            try {
+                $this->uploadApi->destroy($publicId);
+            } catch (\Exception $e) {
+                Log::error("Failed to delete Cloudinary image: " . $e->getMessage());
+                throw $e;
+            }
+        }
     }
 }

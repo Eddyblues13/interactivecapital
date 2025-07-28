@@ -60,6 +60,12 @@ class TraderController extends Controller
         ]);
 
         if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -69,7 +75,6 @@ class TraderController extends Controller
             $validated = $validator->validated();
             $uploadResult = null;
 
-            // Handle picture upload to Cloudinary if provided
             if ($request->hasFile('picture')) {
                 $uploadResult = $this->uploadApi->upload(
                     $request->file('picture')->getRealPath(),
@@ -95,6 +100,8 @@ class TraderController extends Controller
                 'is_verified' => $validated['verified_status'],
                 'picture_url' => $uploadResult['secure_url'] ?? null,
                 'picture_public_id' => $uploadResult['public_id'] ?? null,
+                'min_amount' => 0,
+                'max_amount' => 100000000,
             ]);
 
             return response()->json([
@@ -104,10 +111,19 @@ class TraderController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Trader creation failed: ' . $e->getMessage());
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trader creation failed. Please try again.'
+                ], 500);
+            }
+
             return back()->withInput()
                 ->with('error', 'Trader creation failed. Please try again.');
         }
     }
+
 
     /**
      * Display the specified resource.

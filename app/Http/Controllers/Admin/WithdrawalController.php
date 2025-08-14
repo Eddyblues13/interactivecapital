@@ -68,7 +68,7 @@ class WithdrawalController extends Controller
             //     $user->balance += $withdrawal->amount;
             // }
             // $user->save();
-
+ 
             // Update withdrawal status
             $withdrawal->update(['status' => 'rejected']);
 

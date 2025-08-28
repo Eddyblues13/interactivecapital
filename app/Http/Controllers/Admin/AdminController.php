@@ -108,7 +108,7 @@ class AdminController extends Controller
     {
 
         $data['deposits'] = User::join('deposits', 'users.id', '=', 'deposits.user_id')
-            ->get(['users.email', 'users.name', 'deposits.*']);
+            ->get(['users.email', 'users.first_name', 'deposits.*']);
 
         return view('admin.manage_deposit', $data);
     }
@@ -117,7 +117,7 @@ class AdminController extends Controller
     {
 
         $data['withdrawals'] = User::join('withdrawals', 'users.id', '=', 'withdrawals.user_id')
-            ->get(['users.email', 'users.name', 'withdrawals.*']);
+            ->get(['users.email', 'users.first_name', 'withdrawals.*']);
 
         return view('admin.manage_withdrawal', $data);
     }
@@ -182,7 +182,7 @@ class AdminController extends Controller
     public function manageKycPage()
     {
         $data['kyc'] = User::leftJoin('documents', 'users.id', '=', 'documents.user_id')
-            ->get(['users.id as real_user_id', 'users.email', 'users.name', 'users.kyc_status', 'documents.*']);
+            ->get(['users.id as real_user_id', 'users.email', 'users.first_name', 'users.kyc_status', 'documents.*']);
 
         return view('admin.kyc', $data);
     }
@@ -718,10 +718,10 @@ class AdminController extends Controller
             session()->forget('impersonate');
 
 
-            $data['users'] = User::select('users.id', 'users.name', 'users.email', 'users.created_at')
+            $data['users'] = User::select('users.id', 'users.first_name', 'users.email', 'users.created_at')
                 ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
                 ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-                ->groupBy('users.id', 'users.name', 'users.email', 'users.created_at')
+                ->groupBy('users.id', 'users.first_name', 'users.email', 'users.created_at')
                 ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
                 ->get();
             // Sum of account balance
